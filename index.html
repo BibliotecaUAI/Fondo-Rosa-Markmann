@@ -25,10 +25,10 @@
   html,body{ margin:0; padding:0; }
   body{
     background:
-      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(201,162,39,0.08), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 100%, rgba(201,162,39,0.05), transparent 60%),
-      #ffffff;
-    color: #211f1a;
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(201,162,39,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 100%, rgba(201,162,39,0.06), transparent 60%),
+      var(--noir);
+    color: var(--ivory);
     font-family: 'Cormorant Garamond', serif;
     min-height:100vh;
   }
@@ -46,13 +46,13 @@
   }
   h1{
     font-family:'Fraunces', serif; font-weight:500; font-size: clamp(30px,4.2vw,46px);
-    margin:0; line-height:1.05; letter-spacing:-0.01em; color: #1a1a1c;
+    margin:0; line-height:1.05; letter-spacing:-0.01em; color: var(--ivory);
   }
-  h1 em{ font-style:italic; color: var(--gold-dim); font-weight:300; }
-  .sub{ font-size:17px; color:#6b6559; margin-top:10px; max-width:460px; line-height:1.5; }
+  h1 em{ font-style:italic; color: var(--gold-light); font-weight:300; }
+  .sub{ font-size:17px; color:var(--ivory-dim); margin-top:10px; max-width:460px; line-height:1.5; }
   .stat{ text-align:right; font-family:'Inter',sans-serif; }
-  .stat .n{ font-family:'Fraunces',serif; font-weight:300; font-size:40px; color:var(--gold-dim); line-height:1; }
-  .stat .l{ font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:#6b6559; margin-top:6px;}
+  .stat .n{ font-family:'Fraunces',serif; font-weight:300; font-size:40px; color:var(--gold-light); line-height:1; }
+  .stat .l{ font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ivory-dim); margin-top:6px;}
 
   .board{ display:flex; align-items:flex-start; gap: 26px; transition: gap .9s cubic-bezier(.22,.61,.36,1); perspective: 2400px; }
 
@@ -97,15 +97,6 @@
     display:block; margin-top:9px; font-family:'Inter',sans-serif; font-style:normal;
     font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color: var(--ivory-dim);
   }
-  .bio-context{ margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line-gold); }
-  .bio-context-title{
-    font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
-    color: var(--gold); margin: 0 0 10px;
-  }
-  .bio-context-body{
-    font-size: 16.5px; line-height:1.7; color: var(--ivory-dim); font-style:normal;
-    margin: 0;
-  }
   @media (max-width: 900px){
     .bio-panel{ flex-direction:column; }
     .bio-photo{ flex-basis:auto; width:100%; aspect-ratio: 775/900; }
@@ -119,8 +110,6 @@
     .board{ flex-direction:column; }
     .board .map-panel{ flex-basis:auto; width:100% !important; }
     .board .detail{ width:100% !important; opacity:1 !important; }
-    .map-panel .map-visual{ display:block !important; }
-    .map-panel .region-list-wrap{ display:block !important; margin:0 0 14px; border:0; padding:0 0 14px; border-bottom:1px solid var(--line); }
   }
 
   /* El recuadro de detalle se despliega como una página que gira desde
@@ -144,25 +133,17 @@
 
   .map-inner{ display:flex; flex-direction:column; gap:0; }
   .map-visual{ flex:1 1 auto; min-width:0; }
-  .region-list-wrap{ margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:12px; transition: all .4s ease; }
+  .region-list-wrap{ margin-top:14px; border-top:1px solid var(--line); padding-top:12px; transition: all .4s ease; }
   .region-list-wrap .map-caption{ margin-bottom:8px; }
   .region-list-wrap .region-list{ margin-top:0; border-top:none; padding-top:0; }
-  .map-instructions{
-    font-family:'Inter',sans-serif; font-size:12.5px; line-height:1.5; color: var(--ivory-dim);
-    margin: 0 0 14px; padding-bottom:12px; border-bottom: 1px solid var(--line);
-  }
-  .map-instructions b{ color: var(--gold-light); font-weight:600; }
 
-  /* En reposo (sin región elegida): sólo se ve el filtro de regiones, el mapa se oculta */
-  .map-panel.wide .map-visual{ display:none; }
-  .map-panel:not(.wide) .region-list-wrap{ display:none; }
-
-  .map-panel.wide .map-inner{ flex-direction:column; align-items:stretch; gap:0; }
+  .map-panel.wide .map-inner{ flex-direction:row; align-items:flex-start; gap:26px; }
+  .map-panel.wide .map-visual{ flex:1 1 auto; }
   .map-panel.wide .region-list-wrap{
-    margin-bottom:0; border-bottom:none; padding-bottom:0;
+    flex:0 0 230px; width:230px; margin-top:0; border-top:none; padding-top:0;
+    border-left:1px solid var(--line-gold); padding-left:22px; align-self:stretch;
   }
-  .map-panel.wide .region-list-wrap .region-list{ max-height:520px; columns: 2; column-gap: 22px; }
-  .map-panel.wide .region-list-wrap .region-row{ break-inside: avoid; }
+  .map-panel.wide .region-list-wrap .region-list{ max-height:560px; }
 
   .map-panel{
     background: linear-gradient(180deg, var(--noir-panel), var(--noir-panel-2));
@@ -425,8 +406,8 @@
   .play-btn svg{ width:13px; height:13px; }
 
   footer.note{
-    margin-top: 36px; font-family:'Inter',sans-serif; font-size:11.5px; color: #6b6559;
-    text-align:center; border-top:1px solid rgba(30,28,24,0.12); padding-top:18px;
+    margin-top: 36px; font-family:'Inter',sans-serif; font-size:11.5px; color: var(--ivory-dim);
+    text-align:center; border-top:1px solid var(--line); padding-top:18px;
   }
 
   /* Reproductor fijo abajo */
@@ -551,10 +532,6 @@
       <p class="bio-subtitle">Esposa de Gabriel González Videla, Presidente de Chile (1946–1952)</p>
       <p class="bio-body"><span class="drop">R</span>osa Markmann Reijer (Taltal, 1907 — Santiago, 2009), conocida como «Miti», fue Primera Dama de Chile entre 1946 y 1952. Fue la primera en ocupar un despacho propio en el Palacio de La Moneda, desde donde impulsó el derecho a voto de las mujeres, la creación de viviendas de emergencia y campañas de salud pública que marcaron su época. En 1952, durante una visita a Nueva York, el Comité Internacional de Madres de Norteamérica le otorgó el título de «Madre del Mundo», en reconocimiento a su labor social. Este fondo reúne parte de la correspondencia que recibió durante esos años: cartas de personas de todo Chile que le escribían solicitando ayuda, intercediendo por causas propias o agradeciendo su gestión — un retrato íntimo de una época a través de las voces de quienes le escribieron.</p>
       <p class="bio-quote">«Más que a mí, va dirigido a honrar la virtud de la mujer chilena.»<cite>Rosa Markmann, al recibir el título de «Madre del Mundo» — Nueva York, 1952</cite></p>
-      <div class="bio-context">
-        <p class="bio-context-title">¿Por qué recibía y enviaba cartas?</p>
-        <p class="bio-context-body">Markmann fue la primera Primera Dama en instalar un despacho propio dentro de La Moneda, y desde ahí creó la Oficina de la Mujer: un equipo de abogadas, asistentes sociales y matronas dedicado a leer y gestionar las peticiones que llegaban de todo Chile. En un país con alto desempleo, escasez de vivienda y tuberculosis como enfermedad extendida, miles de personas le escribían pidiendo trabajo, casa, medicamentos o interviniendo ante el Presidente en causas particulares —como la carta que aquí se conserva—, y ella o su equipo respondían, derivaban la solicitud a un ministerio o gestionaban ayuda directa. Se conservan cerca de 8.000 cartas dirigidas a ella en el Archivo Nacional de Chile.</p>
-      </div>
     </div>
   </div>
 
@@ -562,11 +539,6 @@
 
     <div class="map-panel" id="mapPanel">
       <div class="map-inner" id="mapInner">
-        <div class="region-list-wrap">
-          <p class="map-caption region-caption"><span>Regiones</span></p>
-          <p class="map-instructions">Elige una <b>región</b> para abrir el mapa y ver las cartas disponibles ahí.</p>
-          <div class="region-list" id="regionList"></div>
-        </div>
         <div class="map-visual">
           <p class="map-caption"><span>Mapa de Chile</span><span class="map-source">OpenStreetMap</span></p>
           <div id="mapContainer">
@@ -581,13 +553,17 @@
             <span class="lg"><span class="sw empty"></span> Sin cartas aún</span>
           </div>
         </div>
+        <div class="region-list-wrap">
+          <p class="map-caption region-caption"><span>Regiones</span></p>
+          <div class="region-list" id="regionList"></div>
+        </div>
       </div>
     </div>
 
     <div class="detail" id="detailPanel">
       <div class="empty-state" id="emptyState">
         <div class="mark">✉</div>
-        <p>Selecciona una región en la lista para ver el mapa y las cartas disponibles.</p>
+        <p>Selecciona una región en el mapa para ver cuántas cartas hay disponibles.</p>
       </div>
 
       <div class="chooser" id="chooser">
@@ -708,157 +684,120 @@ letters.forEach(l => {
 
 document.getElementById('countStat').textContent = letters.length;
 
-// ===== Mapa Leaflet (con red de seguridad: si falla, el resto del sitio sigue funcionando) =====
-let mapAvailable = true;
+// ===== Mapa Leaflet =====
+// Caja que delimita el territorio continental de Chile (con un margen)
+const CHILE_BOUNDS = L.latLngBounds(
+  L.latLng(-56.2, -76.5),  // suroeste
+  L.latLng(-17.2, -66.0)   // noreste
+);
+
+const map = L.map('leafletMap', {
+  zoomControl: true,
+  attributionControl: true,
+  maxBounds: CHILE_BOUNDS.pad(0.15),
+  maxBoundsViscosity: 1.0,
+  minZoom: 4
+});
+map.fitBounds(CHILE_BOUNDS, { padding: [12,12] });
+
+// Mapa base estándar de OpenStreetMap (el más confiable), con filtro oscuro para mantener la estética.
+const tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
+  maxZoom: 18
+}).addTo(map);
+document.querySelector('#leafletMap .leaflet-tile-pane').style.filter =
+  'invert(94%) hue-rotate(180deg) brightness(0.92) contrast(0.92) saturate(0.6)';
+
+const regionMarkers = {};
 let currentRegion = null;
-let map, tileLayer, regionMarkers = {}, cityMarkers = {}, cityGroups = {}, CHILE_BOUNDS = null;
-let resolveMarkerOverlaps = function(){};
 
-try {
-  if (typeof L === 'undefined') throw new Error('Leaflet no se cargó (sin conexión o CDN bloqueado)');
-
-  // Caja que delimita el territorio continental de Chile (con un margen)
-  CHILE_BOUNDS = L.latLngBounds(
-    L.latLng(-56.2, -76.5),  // suroeste
-    L.latLng(-17.2, -66.0)   // noreste
-  );
-
-  map = L.map('leafletMap', {
-    zoomControl: true,
-    attributionControl: true,
-    maxBounds: CHILE_BOUNDS.pad(0.15),
-    maxBoundsViscosity: 1.0,
-    minZoom: 4
+function regionIcon(r, has){
+  return L.divIcon({
+    className: '',
+    html: `<div class="region-marker${has?' has':''}">${r.code}</div>`,
+    iconSize: [26,26], iconAnchor: [13,13]
   });
-  map.fitBounds(CHILE_BOUNDS, { padding: [12,12] });
+}
+function letterIcon(){
+  return L.divIcon({ className:'', html:`<div class="letter-marker"></div>`, iconSize:[20,20], iconAnchor:[10,10] });
+}
 
-  // Mapa base estándar de OpenStreetMap (el más confiable), con filtro oscuro para mantener la estética.
-  tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
-    maxZoom: 18
-  }).addTo(map);
-  const tilePane = document.querySelector('#leafletMap .leaflet-tile-pane');
-  if (tilePane) tilePane.style.filter = 'invert(94%) hue-rotate(180deg) brightness(0.92) contrast(0.92) saturate(0.6)';
+regionsAll.forEach(r => {
+  const has = !!lettersByRegion[r.code];
+  const marker = L.marker([r.lat, r.lng], { icon: regionIcon(r, has) }).addTo(map);
+  marker.on('click', () => focusRegion(r.code));
+  regionMarkers[r.code] = marker;
+});
 
-  function regionIcon(r, has){
-    return L.divIcon({
-      className: '',
-      html: `<div class="region-marker${has?' has':''}">${r.code}</div>`,
-      iconSize: [26,26], iconAnchor: [13,13]
-    });
-  }
-  function letterIcon(){
-    return L.divIcon({ className:'', html:`<div class="letter-marker"></div>`, iconSize:[20,20], iconAnchor:[10,10] });
-  }
+// ===== Separación automática de marcadores que se superponen ("dos caras") =====
+// Cuando se ve todo Chile, regiones vecinas (ej. Valparaíso, RM, O'Higgins, Maule)
+// quedan tan cerca en pantalla que sus círculos se encajan uno sobre otro.
+// Este método detecta esos choques y los abre en un pequeño abanico, sin tocar
+// la posición real de la región (se recalcula cada vez que cambia el zoom/paneo).
+let overlapRAF = null;
+function resolveMarkerOverlaps(){
+  if(currentRegion) return; // sólo aplica en la vista de todo el país
+  cancelAnimationFrame(overlapRAF);
+  overlapRAF = requestAnimationFrame(() => {
+    const THRESH = 34; // px de distancia mínima entre centros (26px de diámetro + margen)
+    const entries = regionsAll
+      .filter(r => map.hasLayer(regionMarkers[r.code]))
+      .map(r => ({ r, marker: regionMarkers[r.code], ll: L.latLng(r.lat, r.lng) }));
+    entries.forEach(e => e.pt = map.latLngToContainerPoint(e.ll));
 
-  regionsAll.forEach(r => {
-    const has = !!lettersByRegion[r.code];
-    const marker = L.marker([r.lat, r.lng], { icon: regionIcon(r, has) }).addTo(map);
-    marker.on('click', () => focusRegion(r.code));
-    regionMarkers[r.code] = marker;
-  });
-
-  // ===== Separación automática de marcadores que se superponen ("dos caras") =====
-  // Cuando se ve todo Chile, regiones vecinas (ej. Valparaíso, RM, O'Higgins, Maule)
-  // quedan tan cerca en pantalla que sus círculos se encajan uno sobre otro.
-  // Este método detecta esos choques y los abre en un pequeño abanico, sin tocar
-  // la posición real de la región (se recalcula cada vez que cambia el zoom/paneo).
-  let overlapRAF = null;
-  resolveMarkerOverlaps = function(){
-    if(currentRegion) return; // sólo aplica en la vista de todo el país
-    cancelAnimationFrame(overlapRAF);
-    overlapRAF = requestAnimationFrame(() => {
-      const THRESH = 34; // px de distancia mínima entre centros (26px de diámetro + margen)
-      const entries = regionsAll
-        .filter(r => map.hasLayer(regionMarkers[r.code]))
-        .map(r => ({ r, marker: regionMarkers[r.code], ll: L.latLng(r.lat, r.lng) }));
-      entries.forEach(e => e.pt = map.latLngToContainerPoint(e.ll));
-
-      const n = entries.length;
-      const parent = entries.map((_, i) => i);
-      function find(i){ return parent[i] === i ? i : (parent[i] = find(parent[i])); }
-      for(let i = 0; i < n; i++){
-        for(let j = i + 1; j < n; j++){
-          const dx = entries[i].pt.x - entries[j].pt.x, dy = entries[i].pt.y - entries[j].pt.y;
-          if(Math.sqrt(dx*dx + dy*dy) < THRESH) parent[find(i)] = find(j);
-        }
+    const n = entries.length;
+    const parent = entries.map((_, i) => i);
+    function find(i){ return parent[i] === i ? i : (parent[i] = find(parent[i])); }
+    for(let i = 0; i < n; i++){
+      for(let j = i + 1; j < n; j++){
+        const dx = entries[i].pt.x - entries[j].pt.x, dy = entries[i].pt.y - entries[j].pt.y;
+        if(Math.sqrt(dx*dx + dy*dy) < THRESH) parent[find(i)] = find(j);
       }
-      const groups = {};
-      entries.forEach((e, i) => { const root = find(i); (groups[root] = groups[root] || []).push(e); });
+    }
+    const groups = {};
+    entries.forEach((e, i) => { const root = find(i); (groups[root] = groups[root] || []).push(e); });
 
-      Object.values(groups).forEach(group => {
-        if(group.length === 1){ group[0].marker.setLatLng(group[0].ll); return; }
-        const cx = group.reduce((s,e) => s + e.pt.x, 0) / group.length;
-        const cy = group.reduce((s,e) => s + e.pt.y, 0) / group.length;
-        const radius = 21 + group.length * 7;
-        group.forEach((e, idx) => {
-          const angle = (idx / group.length) * Math.PI * 2 - Math.PI/2;
-          const px = L.point(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
-          e.marker.setLatLng(map.containerPointToLatLng(px));
-        });
+    Object.values(groups).forEach(group => {
+      if(group.length === 1){ group[0].marker.setLatLng(group[0].ll); return; }
+      const cx = group.reduce((s,e) => s + e.pt.x, 0) / group.length;
+      const cy = group.reduce((s,e) => s + e.pt.y, 0) / group.length;
+      const radius = 21 + group.length * 7;
+      group.forEach((e, idx) => {
+        const angle = (idx / group.length) * Math.PI * 2 - Math.PI/2;
+        const px = L.point(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+        e.marker.setLatLng(map.containerPointToLatLng(px));
       });
     });
-  };
-  map.on('zoomend moveend resize', resolveMarkerOverlaps);
-  resolveMarkerOverlaps();
-
-  // Marcadores agrupados por ciudad (una carta o varias comparten la misma
-  // ciudad/coordenada): un pin por ciudad, con etiqueta "Ciudad — N° de cartas"
-  // siempre visible. Al agregar futuras cartas a una ciudad ya existente, la
-  // etiqueta se actualiza sola sumando el conteo.
-  letters.forEach(l => {
-    const cityName = l.city || l.place.replace(/^Escrita en\s*/i, '');
-    const key = l.regionCode + '|' + cityName;
-    if(!cityGroups[key]) cityGroups[key] = { regionCode: l.regionCode, city: cityName, lat: l.lat, lng: l.lng, letters: [] };
-    cityGroups[key].letters.push(l);
   });
-
-  Object.entries(cityGroups).forEach(([key, g]) => {
-    const marker = L.marker([g.lat, g.lng], { icon: letterIcon() });
-    const n = g.letters.length;
-    marker.bindTooltip(`${g.city} — ${n} ${n === 1 ? 'carta' : 'cartas'}`, {
-      permanent: true, direction: 'top', offset: [0, -13], className: 'city-label'
-    });
-    marker.on('click', () => {
-      if(n === 1){ openLetter(g.letters[0].id); }
-      else { hideAll(); showChooser(g.regionCode); }
-    });
-    cityMarkers[key] = marker;
-  });
-
-} catch (mapError) {
-  // El mapa no pudo cargar (sin internet, CDN bloqueado, etc.). El resto del
-  // sitio (lista de regiones, cartas, audio) sigue funcionando igual.
-  mapAvailable = false;
-  console.warn('Mapa no disponible:', mapError.message);
-
-  map = {
-    hasLayer: () => false,
-    removeLayer: () => {},
-    flyTo: () => {},
-    flyToBounds: () => {},
-    invalidateSize: () => {},
-    on: () => {}
-  };
-
-  // Agrupar cartas por ciudad de todos modos, para que el resto del código
-  // (que espera cityGroups) no falle aunque no haya mapa.
-  letters.forEach(l => {
-    const cityName = l.city || l.place.replace(/^Escrita en\s*/i, '');
-    const key = l.regionCode + '|' + cityName;
-    if(!cityGroups[key]) cityGroups[key] = { regionCode: l.regionCode, city: cityName, lat: l.lat, lng: l.lng, letters: [] };
-    cityGroups[key].letters.push(l);
-  });
-
-  const mapEl = document.getElementById('leafletMap');
-  if (mapEl) {
-    mapEl.innerHTML = `
-      <div style="height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px; color:#a8a49a; font-family:'Inter',sans-serif;">
-        <div style="font-size:15px; color:#f4f1e8; margin-bottom:8px;">No se pudo cargar el mapa</div>
-        <div style="font-size:12.5px; line-height:1.6; max-width:280px;">Puede ser tu conexión a internet o un bloqueador de contenido. La lista de cartas de la región sigue funcionando igual, a la derecha.</div>
-      </div>`;
-  }
 }
+map.on('zoomend moveend resize', resolveMarkerOverlaps);
+resolveMarkerOverlaps();
+
+// Marcadores agrupados por ciudad (una carta o varias comparten la misma
+// ciudad/coordenada): un pin por ciudad, con etiqueta "Ciudad — N° de cartas"
+// siempre visible. Al agregar futuras cartas a una ciudad ya existente, la
+// etiqueta se actualiza sola sumando el conteo.
+const cityGroups = {}; // clave "regionCode|ciudad" -> { regionCode, city, lat, lng, letters:[] }
+letters.forEach(l => {
+  const cityName = l.city || l.place.replace(/^Escrita en\s*/i, '');
+  const key = l.regionCode + '|' + cityName;
+  if(!cityGroups[key]) cityGroups[key] = { regionCode: l.regionCode, city: cityName, lat: l.lat, lng: l.lng, letters: [] };
+  cityGroups[key].letters.push(l);
+});
+
+const cityMarkers = {};
+Object.entries(cityGroups).forEach(([key, g]) => {
+  const marker = L.marker([g.lat, g.lng], { icon: letterIcon() });
+  const n = g.letters.length;
+  marker.bindTooltip(`${g.city} — ${n} ${n === 1 ? 'carta' : 'cartas'}`, {
+    permanent: true, direction: 'top', offset: [0, -13], className: 'city-label'
+  });
+  marker.on('click', () => {
+    if(n === 1){ openLetter(g.letters[0].id); }
+    else { hideAll(); showChooser(g.regionCode); }
+  });
+  cityMarkers[key] = marker;
+});
 
 const backBtn = document.getElementById('backBtn');
 const regionBadge = document.getElementById('regionBadge');
@@ -882,7 +821,7 @@ function focusRegion(code){
   Object.values(cityMarkers).forEach(m => map.removeLayer(m));
   Object.entries(cityGroups)
     .filter(([, g]) => g.regionCode === code)
-    .forEach(([key]) => { if (cityMarkers[key]) cityMarkers[key].addTo(map); });
+    .forEach(([key]) => cityMarkers[key].addTo(map));
 
   map.flyTo([r.lat, r.lng], r.zoom, { duration: 1.1 });
 

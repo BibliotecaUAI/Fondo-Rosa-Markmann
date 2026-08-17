@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fondo Histórico — Correspondencia de Chile</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --noir: #0a0a0b;
+    --noir-panel: #141416;
+    --noir-panel-2: #1b1b1e;
+    --ivory: #f4f1e8;
+    --ivory-dim: #a8a49a;
+    --gold: #c9a227;
+    --gold-light: #e6c866;
+    --gold-dim: #8a7127;
+    --line: rgba(244,241,232,0.10);
+    --line-gold: rgba(201,162,39,0.35);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; scroll-behavior: smooth; }
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(201,162,39,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 100%, rgba(201,162,39,0.06), transparent 60%),
+      var(--noir);
+    color: var(--ivory);
+    font-family: 'Cormorant Garamond', serif;
+    min-height:100vh;
+  }
+
+  .wrap{ max-width:1260px; margin:0 auto; padding: 40px 28px 120px; }
+
+  header.top{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    border-bottom: 1px solid var(--line-gold);
+    padding-bottom: 22px; margin-bottom: 36px; gap: 20px; flex-wrap:wrap;
+  }
+  .eyebrow{
+    font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--gold); font-weight:600; margin:0 0 8px;
+  }
+  h1{
+    font-family:'Fraunces', serif; font-weight:500; font-size: clamp(30px,4.2vw,46px);
+    margin:0; line-height:1.05; letter-spacing:-0.01em; color: var(--ivory);
+  }
+  h1 em{ font-style:italic; color: var(--gold-light); font-weight:300; }
+  .sub{ font-size:17px; color:var(--ivory-dim); margin-top:10px; max-width:460px; line-height:1.5; }
+  .stat{ text-align:right; font-family:'Inter',sans-serif; }
+  .stat .n{ font-family:'Fraunces',serif; font-weight:300; font-size:40px; color:var(--gold-light); line-height:1; }
+  .stat .l{ font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ivory-dim); margin-top:6px;}
+
+  /* Biografía y Sección Explicativa */
+  .bio-panel{
+    display:flex; align-items:stretch; gap:0;
+    border: 1px solid var(--line-gold); border-radius: 3px;
+    background: linear-gradient(180deg, var(--noir-panel), var(--noir-panel-2));
+    overflow:hidden; margin-bottom: 26px;
+  }
+  .bio-photo{ flex: 0 0 340px; background: var(--noir); }
+  .bio-photo img{ width:100%; height:100%; aspect-ratio: 775 / 1200; object-fit:cover; display:block; }
+  .bio-text{ flex:1 1 auto; min-width:0; padding: 36px 42px; display:flex; flex-direction:column; justify-content:center; }
+  .bio-eyebrow{
+    font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--gold); font-weight:600; margin:0 0 10px;
+  }
+  .bio-text h2{
+    font-family:'Fraunces', serif; font-weight:500; font-size: clamp(24px,2.6vw,32px);
+    margin:0 0 14px; line-height:1.15; color: var(--ivory);
+  }
+  .bio-text h2 em{ font-style:italic; color: var(--gold-light); font-weight:300; }
+  .bio-body{
+    font-size: 17px; line-height:1.7; color: var(--ivory); font-style: italic;
+    margin: 0; text-align: justify; text-align-last: left;
+  }
+  .bio-body .drop{
+    font-family:'Fraunces',serif; font-weight:300; font-style:normal; font-size:44px; float:left;
+    line-height:0.72; padding-right:8px; padding-top:4px; color: var(--gold);
+  }
+  .bio-subtitle{
+    font-family:'Inter',sans-serif; font-size:12px; letter-spacing:.04em;
+    color: var(--ivory-dim); margin: 0 0 16px;
+  }
+
+  /* Cuadro Explicativo Cartas */
+  .why-box{
+    border-top: 1px solid var(--line-gold); margin-top: 22px; padding-top: 18px;
+  }
+  .why-title{
+    font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+    color: var(--gold); font-weight:600; margin: 0 0 10px;
+  }
+  .why-desc{
+    font-family:'Cormorant Garamond', serif; font-size: 16.5px; line-height:1.65; color: var(--ivory-dim); margin:0;
+  }
+
+  /* Selector Global de Regiones (Estilo Solicitado) */
+  .regions-section{
+    border: 1px solid var(--line-gold); border-radius: 3px;
+    background: linear-gradient(180deg, var(--noir-panel), var(--noir-panel-2));
+    padding: 24px 28px; margin-bottom: 36px;
+  }
+  .regions-header{ margin-bottom: 16px; }
+  .regions-header .eyebrow{ margin-bottom: 4px; }
+  .regions-header p{ font-family:'Inter',sans-serif; font-size: 12.5px; color: var(--ivory-dim); margin: 0; }
+  .regions-header p strong{ color: var(--ivory); font-weight: 600; }
+
+  .regions-grid{
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px;
+    border-top: 1px solid var(--line); padding-top: 8px;
+  }
+  .region-grid-row{
+    display:flex; justify-content:space-between; align-items:center; cursor:pointer;
+    font-family:'Inter',sans-serif; font-size:13px; padding: 9px 6px;
+    color: var(--ivory-dim); border-bottom: 1px solid var(--line); transition: background .15s ease, color .15s ease;
+  }
+  .region-grid-row:hover{ background: rgba(201,162,39,0.08); color: var(--ivory); }
+  .region-grid-row.active{ background: rgba(201,162,39,0.14); }
+  .region-grid-row .rnum{ font-family:'Fraunces',serif; color: var(--gold-light); font-size:13.5px; min-width:38px; display:inline-block; font-weight:500; }
+  .region-grid-row .rn{ color: var(--ivory); flex:1; padding: 0 8px; font-weight:500; }
+  .region-grid-row .rc{ color: var(--gold-light); font-family:'Fraunces',serif; font-size:14px; min-width:20px; text-align:right; font-weight:600; }
+  .region-grid-row:not(.has) .rc{ color: var(--ivory-dim); opacity:0.6; }
+
+  /* Interacción Mapa + Detalle */
+  .board{ display:flex; align-items:stretch; gap: 26px; scroll-margin-top: 20px; }
+  .map-panel{ flex: 1 1 50%; min-width:0; background: linear-gradient(180deg, var(--noir-panel), var(--noir-panel-2)); border: 1px solid var(--line-gold); border-radius: 3px; padding: 18px; position: relative; }
+  .detail{ flex: 1 1 50%; min-width:0; border: 1px solid var(--line-gold); border-radius: 3px; background: linear-gradient(180deg, var(--noir-panel), var(--noir-panel-2)); min-height: 560px; padding: 12px; position:relative; overflow:hidden; }
+
+  @media (max-width: 900px){
+    .bio-panel{ flex-direction:column; }
+    .bio-photo{ flex-basis:auto; width:100%; aspect-ratio: 775/900; }
+    .regions-grid{ grid-template-columns: 1fr; }
+    .board{ flex-direction:column; }
+  }
+
+  .map-caption{
+    font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+    color: var(--gold); text-align:center; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;
+  }
+  .map-source{ font-size:9px; color: var(--ivory-dim); letter-spacing:.05em; text-transform:none; }
+
+  #mapContainer{
+    width:100%; height: 560px; border-radius: 2px; overflow:hidden; border: 1px solid var(--line-gold);
+    position:relative; background: #0d0f10;
+  }
+
+  .map-topbar{
+    position:absolute; top:14px; left:14px; right:14px; z-index:500;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:8px;
+    pointer-events:none;
+  }
+
+  .back-to-country{
+    flex: 0 0 auto; display:flex; align-items:center; gap:7px;
+    background: rgba(10,10,11,0.88); backdrop-filter: blur(4px);
+    color: var(--gold-light); border: 1px solid var(--line-gold); border-radius: 20px;
+    padding: 9px 16px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600;
+    cursor:pointer; opacity:0; pointer-events:none; transition: opacity .3s ease, transform .3s ease;
+    transform: translateY(-6px) scale(.97); white-space:nowrap;
+  }
+  .back-to-country.show{ opacity:1; pointer-events:all; transform:translateY(0) scale(1); }
+  .back-to-country:hover{ background: rgba(10,10,11,1); }
+
+  .region-badge{
+    flex: 0 1 auto; min-width:0; background: rgba(10,10,11,0.88); backdrop-filter: blur(4px);
+    color: var(--ivory); border: 1px solid var(--line-gold); border-radius: 20px;
+    padding: 9px 16px; font-family:'Fraunces',serif; font-size:14px;
+    opacity:0; pointer-events:none; transition: opacity .3s ease, transform .3s ease;
+    transform: translateY(-6px) scale(.97); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .region-badge.show{ opacity:1; transform:translateY(0) scale(1); }
+  .region-badge b{ color: var(--gold-light); font-weight:500; }
+
+  .leaflet-div-icon{ background:transparent; border:none; }
+  .region-marker{
+    width:26px; height:26px; border-radius:50%; background: rgba(244,241,232,0.16); border: 1.4px solid var(--gold-dim);
+    display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:10px; color: var(--ivory); cursor:pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4); transition: transform .15s ease;
+  }
+  .region-marker:hover{ transform: scale(1.12); }
+  .region-marker.has{ background: var(--gold); border-color: var(--gold-light); color: var(--noir); font-weight:600; }
+
+  .letter-marker{
+    width:20px; height:20px; border-radius:50%; background: var(--gold-light); border: 2px solid var(--noir);
+    box-shadow: 0 0 0 5px rgba(230,200,102,0.22), 0 2px 12px rgba(0,0,0,0.5); cursor:pointer;
+    animation: pulseMarker 2.2s ease-in-out infinite;
+  }
+  @keyframes pulseMarker{
+    0%,100%{ box-shadow: 0 0 0 5px rgba(230,200,102,0.22), 0 2px 12px rgba(0,0,0,0.5); }
+    50%{ box-shadow: 0 0 0 9px rgba(230,200,102,0.08), 0 2px 12px rgba(0,0,0,0.5); }
+  }
+
+  .leaflet-tooltip.city-label{
+    background: rgba(10,10,11,0.9); backdrop-filter: blur(3px); border: 1px solid var(--line-gold); color: var(--ivory);
+    font-family:'Inter',sans-serif; font-size:11px; font-weight:600; letter-spacing:.01em; padding:5px 11px; border-radius:14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.35); white-space:nowrap; pointer-events:none;
+  }
+  .leaflet-tooltip.city-label::before{ display:none; }
+
+  .map-legend{ display:flex; justify-content:center; gap:18px; margin-top:12px; font-family:'Inter',sans-serif; font-size:10.5px; color: var(--ivory-dim); }
+  .map-legend .lg{ display:flex; align-items:center; gap:6px; }
+  .map-legend .sw{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .sw.gold{ background: var(--gold); }
+  .sw.empty{ background: rgba(244,241,232,0.16); border:1px solid var(--gold-dim); }
+
+  /* Detalle de Carta y Chooser */
+  .empty-state{ height:100%; min-height:540px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color: var(--ivory-dim); padding: 40px; }
+  .empty-state .mark{ font-family:'Fraunces',serif; font-weight:300; font-size:56px; color: var(--gold-dim); margin-bottom:14px; }
+  .empty-state p{ font-size:18px; max-width:320px; }
+
+  .chooser{ display:none; padding: 24px 28px; animation: revealElegant .6s ease; }
+  .chooser.show{ display:block; }
+  .chooser .region-title{ font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color: var(--gold); }
+  .chooser h2{ font-family:'Fraunces',serif; font-weight:500; font-size:28px; margin:6px 0 4px; color: var(--ivory); }
+  .chooser .count-line{ color: var(--ivory-dim); font-size:15px; margin-bottom: 20px; }
+  .pick-list{ display:flex; flex-direction:column; gap:10px; }
+  .pick-item{ display:flex; justify-content:space-between; align-items:center; gap:14px; border: 1px solid var(--line-gold); border-radius:3px; padding: 14px 18px; cursor:pointer; transition: background .15s ease, border-color .15s ease; }
+  .pick-item:hover{ background: rgba(201,162,39,0.07); border-color: var(--gold-light); }
+  .pick-item .pi-title{ font-family:'Fraunces',serif; font-size:17px; color: var(--ivory); }
+  .pick-item .pi-sub{ font-family:'Inter',sans-serif; font-size:11.5px; color: var(--ivory-dim); margin-top:3px; }
+  .pick-item .pi-arrow{ color: var(--gold-light); font-size:18px; }
+
+  .letter{ display:none; padding: 20px 24px 80px; animation: revealElegant .6s ease; }
+  .letter.show{ display:block; }
+
+  @keyframes revealElegant{ from{ opacity:0; transform: translateY(8px); } to{ opacity:1; transform: translateY(0); } }
+
+  .back-link{ font-family:'Inter',sans-serif; font-size:11.5px; color: var(--gold-light); cursor:pointer; display:inline-flex; align-items:center; gap:6px; margin-bottom:16px; }
+  .back-link:hover{ color: var(--ivory); }
+
+  .panel-back-country{ display:inline-flex; align-items:center; gap:7px; background: rgba(10,10,11,0.6); color: var(--gold-light); border: 1px solid var(--line-gold); border-radius: 20px; padding: 8px 16px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; margin-bottom:18px; transition: background .15s ease, border-color .15s ease; }
+  .panel-back-country:hover{ background: rgba(201,162,39,0.12); border-color: var(--gold-light); }
+
+  .letter-meta{ display:flex; justify-content:space-between; align-items:flex-start; border-bottom: 1px solid var(--line-gold); padding-bottom: 16px; margin-bottom:18px; gap:16px; flex-wrap:wrap; }
+  .letter-meta .place{ font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color: var(--gold); font-weight:600; }
+  .letter-meta h2{ font-family:'Fraunces',serif; font-weight:500; font-size:24px; margin:6px 0 4px; color: var(--ivory); }
+  .letter-meta .who{ color: var(--ivory-dim); font-size:15px; }
+  .badge-date{ font-family:'Inter',sans-serif; font-size:11.5px; color: var(--gold-light); border: 1px solid var(--line-gold); border-radius: 20px; padding: 6px 14px; white-space:nowrap; }
+  .origin{ font-family:'Inter',sans-serif; font-size:11px; color: var(--gold-dim); margin-top:6px; }
+  .real-badge{ display:inline-flex; align-items:center; gap:6px; font-family:'Inter',sans-serif; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color: var(--noir); background: var(--gold-light); border-radius: 3px; padding: 4px 9px; margin-bottom: 10px; font-weight:600; }
+
+  .doc-gallery{ margin: 4px 0 22px; }
+  .doc-main{ width:100%; border-radius:3px; overflow:hidden; border: 1px solid var(--line-gold); background: var(--noir); display:flex; align-items:center; justify-content:center; min-height: 240px; cursor: zoom-in; position:relative; }
+  .doc-main img{ width:100%; display:block; }
+  .doc-caption{ font-family:'Inter',sans-serif; font-size:11px; color: var(--gold-light); text-align:center; margin-top:8px; letter-spacing:.04em; }
+  .doc-thumbs{ display:flex; gap:10px; margin-bottom:10px; justify-content:center; }
+  .doc-thumb{ width:52px; height:70px; border-radius:2px; overflow:hidden; cursor:pointer; border: 1.5px solid var(--line-gold); opacity:0.55; transition: opacity .2s ease, border-color .2s ease; }
+  .doc-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .doc-thumb:hover{ opacity:0.85; }
+  .doc-thumb.active{ opacity:1; border-color: var(--gold-light); }
+
+  .transcript-block{ margin-top: 8px; }
+  .transcript-tabs{ display:flex; gap:8px; margin-bottom:14px; }
+  .t-tab{ font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color: var(--ivory-dim); background:transparent; border: 1px solid var(--line-gold); border-radius: 20px; padding: 6px 14px; cursor:pointer; transition: all .15s ease; }
+  .t-tab.active{ background: var(--gold); color: var(--noir); border-color: var(--gold); font-weight:600; }
+  .transcription{ font-size: 17.5px; line-height:1.7; color: var(--ivory); font-style: italic; border-left: 1.5px solid var(--gold-dim); padding-left: 18px; margin: 0 0 20px; }
+  .transcription .drop{ font-family:'Fraunces',serif; font-weight:300; font-style:normal; font-size:42px; float:left; line-height:0.72; padding-right:7px; padding-top:4px; color: var(--gold); }
+
+  .tags{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 8px; }
+  .tag{ font-family:'Inter',sans-serif; font-size:10.5px; color: var(--ivory-dim); border: 1px solid var(--line); border-radius: 20px; padding: 4px 11px; }
+
+  .archive-notes{ margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line-gold); }
+  .archive-title{ font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color: var(--gold); margin: 0 0 10px; }
+  .archive-row{ display:flex; gap:14px; padding: 7px 0; border-bottom: 1px solid var(--line); font-family:'Inter',sans-serif; font-size:12px; }
+  .archive-row:last-child{ border-bottom:none; }
+  .archive-label{ min-width: 100px; color: var(--gold-light); font-weight:600; flex-shrink:0; }
+  .archive-value{ color: var(--ivory-dim); line-height:1.5; }
+
+  .audio-row{ display:flex; align-items:center; gap:10px; margin: 4px 0 20px; flex-wrap:wrap; }
+  .play-btn{ display:flex; align-items:center; gap:8px; background: var(--gold); color: var(--noir); border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; padding: 10px 18px; border-radius: 24px; transition: background .2s ease; }
+  .play-btn:hover{ background: var(--gold-light); }
+  .play-btn.secondary{ background: transparent; color: var(--gold-light); border: 1px solid var(--gold-dim); }
+  .play-btn svg{ width:13px; height:13px; }
+
+  footer.note{ margin-top: 36px; font-family:'Inter',sans-serif; font-size:11.5px; color: var(--ivory-dim); text-align:center; border-top:1px solid var(--line); padding-top:18px; }
+
+  /* Reproductor Audio */
+  .audio-bar{ position: fixed; left:0; right:0; bottom:0; z-index: 900; background: linear-gradient(180deg, rgba(20,20,22,0.92), rgba(10,10,11,0.98)); backdrop-filter: blur(10px); border-top: 1px solid var(--line-gold); padding: 14px 24px; display:flex; align-items:center; gap:18px; transform: translateY(100%); transition: transform .35s cubic-bezier(.2,.7,.3,1); }
+  .audio-bar.show{ transform: translateY(0); }
+  .ab-icon{ width:40px; height:40px; border-radius:50%; background: var(--gold); color:var(--noir); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px; }
+  .ab-info{ flex:1; min-width:0; font-family:'Inter',sans-serif; }
+  .ab-title{ font-size:13px; color: var(--ivory); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ab-sub{ font-size:11px; color: var(--gold-light); margin-top:2px; }
+  .ab-controls{ display:flex; align-items:center; gap:10px; }
+  .ab-btn{ width:38px; height:38px; border-radius:50%; border: 1px solid var(--line-gold); background:transparent; color: var(--ivory); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .ab-btn.close{ color: var(--ivory-dim); }
+
+  /* Lightbox */
+  .lightbox{ position:fixed; inset:0; background: rgba(6,6,7,0.92); z-index:1000; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition: opacity .3s ease; }
+  .lightbox.show{ opacity:1; pointer-events:all; }
+  .lightbox-inner{ position:relative; max-width: 78vw; }
+  .lightbox-inner img{ max-height:80vh; max-width:78vw; display:block; border-radius:2px; box-shadow: 0 40px 90px rgba(0,0,0,0.65); }
+  .lightbox-caption{ text-align:center; margin-top:16px; font-family:'Inter',sans-serif; font-size:12px; color: var(--gold-light); letter-spacing:.06em; }
+  .lb-nav{ position:absolute; top:50%; transform:translateY(-50%); width:46px; height:46px; border-radius:50%; background: rgba(20,20,22,0.7); border: 1px solid var(--line-gold); color: var(--ivory); font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .lb-prev{ left:-64px; } .lb-next{ right:-64px; }
+  .lb-close{ position:absolute; top:-46px; right:0; width:34px; height:34px; border-radius:50%; background: rgba(20,20,22,0.7); border: 1px solid var(--line-gold); color: var(--ivory); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <p class="eyebrow">Fondo Histórico</p>
+      <h1>Fondo Rosa Markmann</h1>
+      <p class="sub">Bibliotecas Universidad Adolfo Ibáñez</p>
+    </div>
+    <div class="stat">
+      <div class="n" id="countStat">1</div>
+      <div class="l">Carta digitalizada</div>
+    </div>
+  </header>
+
+  <!-- Biografía Principal -->
+  <div class="bio-panel">
+    <div class="bio-photo">
+      <img src="assets/images/rosa-markmann.jpg" alt="Retrato de Rosa Markmann de González Videla">
+    </div>
+    <div class="bio-text">
+      <p class="bio-eyebrow">Sobre el fondo</p>
+      <h2>Rosa Markmann — <em>«Madre del Mundo»</em></h2>
+      <p class="bio-subtitle">Esposa de Gabriel González Videla, Presidente de Chile (1946–1952)</p>
+      <p class="bio-body"><span class="drop">R</span>osa Markmann Reijer (Taltal, 1907 — Santiago, 2009), conocida como «Miti», fue Primera Dama de Chile entre 1946 y 1952. Fue la primera en ocupar un despacho propio en el Palacio de La Moneda, desde donde impulsó el derecho a voto de las mujeres, la creación de viviendas de emergencia y campañas de salud pública que marcaron su época. En 1952, durante una visita a Nueva York, el Comité Internacional de Madres de Norteamérica le otorgó el título de «Madre del Mundo», en reconocimiento a su labor social.</p>
+      
+      <div class="why-box">
+        <p class="why-title">¿Por qué recibía y enviaba cartas?</p>
+        <p class="why-desc">Markmann fue la primera Primera Dama en instalar un despacho propio dentro de La Moneda, y desde ahí creó la Oficina de la Mujer: un equipo de abogadas, asistentes sociales y matronas dedicado a leer y gestionar las peticiones que llegaban de todo Chile. En un país con alto desempleo, escasez de vivienda y tuberculosis como enfermedad extendida, miles de personas le escribían pidiendo trabajo, casa, medicamentos o interviniendo ante el Presidente en causas particulares —como la carta que aquí se conserva—, y ella o su equipo respondían, derivaban la solicitud a un ministerio o gestionaban ayuda directa. Se conservan cerca de 8.000 cartas dirigidas a ella en el Archivo Nacional de Chile.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Selector de Regiones Horizontal (Solicitado) -->
+  <div class="regions-section">
+    <div class="regions-header">
+      <p class="eyebrow">REGIONES</p>
+      <p>Elige una <strong>región</strong> para abrir el mapa y ver las cartas disponibles ahí.</p>
+    </div>
+    <div class="regions-grid" id="regionsGrid"></div>
+  </div>
+
+  <!-- Interacción Mapa + Panel de Detalle -->
+  <div class="board" id="interactiveBoard">
+
+    <div class="map-panel" id="mapPanel">
+      <p class="map-caption"><span>Mapa de Chile</span><span class="map-source">OpenStreetMap</span></p>
+      <div id="mapContainer">
+        <div class="map-topbar" id="mapTopbar">
+          <div class="back-to-country" id="backBtn">‹ Volver a Chile</div>
+          <div class="region-badge" id="regionBadge">Región <b id="regionBadgeText">—</b></div>
+        </div>
+        <div id="leafletMap" style="width:100%; height:100%;"></div>
+      </div>
+      <div class="map-legend">
+        <span class="lg"><span class="sw gold"></span> Con cartas</span>
+        <span class="lg"><span class="sw empty"></span> Sin cartas aún</span>
+      </div>
+    </div>
+
+    <div class="detail" id="detailPanel">
+      <div class="empty-state" id="emptyState">
+        <div class="mark">✉</div>
+        <p>Selecciona una región arriba o en el mapa para explorar las cartas.</p>
+      </div>
+
+      <div class="chooser" id="chooser">
+        <div class="panel-back-country" id="chooserBackCountry">‹ Volver a Chile</div>
+        <p class="region-title" id="chooserEyebrow">Región</p>
+        <h2 id="chooserTitle">—</h2>
+        <p class="count-line" id="chooserCount">—</p>
+        <div class="pick-list" id="pickList"></div>
+      </div>
+
+      <div id="letterHost"></div>
+    </div>
+
+  </div>
+
+  <footer class="note">
+    Prototipo con datos reales del fondo · mapa con geografía real vía OpenStreetMap/Leaflet.
+  </footer>
+</div>
+
+<!-- Audio Bar y Lightbox -->
+<div class="audio-bar" id="audioBar">
+  <div class="ab-icon">♫</div>
+  <div class="ab-info">
+    <div class="ab-title" id="abTitle">—</div>
+    <div class="ab-sub" id="abSub">—</div>
+  </div>
+  <div class="ab-controls">
+    <button class="ab-btn" id="abToggle"><svg id="abToggleIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+    <button class="ab-btn close" id="abStop"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"/></svg></button>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <div class="lb-close" id="lbClose">✕</div>
+    <div class="lb-nav lb-prev" id="lbPrev">‹</div>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lb-nav lb-next" id="lbNext">›</div>
+    <div class="lightbox-caption" id="lightboxCaption">—</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const regionsAll = [
+  { code: "XV",   name: "Arica y Parinacota",        lat: -18.5, lng: -70.4, zoom: 8 },
+  { code: "VII",  name: "Maule",                     lat: -35.5, lng: -72.3, zoom: 8 },
+  { code: "I",    name: "Tarapacá",                  lat: -20.3, lng: -70.3, zoom: 8 },
+  { code: "XVI",  name: "Ñuble",                     lat: -36.4, lng: -72.6, zoom: 8 },
+  { code: "II",   name: "Antofagasta",               lat: -23.7, lng: -70.5, zoom: 7 },
+  { code: "VIII", name: "Biobío",                    lat: -37.1, lng: -73.0, zoom: 8 },
+  { code: "III",  name: "Atacama",                   lat: -27.1, lng: -70.9, zoom: 7 },
+  { code: "IX",   name: "La Araucanía",              lat: -38.4, lng: -73.3, zoom: 8 },
+  { code: "IV",   name: "Coquimbo",                  lat: -29.9, lng: -71.4, zoom: 8 },
+  { code: "XIV",  name: "Los Ríos",                  lat: -39.6, lng: -73.4, zoom: 8 },
+  { code: "V",    name: "Valparaíso",                lat: -32.8, lng: -71.7, zoom: 8 },
+  { code: "X",    name: "Los Lagos",                 lat: -41.0, lng: -73.5, zoom: 7 },
+  { code: "RM",   name: "Metropolitana de Santiago", lat: -33.9, lng: -71.8, zoom: 9 },
+  { code: "XI",   name: "Aysén",                     lat: -44.5, lng: -73.6, zoom: 6 },
+  { code: "VI",   name: "O'Higgins",                 lat: -34.6, lng: -72.0, zoom: 8 },
+  { code: "XII",  name: "Magallanes",                lat: -52.5, lng: -72.0, zoom: 6 }
+];
+
+const CHILE_BOUNDS = L.latLngBounds(L.latLng(-56.2, -76.5), L.latLng(-17.2, -66.0));
+
+const pageImages = [
+  { label: "Página 1 — original manuscrito", src: "assets/images/pagina-1.jpg" },
+  { label: "Página 2 — traducción caligráfica", src: "assets/images/pagina-2.jpg" },
+  { label: "Página 3 — traducción mecanografiada", src: "assets/images/pagina-3.jpg" }
+];
+
+const realLetter = {
+  id: 1, regionCode: "V", lat: -33.5967, lng: -71.6178,
+  place: "Escrita en Llo-Lleo, San Antonio", city: "Llo-Lleo, San Antonio",
+  title: "Solicitud de pensión de gracia", from: "Ed. Amengual S.", to: "Rosa Markmann de González Videla",
+  date: "23 de agosto de 1952", origin: "Dirigida a Palacio de La Moneda, Santiago",
+  text: "Con fecha 24 de Octubre de 1951, me permití enviar a Ud. una extensa carta, a fin de que Ud. intercediera ante su digno esposo, el Excelentísimo Señor Presidente de la República, en el sentido de que, compenetrado de la justicia de mi causa, hiciera a mi favor lo que de su parte estuviera. El corazón magnánimo y bondadoso de la Primera Dama de la Nación, oyó mi súplica y la hizo llegar a conocimiento de S.E. Por intermedio del Señor Secretario General de Gobierno, nuestro querido Presidente, viéndose imposibilitado para prestarme su cooperación por la vía administrativa, me sugirió la idea de hacerlo solicitando del H. Congreso una pensión de gracia. Así lo hice y, con tan buena suerte que, en el transcurso de un mes, Cámara y Senado, despacharon un proyecto que me beneficia con la suma de cinco mil pesos mensuales, aparte, se entiende, de la modesta jubilación de que disfruto. Ahora, pues, sólo resta a S.E. promulgar la ley y, en tal sentido, me he dirigido al Sr. Poblete. Una nueva ayuda de su parte, o sea, un recuerdo a este respecto a S.E., culminaría este servicio y sería un motivo más de reconocimiento y gratitud al ser de corazón grande y generoso, que es la esposa del Primer Magistrado de la República. Todos mis respetos, conjuntamente con mis mejores saludos.",
+  audioEn: "assets/audio/carta_english.m4a.m4a",
+  textEn: "On October 24th, 1951, I took the liberty of sending you a lengthy letter...",
+  tags: ["Documento original del fondo", "Pensión de gracia", "1952"],
+  annotations: [
+    { label: "Nota marginal", value: "“Special pension” — anotación del archivo sobre el motivo de la carta" },
+    { label: "Nota marginal", value: "“Without an address” — indicación de que la carta no incluye dirección" }
+  ],
+  isReal: true
+};
+
+const letters = [realLetter];
+const lettersByRegion = {};
+letters.forEach(l => {
+  if(!lettersByRegion[l.regionCode]) lettersByRegion[l.regionCode] = [];
+  lettersByRegion[l.regionCode].push(l);
+});
+
+document.getElementById('countStat').textContent = letters.length;
+
+const map = L.map('leafletMap', { zoomControl: true, attributionControl: true, maxBounds: CHILE_BOUNDS.pad(0.15), maxBoundsViscosity: 1.0, minZoom: 4 });
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+document.querySelector('#leafletMap .leaflet-tile-pane').style.filter = 'invert(94%) hue-rotate(180deg) brightness(0.92) contrast(0.92) saturate(0.6)';
+
+const regionMarkers = {};
+let currentRegion = null;
+
+function regionIcon(r, has){ return L.divIcon({ className: '', html: `<div class="region-marker${has?' has':''}">${r.code}</div>`, iconSize: [26,26], iconAnchor: [13,13] }); }
+function letterIcon(){ return L.divIcon({ className:'', html:`<div class="letter-marker"></div>`, iconSize:[20,20], iconAnchor:[10,10] }); }
+
+regionsAll.forEach(r => {
+  const has = !!lettersByRegion[r.code];
+  const marker = L.marker([r.lat, r.lng], { icon: regionIcon(r, has) }).addTo(map);
+  marker.on('click', () => focusRegion(r.code));
+  regionMarkers[r.code] = marker;
+});
+
+const cityGroups = {};
+letters.forEach(l => {
+  const cityName = l.city || l.place.replace(/^Escrita en\s*/i, '');
+  const key = l.regionCode + '|' + cityName;
+  if(!cityGroups[key]) cityGroups[key] = { regionCode: l.regionCode, city: cityName, lat: l.lat, lng: l.lng, letters: [] };
+  cityGroups[key].letters.push(l);
+});
+
+const cityMarkers = {};
+Object.entries(cityGroups).forEach(([key, g]) => {
+  const marker = L.marker([g.lat, g.lng], { icon: letterIcon() });
+  const n = g.letters.length;
+  marker.bindTooltip(`${g.city} — ${n} ${n === 1 ? 'carta' : 'cartas'}`, { permanent: true, direction: 'top', offset: [0, -13], className: 'city-label' });
+  marker.on('click', () => {
+    if(n === 1){ openLetter(g.letters[0].id); }
+    else { hideAll(); showChooser(g.regionCode); }
+  });
+  cityMarkers[key] = marker;
+});
+
+const backBtn = document.getElementById('backBtn');
+const regionBadge = document.getElementById('regionBadge');
+const regionBadgeText = document.getElementById('regionBadgeText');
+
+function focusRegion(code){
+  currentRegion = code;
+  const r = regionsAll.find(x => x.code === code);
+
+  Object.entries(regionMarkers).forEach(([c, m]) => {
+    if(c === code){ m.setLatLng([r.lat, r.lng]); if(!map.hasLayer(m)) m.addTo(map); }
+    else { map.removeLayer(m); }
+  });
+
+  Object.values(cityMarkers).forEach(m => map.removeLayer(m));
+  Object.entries(cityGroups).filter(([, g]) => g.regionCode === code).forEach(([key]) => cityMarkers[key].addTo(map));
+
+  map.flyTo([r.lat, r.lng], r.zoom, { duration: 1.1 });
+  backBtn.classList.add('show');
+  regionBadge.classList.add('show');
+  regionBadgeText.textContent = r.code + ' — ' + r.name;
+
+  showChooser(code);
+  document.querySelectorAll('.region-grid-row').forEach(x => x.classList.remove('active'));
+  const row = document.getElementById('grid-row-'+code);
+  if(row) row.classList.add('active');
+
+  // Scroll suave hacia el mapa al hacer clic arriba
+  document.getElementById('interactiveBoard').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetToCountry(){
+  currentRegion = null;
+  Object.values(regionMarkers).forEach(m => { if(!map.hasLayer(m)) m.addTo(map); });
+  Object.values(cityMarkers).forEach(m => map.removeLayer(m));
+  map.flyToBounds(CHILE_BOUNDS, { padding: [12,12], duration: 1.1 });
+  backBtn.classList.remove('show');
+  regionBadge.classList.remove('show');
+  hideAll();
+  emptyState.style.display = 'flex';
+  document.querySelectorAll('.region-grid-row').forEach(x => x.classList.remove('active'));
+}
+
+backBtn.addEventListener('click', resetToCountry);
+document.getElementById('chooserBackCountry').addEventListener('click', resetToCountry);
+
+// Cargar Cuadrícula Superior de Regiones
+const regionsGrid = document.getElementById('regionsGrid');
+regionsAll.forEach(r => {
+  const count = (lettersByRegion[r.code] || []).length;
+  const row = document.createElement('div');
+  row.className = 'region-grid-row' + (count>0 ? ' has' : '');
+  row.id = 'grid-row-'+r.code;
+  row.innerHTML = `<span class="rnum">${r.code}</span><span class="rn">${r.name}</span><span class="rc">${count}</span>`;
+  row.addEventListener('click', () => focusRegion(r.code));
+  regionsGrid.appendChild(row);
+});
+
+const emptyState = document.getElementById('emptyState');
+const chooser = document.getElementById('chooser');
+const chooserEyebrow = document.getElementById('chooserEyebrow');
+const chooserTitle = document.getElementById('chooserTitle');
+const chooserCount = document.getElementById('chooserCount');
+const pickList = document.getElementById('pickList');
+const letterHost = document.getElementById('letterHost');
+
+function hideAll(){
+  emptyState.style.display = 'none';
+  chooser.classList.remove('show');
+  document.querySelectorAll('.letter').forEach(d => d.classList.remove('show'));
+}
+
+function showChooser(code){
+  hideAll();
+  const r = regionsAll.find(x => x.code === code);
+  const list = lettersByRegion[code] || [];
+  chooserEyebrow.textContent = "Región " + r.code;
+  chooserTitle.textContent = r.name;
+  chooserCount.textContent = list.length === 0 ? "Aún no hay cartas digitalizadas en esta región." : (list.length === 1 ? "1 carta disponible" : list.length + " cartas disponibles");
+
+  pickList.innerHTML = '';
+  list.forEach(l => {
+    const item = document.createElement('div');
+    item.className = 'pick-item';
+    item.innerHTML = `<div><div class="pi-title">${l.title}</div><div class="pi-sub">De ${l.from} — Para ${l.to} · ${l.date}</div></div><div class="pi-arrow">→</div>`;
+    item.addEventListener('click', () => openLetter(l.id));
+    pickList.appendChild(item);
+  });
+  chooser.classList.add('show');
+}
+
+letters.forEach(l => {
+  const div = document.createElement('div');
+  div.className = 'letter';
+  div.id = 'letter-'+l.id;
+  div.innerHTML = `
+    <div class="panel-back-country">‹ Volver a Chile</div>
+    <span class="back-link" data-region="${l.regionCode}">‹ Volver a la región</span>
+    <div class="letter-meta">
+      <div>
+        ${l.isReal ? '<div class="real-badge">✦ Documento original digitalizado</div><br>' : ''}
+        <div class="place">${l.place}</div>
+        <h2>${l.title}</h2>
+        <div class="who">De ${l.from} — Para ${l.to}</div>
+      </div>
+      <div class="badge-date">${l.date}</div>
+    </div>
+    <div class="doc-gallery" id="gallery-${l.id}"></div>
+    <div class="transcript-block">
+      <p class="transcription" id="transcript-${l.id}"><span class="drop">${l.text.charAt(0)}</span>${l.text.slice(1)}</p>
+    </div>
+  `;
+  letterHost.appendChild(div);
+
+  div.querySelector('.back-link').addEventListener('click', (e) => { hideAll(); showChooser(e.currentTarget.dataset.region); });
+  div.querySelector('.panel-back-country').addEventListener('click', resetToCountry);
+
+  const gallery = div.querySelector('#gallery-' + l.id);
+  gallery.innerHTML = `
+    <div class="doc-thumbs">${pageImages.map((p,i) => `<div class="doc-thumb${i===0?' active':''}" data-idx="${i}"><img src="${p.src}"></div>`).join('')}</div>
+    <div class="doc-main" id="docMainWrap-${l.id}"><img id="docMain-${l.id}" src="${pageImages[0].src}" alt="${pageImages[0].label}"></div>
+    <div class="doc-caption" id="docCaption-${l.id}">${pageImages[0].label}</div>
+  `;
+  gallery.querySelectorAll('.doc-thumb').forEach(t => {
+    t.addEventListener('click', (e) => {
+      const idx = parseInt(e.currentTarget.dataset.idx, 10);
+      gallery.querySelector('#docMain-'+l.id).src = pageImages[idx].src;
+      gallery.querySelector('#docCaption-'+l.id).textContent = pageImages[idx].label;
+      gallery.querySelectorAll('.doc-thumb').forEach(x => x.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+    });
+  });
+});
+
+function openLetter(idNum){
+  hideAll();
+  document.getElementById('letter-'+idNum).classList.add('show');
+}
+
+setTimeout(() => { map.fitBounds(CHILE_BOUNDS, { padding: [12,12] }); }, 100);
+</script>
+</body>
+</html>

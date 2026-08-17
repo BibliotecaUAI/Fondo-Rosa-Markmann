@@ -153,13 +153,9 @@
   }
   .map-instructions b{ color: var(--gold-light); font-weight:600; }
 
-  /* En reposo (sin región elegida): sólo se ve el filtro de regiones, el mapa se oculta */
-  .map-panel.wide .map-visual{ display:none; }
-  .map-panel:not(.wide) .region-list-wrap{ display:none; }
-
-  .map-panel.wide .map-inner{ flex-direction:column; align-items:stretch; gap:0; }
+  /* Lista de regiones arriba y mapa interactivo abajo — ambos siempre visibles */
   .map-panel.wide .region-list-wrap{
-    margin-bottom:0; border-bottom:none; padding-bottom:0;
+    margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:12px;
   }
   .map-panel.wide .region-list-wrap .region-list{ max-height:520px; columns: 2; column-gap: 22px; }
   .map-panel.wide .region-list-wrap .region-row{ break-inside: avoid; }
@@ -564,7 +560,7 @@
       <div class="map-inner" id="mapInner">
         <div class="region-list-wrap">
           <p class="map-caption region-caption"><span>Regiones</span></p>
-          <p class="map-instructions">Elige una <b>región</b> para abrir el mapa y ver las cartas disponibles ahí.</p>
+          <p class="map-instructions">Elige una <b>región</b> en la lista o directamente en el mapa para ver las cartas disponibles ahí.</p>
           <div class="region-list" id="regionList"></div>
         </div>
         <div class="map-visual">

@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fondo Histórico — Correspondencia de Chile</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --noir: #0a0a0b;
+    --noir-panel: #141416;
+    --noir-panel-2: #1b1b1e;
+    --ivory: #f4f1e8;
+    --ivory-dim: #a8a49a;
+    --gold: #c9a227;
+    --gold-light: #e6c866;
+    --gold-dim: #8a7127;
+    --line: rgba(244,241,232,0.10);
+    --line-gold: rgba(201,162,39,0.35);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(201,162,39,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 100%, rgba(201,162,39,0.06), transparent 60%),
+      var(--noir);
+    color: var(--ivory);
+    font-family: 'Cormorant Garamond', serif;
+    min-height:100vh;
+  }
+
+  .wrap{ max-width:1260px; margin:0 auto; padding: 40px 28px 120px; }
+
+  header.top{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    border-bottom: 1px solid var(--line-gold);
+    padding-bottom: 22px; margin-bottom: 36px; gap: 20px; flex-wrap:wrap;
+  }
+  .eyebrow{
+    font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--gold); font-weight:600; margin:0 0 8px;
+  }
+  h1{
+    font-family:'Fraunces', serif; font-weight:500; font-size: clamp(30px,4.2vw,46px);
+    margin:0; line-height:1.05; letter-spacing:-0.01em; color: var(--ivory);
+  }
+  h1 em{ font-style:italic; color: var(--gold-light); font-weight:300; }
+  .sub{ font-size:17px; color:var(--ivory-dim); margin-top:10px; max-width:460px; line-height:1.5; }
+  .stat{ text-align:right; font-family:'Inter',sans-serif; }
+  .stat .n{ font-family:'Fraunces',serif; font-weight:300; font-size:40px; color:var(--gold-light); line-height:1; }
+  .stat .l{ font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ivory-dim); margin-top:6px;}
+
+  .board{ display:flex; align-items:flex-start; gap: 26px; transition: gap .9s cubic-bezier(.22,.61,.36,1); perspective: 2400px; }
+
+  /* Cuadro de biografía — foto a un lado, texto elegante al otro.
+     Va antes del mapa, para presentar el fondo antes de explorarlo. */
+  .bio-panel{
+    display:flex; align-items:stretch; gap:0;
+    border: 1px solid var(--line-gold); border-radius: 3px;
+    background: linear-gradient(180deg, var(--noir-panel), var(--noir-panel-2));
+    overflow:hidden; margin-bottom: 36px;
+  }
+  .bio-photo{ flex: 0 0 340px; background: var(--noir); }
+  .bio-photo img{ width:100%; height:100%; aspect-ratio: 775 / 1200; object-fit:cover; display:block; }
+  .bio-text{ flex:1 1 auto; min-width:0; padding: 40px 46px; display:flex; flex-direction:column; justify-content:center; }
+  .bio-eyebrow{
+    font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--gold); font-weight:600; margin:0 0 10px;
+  }
+  .bio-text h2{
+    font-family:'Fraunces', serif; font-weight:500; font-size: clamp(24px,2.6vw,32px);
+    margin:0 0 18px; line-height:1.15; color: var(--ivory);
+  }
+  .bio-text h2 em{ font-style:italic; color: var(--gold-light); font-weight:300; }
+  .bio-body{
+    font-size: 18px; line-height:1.8; color: var(--ivory); font-style: italic;
+    margin: 0; text-align: justify; text-align-last: left;
+  }
+  .bio-body .drop{
+    font-family:'Fraunces',serif; font-weight:300; font-style:normal; font-size:48px; float:left;
+    line-height:0.72; padding-right:8px; padding-top:5px; color: var(--gold);
+  }
+  .bio-subtitle{
+    font-family:'Inter',sans-serif; font-size:12.5px; letter-spacing:.04em;
+    color: var(--ivory-dim); margin: 0 0 20px;
+  }
+  .bio-quote{
+    margin: 22px 0 0; padding-left: 20px; border-left: 1.5px solid var(--gold-dim);
+    font-family:'Cormorant Garamond', serif; font-style: italic; font-size: 18px;
+    color: var(--gold-light); line-height:1.55;
+  }
+  .bio-quote cite{
+    display:block; margin-top:9px; font-family:'Inter',sans-serif; font-style:normal;
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color: var(--ivory-dim);
+  }
+  .bio-context{ margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line-gold); }
+  .bio-context-title{
+    font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+    color: var(--gold); margin: 0 0 10px;
+  }
+  .bio-context-body{
+    font-size: 16.5px; line-height:1.7; color: var(--ivory-dim); font-style:normal;
+    margin: 0;
+  }
+  @media (max-width: 900px){
+    .bio-panel{ flex-direction:column; }
+    .bio-photo{ flex-basis:auto; width:100%; aspect-ratio: 775/900; }
+    .bio-photo img{ aspect-ratio: unset; }
+    .bio-text{ padding: 30px 26px; }
+  }
+
+  .board .map-panel{ flex: 0 0 auto; width:460px; transition: width .9s cubic-bezier(.22,.61,.36,1); }
+  .board .detail{ flex: 1 1 auto; min-width:0; opacity:1; transition: width .9s cubic-bezier(.22,.61,.36,1), opacity .5s ease .25s; }
+  @media (max-width: 980px){
+    .board{ flex-direction:column; }
+    .board .map-panel{ flex-basis:auto; width:100% !important; }
+    .board .detail{ width:100% !important; opacity:1 !important; }
+    .map-panel .map-visual{ display:block !important; }
+    .map-panel .region-list-wrap{ display:block !important; margin:0 0 14px; border:0; padding:0 0 14px; border-bottom:1px solid var(--line); }
+  }
+
+  /* El recuadro de detalle se despliega como una página que gira desde
+     el lomo del libro (el borde donde se junta con el mapa) */
+  .detail.panel-opening{
+    animation: panelSwingOpen .95s cubic-bezier(.19,1,.22,1);
+    transform-origin: left center;
+  }
+  .detail.panel-closing{
+    animation: panelSwingClose .8s cubic-bezier(.5,0,.75,0);
+    transform-origin: left center;
+  }
+  @keyframes panelSwingOpen{
+    0%{ transform: rotateY(-32deg); box-shadow: -30px 0 60px rgba(0,0,0,0.45); }
+    100%{ transform: rotateY(0deg); box-shadow: none; }
+  }
+  @keyframes panelSwingClose{
+    0%{ transform: rotateY(0deg); }
+    100%{ transform: rotateY(-32deg); }
+  }
+
+  .map-inner{ display:flex; flex-direction:column; gap:0; }
+  .map-visual{ flex:1 1 auto; min-width:0; }
+  .region-list-wrap{ margin-bottom:14px; border-bottom:1px solid var(--line); padding-bottom:12px; transition: all .4s ease; }
+  .region-list-wrap .map-caption{ margin-bottom:8px; }
+  .region-list-wrap .region-list{ margin-top:0; border-top:none; padding-top:0; }
+  .map-instructions{
+    font-family:'Inter',sans-serif; font-size:12.5px; line-height:1.5; color: var(--ivory-dim);
+    margin: 0 0 14px; padding-bottom:12px; border-bottom: 1px solid var(--line);
+  }
+  .map-instructions b{ color: var(--gold-light); font-weight:600; }
+
+  /* En reposo (sin región elegida): sólo se ve el filtro de regiones, el mapa se oculta */
+  .map-panel.wide .map-visual{ display:none; }
+  .map-panel:not(.wide) .region-list-wrap{ display:none; }
+
+  .map-panel.wide .map-inner{ flex-direction:column; align-items:stretch; gap:0; }
+  .map-panel.wide .region-list-wrap{
+    margin-bottom:0; border-bottom:none; padding-bottom:0;
+  }
+  .map-panel.wide .region-list-wrap .region-list{ max-height:520px; columns: 2; column-gap: 22px; }
+  .map-panel.wide .region-list-wrap .region-row{ break-inside: avoid; }
+
+  .map-panel{
+    background: linear-gradient(180deg, var(--noir-panel), var(--noir-panel-2));
+    border: 1px solid var(--line-gold);
+    border-radius: 3px;
+    padding: 18px;
+    position: relative;
+  }
+  .map-caption{
+    font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+    color: var(--gold); text-align:center; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;
+  }
+  .map-source{ font-size:9px; color: var(--ivory-dim); letter-spacing:.05em; text-transform:none; }
+
+  #mapContainer{
+    width:100%; height: 560px; border-radius: 2px; overflow:hidden; border: 1px solid var(--line-gold);
+    position:relative; background: #0d0f10;
+  }
+
+  /* Barra superior del mapa: un único contenedor flex, nunca se superponen entre sí */
+  .map-topbar{
+    position:absolute; top:14px; left:14px; right:14px; z-index:500;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:8px;
+    pointer-events:none;
+  }
+
+  .back-to-country{
+    flex: 0 0 auto;
+    display:flex; align-items:center; gap:7px;
+    background: rgba(10,10,11,0.88); backdrop-filter: blur(4px);
+    color: var(--gold-light); border: 1px solid var(--line-gold); border-radius: 20px;
+    padding: 9px 16px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600;
+    cursor:pointer; opacity:0; pointer-events:none; transition: opacity .3s ease, transform .3s ease;
+    transform: translateY(-6px) scale(.97); white-space:nowrap;
+  }
+  .back-to-country.show{ opacity:1; pointer-events:all; transform:translateY(0) scale(1); }
+  .back-to-country:hover{ background: rgba(10,10,11,1); }
+  .back-to-country .bt-full{ }
+  .back-to-country .bt-short{ display:none; }
+
+  .region-badge{
+    flex: 0 1 auto; min-width:0;
+    background: rgba(10,10,11,0.88); backdrop-filter: blur(4px);
+    color: var(--ivory); border: 1px solid var(--line-gold); border-radius: 20px;
+    padding: 9px 16px; font-family:'Fraunces',serif; font-size:14px;
+    opacity:0; pointer-events:none; transition: opacity .3s ease, transform .3s ease;
+    transform: translateY(-6px) scale(.97);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .region-badge.show{ opacity:1; transform:translateY(0) scale(1); }
+  .region-badge b{ color: var(--gold-light); font-weight:500; }
+
+  /* Cuando ambos elementos están visibles a la vez, se acorta el botón de volver
+     para dejarle todo el espacio disponible al nombre de la región */
+  .map-topbar.both .back-to-country .bt-full{ display:none; }
+  .map-topbar.both .back-to-country .bt-short{ display:inline; }
+  .map-topbar.both .back-to-country{ padding: 9px 13px; }
+
+  .leaflet-div-icon{ background:transparent; border:none; }
+  .region-marker{
+    width:26px; height:26px; border-radius:50%;
+    background: rgba(244,241,232,0.16); border: 1.4px solid var(--gold-dim);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:10px; color: var(--ivory); cursor:pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    transition: transform .15s ease;
+  }
+  .region-marker:hover{ transform: scale(1.12); }
+  .region-marker.has{ background: var(--gold); border-color: var(--gold-light); color: var(--noir); font-weight:600; }
+
+  .letter-marker{
+    width:20px; height:20px; border-radius:50%;
+    background: var(--gold-light); border: 2px solid var(--noir);
+    box-shadow: 0 0 0 5px rgba(230,200,102,0.22), 0 2px 12px rgba(0,0,0,0.5);
+    cursor:pointer;
+    animation: pulseMarker 2.2s ease-in-out infinite;
+  }
+  @keyframes pulseMarker{
+    0%,100%{ box-shadow: 0 0 0 5px rgba(230,200,102,0.22), 0 2px 12px rgba(0,0,0,0.5); }
+    50%{ box-shadow: 0 0 0 9px rgba(230,200,102,0.08), 0 2px 12px rgba(0,0,0,0.5); }
+  }
+
+  /* Etiqueta "Ciudad — N° de cartas" sobre cada pin de carta en el mapa */
+  .leaflet-tooltip.city-label{
+    background: rgba(10,10,11,0.9); backdrop-filter: blur(3px);
+    border: 1px solid var(--line-gold); color: var(--ivory);
+    font-family:'Inter',sans-serif; font-size:11px; font-weight:600; letter-spacing:.01em;
+    padding:5px 11px; border-radius:14px; box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    white-space:nowrap; pointer-events:none;
+  }
+  .leaflet-tooltip.city-label::before{ display:none; }
+
+  .map-legend{
+    display:flex; justify-content:center; gap:18px; margin-top:12px;
+    font-family:'Inter',sans-serif; font-size:10.5px; color: var(--ivory-dim);
+  }
+  .map-legend .lg{ display:flex; align-items:center; gap:6px; }
+  .map-legend .sw{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .sw.gold{ background: var(--gold); }
+  .sw.empty{ background: rgba(244,241,232,0.16); border:1px solid var(--gold-dim); }
+
+  .region-list{ margin-top:14px; border-top:1px solid var(--line); padding-top:12px; max-height:190px; overflow-y:auto; }
+  .region-row{
+    display:flex; justify-content:space-between; align-items:center; cursor:pointer;
+    font-family:'Inter',sans-serif; font-size:12px; padding: 7px 4px;
+    color: var(--ivory-dim); border-bottom: 1px solid var(--line); transition: background .15s ease;
+  }
+  .region-row:hover{ background: rgba(201,162,39,0.06); }
+  .region-row:last-child{ border-bottom:none; }
+  .region-row.active{ background: rgba(201,162,39,0.10); }
+  .region-row .rnum{ font-family:'Fraunces',serif; color: var(--gold-light); font-size:13px; min-width:34px; display:inline-block; }
+  .region-row .rn{ color: var(--ivory); letter-spacing:.01em; flex:1; padding: 0 8px; }
+  .region-row .rc{ color: var(--gold-light); font-family:'Fraunces',serif; font-size:13px; min-width:16px; text-align:right; }
+  .region-row:not(.has) .rc{ color: var(--ivory-dim); }
+
+  .detail{
+    border: 1px solid var(--line-gold);
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--noir-panel), var(--noir-panel-2));
+    min-height: 560px;
+    padding: 8px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .empty-state{
+    height:100%; min-height:540px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; color: var(--ivory-dim); padding: 40px;
+  }
+  .empty-state .mark{ font-family:'Fraunces',serif; font-weight:300; font-size:56px; color: var(--gold-dim); margin-bottom:14px; }
+  .empty-state p{ font-size:18px; max-width:320px; }
+
+  .chooser{ display:none; padding: 30px 34px; animation: revealElegant .7s cubic-bezier(.16,1,.3,1); transform-origin: left center; }
+  .chooser.show{ display:block; }
+  .chooser .region-title{ font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color: var(--gold); }
+  .chooser h2{ font-family:'Fraunces',serif; font-weight:500; font-size:30px; margin:8px 0 4px; color: var(--ivory); }
+  .chooser .count-line{ color: var(--ivory-dim); font-size:16px; margin-bottom: 24px; }
+  .pick-list{ display:flex; flex-direction:column; gap:10px; }
+  .pick-item{
+    display:flex; justify-content:space-between; align-items:center; gap:14px;
+    border: 1px solid var(--line-gold); border-radius:3px; padding: 14px 18px; cursor:pointer;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .pick-item:hover{ background: rgba(201,162,39,0.07); border-color: var(--gold-light); }
+  .pick-item .pi-title{ font-family:'Fraunces',serif; font-size:17px; color: var(--ivory); }
+  .pick-item .pi-sub{ font-family:'Inter',sans-serif; font-size:11.5px; color: var(--ivory-dim); margin-top:3px; }
+  .pick-item .pi-arrow{ color: var(--gold-light); font-size:18px; }
+
+  .letter{ display:none; padding: 28px 32px 120px; animation: revealElegant .7s cubic-bezier(.16,1,.3,1); transform-origin: left center; }
+  .letter.show{ display:block; }
+
+  /* Efecto de apertura compartido en todo el sitio: la página gira
+     levemente desde su borde izquierdo, como si se pasara una hoja —
+     consistente con el efecto del visor de documentos. */
+  @keyframes revealElegant{
+    from{ opacity:0; transform: perspective(1600px) rotateY(-6deg) translateX(-10px); }
+    to{ opacity:1; transform: perspective(1600px) rotateY(0deg) translateX(0); }
+  }
+
+  .back-link{
+    font-family:'Inter',sans-serif; font-size:11.5px; color: var(--gold-light); cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; margin-bottom:16px;
+  }
+  .back-link:hover{ color: var(--ivory); }
+
+  /* Botón "Volver a Chile" propio del panel de detalle — misma jerarquía visual
+     que el que flota sobre el mapa, para que sea igual de visible desde acá. */
+  .panel-back-country{
+    display:inline-flex; align-items:center; gap:7px;
+    background: rgba(10,10,11,0.6);
+    color: var(--gold-light); border: 1px solid var(--line-gold); border-radius: 20px;
+    padding: 8px 16px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600;
+    cursor:pointer; margin-bottom:18px; transition: background .15s ease, border-color .15s ease;
+  }
+  .panel-back-country:hover{ background: rgba(201,162,39,0.12); border-color: var(--gold-light); }
+
+  .letter-meta{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    border-bottom: 1px solid var(--line-gold); padding-bottom: 16px; margin-bottom:18px; gap:16px; flex-wrap:wrap;
+  }
+  .letter-meta .place{ font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color: var(--gold); font-weight:600; }
+  .letter-meta h2{ font-family:'Fraunces',serif; font-weight:500; font-size:26px; margin:8px 0 6px; color: var(--ivory); }
+  .letter-meta .who{ color: var(--ivory-dim); font-size:16px; }
+  .badge-date{
+    font-family:'Inter',sans-serif; font-size:11.5px; color: var(--gold-light);
+    border: 1px solid var(--line-gold); border-radius: 20px; padding: 6px 14px; white-space:nowrap;
+  }
+  .origin{ font-family:'Inter',sans-serif; font-size:11px; color: var(--gold-dim); margin-top:6px; }
+  .real-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'Inter',sans-serif; font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color: var(--noir); background: var(--gold-light); border-radius: 3px; padding: 4px 9px;
+    margin-bottom: 10px; font-weight:600;
+  }
+
+  /* Galería tipo hoja de libro */
+  .doc-gallery{ margin: 4px 0 26px; }
+  .doc-main{
+    width:100%; border-radius:3px; overflow:hidden; border: 1px solid var(--line-gold);
+    background: var(--noir); display:flex; align-items:center; justify-content:center;
+    min-height: 260px; cursor: zoom-in; position:relative;
+  }
+  .doc-main::after{
+    content:"⤢ Ver página completa"; position:absolute; bottom:10px; right:12px;
+    font-family:'Inter',sans-serif; font-size:10.5px; color: var(--ivory);
+    background: rgba(10,10,11,0.65); padding:5px 10px; border-radius:14px; letter-spacing:.03em;
+    opacity:0; transition: opacity .2s ease;
+  }
+  .doc-main:hover::after{ opacity:1; }
+  .doc-main img{ width:100%; display:block; }
+  .doc-caption{ font-family:'Inter',sans-serif; font-size:11px; color: var(--gold-light); text-align:center; margin-top:10px; letter-spacing:.04em; }
+  .doc-thumbs{ display:flex; gap:10px; margin-bottom:12px; justify-content:center; }
+  .doc-thumb{
+    width:56px; height:74px; border-radius:2px; overflow:hidden; cursor:pointer;
+    border: 1.5px solid var(--line-gold); opacity:0.55; transition: opacity .2s ease, border-color .2s ease;
+  }
+  .doc-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .doc-thumb:hover{ opacity:0.85; }
+  .doc-thumb.active{ opacity:1; border-color: var(--gold-light); }
+
+  /* Transcripción elegante */
+  .transcript-block{ margin-top: 8px; }
+  .transcript-tabs{ display:flex; gap:8px; margin-bottom:16px; }
+  .t-tab{
+    font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color: var(--ivory-dim); background:transparent; border: 1px solid var(--line-gold);
+    border-radius: 20px; padding: 7px 15px; cursor:pointer; transition: all .15s ease;
+  }
+  .t-tab.active{ background: var(--gold); color: var(--noir); border-color: var(--gold); font-weight:600; }
+  .transcription{
+    font-size: 19px; line-height:1.75; color: var(--ivory);
+    font-style: italic; border-left: 1.5px solid var(--gold-dim); padding-left: 20px;
+    margin: 0 0 22px;
+  }
+  .transcription .drop{
+    font-family:'Fraunces',serif; font-weight:300; font-style:normal; font-size:46px; float:left;
+    line-height:0.72; padding-right:7px; padding-top:4px; color: var(--gold);
+  }
+
+  .tags{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 8px; }
+  .tag{ font-family:'Inter',sans-serif; font-size:10.5px; color: var(--ivory-dim); border: 1px solid var(--line); border-radius: 20px; padding: 5px 12px; }
+
+  .archive-notes{ margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line-gold); }
+  .archive-title{ font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color: var(--gold); margin: 0 0 12px; }
+  .archive-row{ display:flex; gap:14px; padding: 8px 0; border-bottom: 1px solid var(--line); font-family:'Inter',sans-serif; font-size:12.5px; }
+  .archive-row:last-child{ border-bottom:none; }
+  .archive-label{ min-width: 110px; color: var(--gold-light); font-weight:600; flex-shrink:0; }
+  .archive-value{ color: var(--ivory-dim); line-height:1.5; }
+
+  .audio-row{ display:flex; align-items:center; gap:12px; margin: 4px 0 22px; flex-wrap:wrap; }
+  .play-btn{
+    display:flex; align-items:center; gap:9px;
+    background: var(--gold); color: var(--noir); border:none; cursor:pointer;
+    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600; letter-spacing:.03em;
+    padding: 11px 20px; border-radius: 24px; transition: background .2s ease, transform .15s ease;
+  }
+  .play-btn:hover{ background: var(--gold-light); transform: translateY(-1px); }
+  .play-btn.secondary{ background: transparent; color: var(--gold-light); border: 1px solid var(--gold-dim); }
+  .play-btn.secondary:hover{ background: rgba(201,162,39,0.10); }
+  .play-btn svg{ width:13px; height:13px; }
+
+  footer.note{
+    margin-top: 36px; font-family:'Inter',sans-serif; font-size:11.5px; color: var(--ivory-dim);
+    text-align:center; border-top:1px solid var(--line); padding-top:18px;
+  }
+
+  /* Reproductor fijo abajo */
+  .audio-bar{
+    position: fixed; left:0; right:0; bottom:0; z-index: 900;
+    background: linear-gradient(180deg, rgba(20,20,22,0.92), rgba(10,10,11,0.98));
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line-gold);
+    padding: 14px 24px; display:flex; align-items:center; gap:18px;
+    transform: translateY(100%); transition: transform .35s cubic-bezier(.2,.7,.3,1);
+  }
+  .audio-bar.show{ transform: translateY(0); }
+  .ab-icon{
+    width:40px; height:40px; border-radius:50%; background: var(--gold); color:var(--noir);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:16px;
+  }
+  .ab-info{ flex:1; min-width:0; font-family:'Inter',sans-serif; }
+  .ab-title{ font-size:13px; color: var(--ivory); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ab-sub{ font-size:11px; color: var(--gold-light); margin-top:2px; }
+  .ab-controls{ display:flex; align-items:center; gap:10px; }
+  .ab-btn{
+    width:38px; height:38px; border-radius:50%; border: 1px solid var(--line-gold); background:transparent;
+    color: var(--ivory); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .ab-btn:hover{ background: rgba(201,162,39,0.12); border-color: var(--gold-light); }
+  .ab-btn svg{ width:15px; height:15px; }
+  .ab-btn.close{ color: var(--ivory-dim); }
+
+  /* Lightbox tipo libro, con un despliegue suave (tipo ola) al abrir */
+  .lightbox{
+    position:fixed; inset:0; background: rgba(6,6,7,0.92); z-index:1000;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none;
+    clip-path: circle(0px at var(--wave-x, 50%) var(--wave-y, 50%));
+    transition: clip-path .9s cubic-bezier(.19,1,.22,1), opacity .3s ease;
+  }
+  .lightbox.show{
+    opacity:1; pointer-events:all;
+    clip-path: circle(150vmax at var(--wave-x, 50%) var(--wave-y, 50%));
+  }
+  .lightbox-inner{ position:relative; max-width: 78vw; perspective: 1800px; }
+  .lightbox-inner img{
+    max-height:80vh; max-width:78vw; display:block; border-radius:2px;
+    box-shadow: 0 40px 90px rgba(0,0,0,0.65);
+    transition: transform .32s cubic-bezier(.3,.1,.3,1), opacity .28s ease;
+    transform-origin: left center;
+  }
+  .lightbox-inner img.flip-out{ transform: rotateY(-95deg) scale(.94); opacity:0; }
+  .lightbox-inner img.flip-in-start{ transform: rotateY(95deg) scale(.94); opacity:0; }
+
+  /* Estado inicial/final al abrir la vista completa — usa el mismo giro
+     de página que pasar a la siguiente hoja, para que abrir y hojear
+     se sientan como el mismo gesto de libro. */
+  .lightbox-inner img.wave-start{
+    transform: rotateY(70deg) scale(.94);
+    opacity: 0;
+    transition: none;
+  }
+  .lightbox-inner img.wave-end{
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+    transition: transform .85s cubic-bezier(.16,1,.3,1), opacity .6s ease;
+  }
+
+  /* Un único anillo, tenue, que se disuelve desde el punto donde se tocó la carta */
+  .wave-ring{
+    position: fixed; z-index: 1001; pointer-events:none;
+    width: 18px; height: 18px; margin: -9px 0 0 -9px;
+    border-radius: 50%;
+    border: 1px solid rgba(230,200,102,0.4);
+    transform: scale(0);
+    opacity: 0.6;
+    animation: rippleWave 1.1s cubic-bezier(.19,1,.22,1) forwards;
+  }
+  @keyframes rippleWave{
+    0%{ transform: scale(0); opacity: 0.5; }
+    100%{ transform: scale(34); opacity: 0; }
+  }
+  .lightbox-caption{
+    text-align:center; margin-top:16px; font-family:'Inter',sans-serif; font-size:12px;
+    color: var(--gold-light); letter-spacing:.06em;
+  }
+  .lb-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:46px; height:46px; border-radius:50%; background: rgba(20,20,22,0.7);
+    border: 1px solid var(--line-gold); color: var(--ivory); font-size:20px;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .lb-nav:hover{ background: rgba(201,162,39,0.2); }
+  .lb-prev{ left:-64px; } .lb-next{ right:-64px; }
+  @media (max-width:900px){ .lb-prev{left:8px;} .lb-next{right:8px;} }
+  .lb-close{
+    position:absolute; top:-46px; right:0; width:34px; height:34px; border-radius:50%;
+    background: rgba(20,20,22,0.7); border: 1px solid var(--line-gold); color: var(--ivory);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <p class="eyebrow">Fondo Histórico</p>
+      <h1>Fondo Rosa Markmann</h1>
+      <p class="sub">Bibliotecas Universidad Adolfo Ibáñez</p>
+    </div>
+    <div class="stat">
+      <div class="n" id="countStat">1</div>
+      <div class="l">Carta digitalizada</div>
+    </div>
+  </header>
+
+  <div class="bio-panel">
+    <div class="bio-photo">
+      <img src="assets/images/rosa-markmann.jpg" alt="Retrato de Rosa Markmann de González Videla">
+    </div>
+    <div class="bio-text">
+      <p class="bio-eyebrow">Sobre el fondo</p>
+      <h2>Rosa Markmann — <em>«Madre del Mundo»</em></h2>
+      <p class="bio-subtitle">Esposa de Gabriel González Videla, Presidente de Chile (1946–1952)</p>
+      <p class="bio-body"><span class="drop">R</span>osa Markmann Reijer (Taltal, 1907 — Santiago, 2009), conocida como «Miti», fue Primera Dama de Chile entre 1946 y 1952. Fue la primera en ocupar un despacho propio en el Palacio de La Moneda, desde donde impulsó el derecho a voto de las mujeres, la creación de viviendas de emergencia y campañas de salud pública que marcaron su época. En 1952, durante una visita a Nueva York, el Comité Internacional de Madres de Norteamérica le otorgó el título de «Madre del Mundo», en reconocimiento a su labor social. Este fondo reúne parte de la correspondencia que recibió durante esos años: cartas de personas de todo Chile que le escribían solicitando ayuda, intercediendo por causas propias o agradeciendo su gestión — un retrato íntimo de una época a través de las voces de quienes le escribieron.</p>
+      <p class="bio-quote">«Más que a mí, va dirigido a honrar la virtud de la mujer chilena.»<cite>Rosa Markmann, al recibir el título de «Madre del Mundo» — Nueva York, 1952</cite></p>
+      <div class="bio-context">
+        <p class="bio-context-title">¿Por qué recibía y enviaba cartas?</p>
+        <p class="bio-context-body">Markmann fue la primera Primera Dama en instalar un despacho propio dentro de La Moneda, y desde ahí creó la Oficina de la Mujer: un equipo de abogadas, asistentes sociales y matronas dedicado a leer y gestionar las peticiones que llegaban de todo Chile. En un país con alto desempleo, escasez de vivienda y tuberculosis como enfermedad extendida, miles de personas le escribían pidiendo trabajo, casa, medicamentos o interviniendo ante el Presidente en causas particulares —como la carta que aquí se conserva—, y ella o su equipo respondían, derivaban la solicitud a un ministerio o gestionaban ayuda directa. Se conservan cerca de 8.000 cartas dirigidas a ella en el Archivo Nacional de Chile.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="board">
+
+    <div class="map-panel" id="mapPanel">
+      <div class="map-inner" id="mapInner">
+        <div class="region-list-wrap">
+          <p class="map-caption region-caption"><span>Regiones</span></p>
+          <p class="map-instructions">Elige una <b>región</b> para abrir el mapa y ver las cartas disponibles ahí.</p>
+          <div class="region-list" id="regionList"></div>
+        </div>
+        <div class="map-visual">
+          <p class="map-caption"><span>Mapa de Chile</span><span class="map-source">OpenStreetMap</span></p>
+          <div id="mapContainer">
+            <div class="map-topbar" id="mapTopbar">
+              <div class="back-to-country" id="backBtn"><span class="bt-full">‹ Volver a Chile</span><span class="bt-short">‹ Chile</span></div>
+              <div class="region-badge" id="regionBadge">Región <b id="regionBadgeText">—</b></div>
+            </div>
+            <div id="leafletMap" style="width:100%; height:100%;"></div>
+          </div>
+          <div class="map-legend">
+            <span class="lg"><span class="sw gold"></span> Con cartas</span>
+            <span class="lg"><span class="sw empty"></span> Sin cartas aún</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail" id="detailPanel">
+      <div class="empty-state" id="emptyState">
+        <div class="mark">✉</div>
+        <p>Selecciona una región en la lista para ver el mapa y las cartas disponibles.</p>
+      </div>
+
+      <div class="chooser" id="chooser">
+        <div class="panel-back-country" id="chooserBackCountry">‹ Volver a Chile</div>
+        <p class="region-title" id="chooserEyebrow">Región</p>
+        <h2 id="chooserTitle">—</h2>
+        <p class="count-line" id="chooserCount">—</p>
+        <div class="pick-list" id="pickList"></div>
+      </div>
+
+      <div id="letterHost"></div>
+    </div>
+
+  </div>
+
+  <footer class="note">
+    Prototipo con datos reales del fondo · mapa con geografía real vía OpenStreetMap/Leaflet · el audio en inglés usa la grabación original; el audio en español usa voz sintética por ahora.
+  </footer>
+</div>
+
+<!-- Reproductor fijo -->
+<div class="audio-bar" id="audioBar">
+  <div class="ab-icon">♫</div>
+  <div class="ab-info">
+    <div class="ab-title" id="abTitle">—</div>
+    <div class="ab-sub" id="abSub">—</div>
+  </div>
+  <div class="ab-controls">
+    <button class="ab-btn" id="abToggle" title="Pausar/Reanudar">
+      <svg id="abToggleIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+    </button>
+    <button class="ab-btn close" id="abStop" title="Detener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Lightbox estilo libro -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <div class="lb-close" id="lbClose">✕</div>
+    <div class="lb-nav lb-prev" id="lbPrev">‹</div>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lb-nav lb-next" id="lbNext">›</div>
+    <div class="lightbox-caption" id="lightboxCaption">—</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ===== Regiones de Chile: fila ordenada de pines pegados al litoral =====
+// No son las capitales regionales (varias quedan tierra adentro: Rancagua,
+// Talca, Chillán, Temuco, Coyhaique) sino puntos elegidos sobre una curva
+// pareja que sigue el borde del país de norte a sur, para que los pines
+// queden en fila prolija junto al océano, sin zigzaguear hacia el interior.
+const regionsAll = [
+  { code: "XV",   name: "Arica y Parinacota",        lat: -18.5, lng: -70.4, zoom: 8 },
+  { code: "I",    name: "Tarapacá",                  lat: -20.3, lng: -70.3, zoom: 8 },
+  { code: "II",   name: "Antofagasta",               lat: -23.7, lng: -70.5, zoom: 7 },
+  { code: "III",  name: "Atacama",                   lat: -27.1, lng: -70.9, zoom: 7 },
+  { code: "IV",   name: "Coquimbo",                  lat: -29.9, lng: -71.4, zoom: 8 },
+  { code: "V",    name: "Valparaíso",                lat: -32.8, lng: -71.7, zoom: 8 },
+  { code: "RM",   name: "Metropolitana de Santiago", lat: -33.9, lng: -71.8, zoom: 9 },
+  { code: "VI",   name: "O'Higgins",                 lat: -34.6, lng: -72.0, zoom: 8 },
+  { code: "VII",  name: "Maule",                     lat: -35.5, lng: -72.3, zoom: 8 },
+  { code: "XVI",  name: "Ñuble",                     lat: -36.4, lng: -72.6, zoom: 8 },
+  { code: "VIII", name: "Biobío",                    lat: -37.1, lng: -73.0, zoom: 8 },
+  { code: "IX",   name: "La Araucanía",              lat: -38.4, lng: -73.3, zoom: 8 },
+  { code: "XIV",  name: "Los Ríos",                  lat: -39.6, lng: -73.4, zoom: 8 },
+  { code: "X",    name: "Los Lagos",                 lat: -41.0, lng: -73.5, zoom: 7 },
+  { code: "XI",   name: "Aysén",                     lat: -44.5, lng: -73.6, zoom: 6 },
+  { code: "XII",  name: "Magallanes",                lat: -52.5, lng: -72.0, zoom: 6 },
+];
+
+const CHILE_CENTER = [-37.5, -71.0];
+const CHILE_ZOOM = 4;
+
+// Páginas escaneadas reales del documento (imagen del archivo tal cual).
+const pageImages = [
+  { label: "Página 1 — original manuscrito", src: "assets/images/pagina-1.jpg" },
+  { label: "Página 2 — traducción caligráfica", src: "assets/images/pagina-2.jpg" },
+  { label: "Página 3 — traducción mecanografiada", src: "assets/images/pagina-3.jpg" }
+];
+
+// Documento real del fondo, digitalizado a partir del original manuscrito.
+const realLetter = {
+  id: 1,
+  regionCode: "V",
+  lat: -33.5967, lng: -71.6178, // Llo-Lleo, San Antonio, Región de Valparaíso (lugar donde se escribió la carta)
+  place: "Escrita en Llo-Lleo, San Antonio",
+  city: "Llo-Lleo, San Antonio", // nombre de ciudad usado en el pin del mapa (Ciudad — N° de cartas)
+  title: "Solicitud de pensión de gracia",
+  from: "Ed. Amengual S.",
+  to: "Rosa Markmann de González Videla",
+  date: "23 de agosto de 1952",
+  origin: "Dirigida a Palacio de La Moneda, Santiago",
+  text: "Con fecha 24 de Octubre de 1951, me permití enviar a Ud. una extensa carta, a fin de que Ud. intercediera ante su digno esposo, el Excelentísimo Señor Presidente de la República, en el sentido de que, compenetrado de la justicia de mi causa, hiciera a mi favor lo que de su parte estuviera. El corazón magnánimo y bondadoso de la Primera Dama de la Nación, oyó mi súplica y la hizo llegar a conocimiento de S.E. Por intermedio del Señor Secretario General de Gobierno, nuestro querido Presidente, viéndose imposibilitado para prestarme su cooperación por la vía administrativa, me sugirió la idea de hacerlo solicitando del H. Congreso una pensión de gracia. Así lo hice y, con tan buena suerte que, en el transcurso de un mes, Cámara y Senado, despacharon un proyecto que me beneficia con la suma de cinco mil pesos mensuales, aparte, se entiende, de la modesta jubilación de que disfruto. Ahora, pues, sólo resta a S.E. promulgar la ley y, en tal sentido, me he dirigido al Sr. Poblete. Una nueva ayuda de su parte, o sea, un recuerdo a este respecto a S.E., culminaría este servicio y sería un motivo más de reconocimiento y gratitud al ser de corazón grande y generoso, que es la esposa del Primer Magistrado de la República. Todos mis respetos, conjuntamente con mis mejores saludos.",
+  // Audio real (grabación de voz), no síntesis. Ruta relativa dentro del repo:
+  // ajusta el nombre/carpeta si en GitHub quedó guardado con otro nombre.
+  audioEn: "assets/audio/carta_english.m4a.m4a",
+  textEn: "On October 24th, 1951, I took the liberty of sending you a lengthy letter, so that you might intercede before your esteemed husband, His Excellency the President of the Republic, in the sense that, attuned to the justice of my cause, he would do whatever was within his power to help me. The kind and magnanimous heart of the First Lady of the Nation, heard my plea and made it known to S.E. Through the General Secretary of Government, our beloved President, unable to offer me his assistance through administrative channels, suggested that I request a special pension to the H. Congress. That is what I did and, with such luck that, in the span of a month, the Chamber of Deputies and the Senate, both passed a bill that grants me the sum of five thousand pesos per month, in addition, of course, to the modest retirement pension that I currently receive, so, the only thing left to do is for H.E. to enact the law and, with that in mind, I have contacted Mr. Poblete. Another favor from you, in other words a reminder regarding this matter to H.E., would finalize this service and it would be yet another reason to appreciate and be grateful to a generous and big-hearted person, that is the wife of the Chief Magistrate of the Republic. Please accept my deepest respects along with my best regards.",
+  tags: ["Documento original del fondo", "Pensión de gracia", "1952"],
+  annotations: [
+    { label: "Nota marginal", value: "“Special pension” — anotación del archivo sobre el motivo de la carta" },
+    { label: "Nota marginal", value: "“Without an address” — indicación de que la carta no incluye dirección de respuesta" },
+    { label: "Firma", value: "Ed. Amengual S." },
+    { label: "Traducción", value: "Existe versión traducida al inglés (página 2) para exhibición del fondo" }
+  ],
+  isReal: true
+};
+
+const letters = [realLetter];
+const lettersByRegion = {};
+letters.forEach(l => {
+  if(!lettersByRegion[l.regionCode]) lettersByRegion[l.regionCode] = [];
+  lettersByRegion[l.regionCode].push(l);
+});
+
+document.getElementById('countStat').textContent = letters.length;
+
+// ===== Mapa Leaflet (con red de seguridad: si falla, el resto del sitio sigue funcionando) =====
+let mapAvailable = true;
+let currentRegion = null;
+let map, tileLayer, regionMarkers = {}, cityMarkers = {}, cityGroups = {}, CHILE_BOUNDS = null;
+let resolveMarkerOverlaps = function(){};
+
+try {
+  if (typeof L === 'undefined') throw new Error('Leaflet no se cargó (sin conexión o CDN bloqueado)');
+
+  // Caja que delimita el territorio continental de Chile (con un margen)
+  CHILE_BOUNDS = L.latLngBounds(
+    L.latLng(-56.2, -76.5),  // suroeste
+    L.latLng(-17.2, -66.0)   // noreste
+  );
+
+  map = L.map('leafletMap', {
+    zoomControl: true,
+    attributionControl: true,
+    maxBounds: CHILE_BOUNDS.pad(0.15),
+    maxBoundsViscosity: 1.0,
+    minZoom: 4
+  });
+  map.fitBounds(CHILE_BOUNDS, { padding: [12,12] });
+
+  // Mapa base estándar de OpenStreetMap (el más confiable), con filtro oscuro para mantener la estética.
+  tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 18
+  }).addTo(map);
+  const tilePane = document.querySelector('#leafletMap .leaflet-tile-pane');
+  if (tilePane) tilePane.style.filter = 'invert(94%) hue-rotate(180deg) brightness(0.92) contrast(0.92) saturate(0.6)';
+
+  function regionIcon(r, has){
+    return L.divIcon({
+      className: '',
+      html: `<div class="region-marker${has?' has':''}">${r.code}</div>`,
+      iconSize: [26,26], iconAnchor: [13,13]
+    });
+  }
+  function letterIcon(){
+    return L.divIcon({ className:'', html:`<div class="letter-marker"></div>`, iconSize:[20,20], iconAnchor:[10,10] });
+  }
+
+  regionsAll.forEach(r => {
+    const has = !!lettersByRegion[r.code];
+    const marker = L.marker([r.lat, r.lng], { icon: regionIcon(r, has) }).addTo(map);
+    marker.on('click', () => focusRegion(r.code));
+    regionMarkers[r.code] = marker;
+  });
+
+  // ===== Separación automática de marcadores que se superponen ("dos caras") =====
+  // Cuando se ve todo Chile, regiones vecinas (ej. Valparaíso, RM, O'Higgins, Maule)
+  // quedan tan cerca en pantalla que sus círculos se encajan uno sobre otro.
+  // Este método detecta esos choques y los abre en un pequeño abanico, sin tocar
+  // la posición real de la región (se recalcula cada vez que cambia el zoom/paneo).
+  let overlapRAF = null;
+  resolveMarkerOverlaps = function(){
+    if(currentRegion) return; // sólo aplica en la vista de todo el país
+    cancelAnimationFrame(overlapRAF);
+    overlapRAF = requestAnimationFrame(() => {
+      const THRESH = 34; // px de distancia mínima entre centros (26px de diámetro + margen)
+      const entries = regionsAll
+        .filter(r => map.hasLayer(regionMarkers[r.code]))
+        .map(r => ({ r, marker: regionMarkers[r.code], ll: L.latLng(r.lat, r.lng) }));
+      entries.forEach(e => e.pt = map.latLngToContainerPoint(e.ll));
+
+      const n = entries.length;
+      const parent = entries.map((_, i) => i);
+      function find(i){ return parent[i] === i ? i : (parent[i] = find(parent[i])); }
+      for(let i = 0; i < n; i++){
+        for(let j = i + 1; j < n; j++){
+          const dx = entries[i].pt.x - entries[j].pt.x, dy = entries[i].pt.y - entries[j].pt.y;
+          if(Math.sqrt(dx*dx + dy*dy) < THRESH) parent[find(i)] = find(j);
+        }
+      }
+      const groups = {};
+      entries.forEach((e, i) => { const root = find(i); (groups[root] = groups[root] || []).push(e); });
+
+      Object.values(groups).forEach(group => {
+        if(group.length === 1){ group[0].marker.setLatLng(group[0].ll); return; }
+        const cx = group.reduce((s,e) => s + e.pt.x, 0) / group.length;
+        const cy = group.reduce((s,e) => s + e.pt.y, 0) / group.length;
+        const radius = 21 + group.length * 7;
+        group.forEach((e, idx) => {
+          const angle = (idx / group.length) * Math.PI * 2 - Math.PI/2;
+          const px = L.point(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+          e.marker.setLatLng(map.containerPointToLatLng(px));
+        });
+      });
+    });
+  };
+  map.on('zoomend moveend resize', resolveMarkerOverlaps);
+  resolveMarkerOverlaps();
+
+  // Marcadores agrupados por ciudad (una carta o varias comparten la misma
+  // ciudad/coordenada): un pin por ciudad, con etiqueta "Ciudad — N° de cartas"
+  // siempre visible. Al agregar futuras cartas a una ciudad ya existente, la
+  // etiqueta se actualiza sola sumando el conteo.
+  letters.forEach(l => {
+    const cityName = l.city || l.place.replace(/^Escrita en\s*/i, '');
+    const key = l.regionCode + '|' + cityName;
+    if(!cityGroups[key]) cityGroups[key] = { regionCode: l.regionCode, city: cityName, lat: l.lat, lng: l.lng, letters: [] };
+    cityGroups[key].letters.push(l);
+  });
+
+  Object.entries(cityGroups).forEach(([key, g]) => {
+    const marker = L.marker([g.lat, g.lng], { icon: letterIcon() });
+    const n = g.letters.length;
+    marker.bindTooltip(`${g.city} — ${n} ${n === 1 ? 'carta' : 'cartas'}`, {
+      permanent: true, direction: 'top', offset: [0, -13], className: 'city-label'
+    });
+    marker.on('click', () => {
+      if(n === 1){ openLetter(g.letters[0].id); }
+      else { hideAll(); showChooser(g.regionCode); }
+    });
+    cityMarkers[key] = marker;
+  });
+
+} catch (mapError) {
+  // El mapa no pudo cargar (sin internet, CDN bloqueado, etc.). El resto del
+  // sitio (lista de regiones, cartas, audio) sigue funcionando igual.
+  mapAvailable = false;
+  console.warn('Mapa no disponible:', mapError.message);
+
+  map = {
+    hasLayer: () => false,
+    removeLayer: () => {},
+    flyTo: () => {},
+    flyToBounds: () => {},
+    invalidateSize: () => {},
+    on: () => {}
+  };
+
+  // Agrupar cartas por ciudad de todos modos, para que el resto del código
+  // (que espera cityGroups) no falle aunque no haya mapa.
+  letters.forEach(l => {
+    const cityName = l.city || l.place.replace(/^Escrita en\s*/i, '');
+    const key = l.regionCode + '|' + cityName;
+    if(!cityGroups[key]) cityGroups[key] = { regionCode: l.regionCode, city: cityName, lat: l.lat, lng: l.lng, letters: [] };
+    cityGroups[key].letters.push(l);
+  });
+
+  const mapEl = document.getElementById('leafletMap');
+  if (mapEl) {
+    mapEl.innerHTML = `
+      <div style="height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px; color:#a8a49a; font-family:'Inter',sans-serif;">
+        <div style="font-size:15px; color:#f4f1e8; margin-bottom:8px;">No se pudo cargar el mapa</div>
+        <div style="font-size:12.5px; line-height:1.6; max-width:280px;">Puede ser tu conexión a internet o un bloqueador de contenido. La lista de cartas de la región sigue funcionando igual, a la derecha.</div>
+      </div>`;
+  }
+}
+
+const backBtn = document.getElementById('backBtn');
+const regionBadge = document.getElementById('regionBadge');
+const regionBadgeText = document.getElementById('regionBadgeText');
+const mapTopbar = document.getElementById('mapTopbar');
+
+function focusRegion(code){
+  currentRegion = code;
+  const r = regionsAll.find(x => x.code === code);
+
+  // Ocultar el resto de los marcadores de región, dejar solo la seleccionada
+  // (y devolverla a su coordenada real, por si tenía el offset anti-solape)
+  Object.entries(regionMarkers).forEach(([c, m]) => {
+    if(c === code){
+      m.setLatLng([r.lat, r.lng]);
+      if(!map.hasLayer(m)) m.addTo(map);
+    } else { map.removeLayer(m); }
+  });
+
+  // Mostrar marcador(es) de ciudad de esa región
+  Object.values(cityMarkers).forEach(m => map.removeLayer(m));
+  Object.entries(cityGroups)
+    .filter(([, g]) => g.regionCode === code)
+    .forEach(([key]) => { if (cityMarkers[key]) cityMarkers[key].addTo(map); });
+
+  map.flyTo([r.lat, r.lng], r.zoom, { duration: 1.1 });
+
+  backBtn.classList.add('show');
+  regionBadge.classList.add('show');
+  mapTopbar.classList.add('both');
+  regionBadgeText.textContent = r.code + ' — ' + r.name;
+
+  openDetailPanel();
+  showChooser(code);
+
+  document.querySelectorAll('.region-row').forEach(x => x.classList.remove('active'));
+  const row = document.getElementById('row-'+code);
+  if(row) row.classList.add('active');
+}
+
+function resetToCountry(){
+  currentRegion = null;
+  Object.values(regionMarkers).forEach(m => { if(!map.hasLayer(m)) m.addTo(map); });
+  Object.values(cityMarkers).forEach(m => map.removeLayer(m));
+  map.flyToBounds(CHILE_BOUNDS, { padding: [12,12], duration: 1.1 });
+  backBtn.classList.remove('show');
+  regionBadge.classList.remove('show');
+  mapTopbar.classList.remove('both');
+  hideAll();
+  emptyState.style.display = 'flex';
+  document.querySelectorAll('.region-row').forEach(x => x.classList.remove('active'));
+  closeDetailPanel();
+}
+backBtn.addEventListener('click', resetToCountry);
+document.getElementById('chooserBackCountry').addEventListener('click', resetToCountry);
+
+// ===== Panel de detalle: se abre sólo al elegir una región (efecto "libro" al desplegarse) =====
+const boardEl = document.querySelector('.board');
+const mapPanelEl = document.getElementById('mapPanel');
+const detailEl = document.getElementById('detailPanel');
+const isNarrow = () => window.matchMedia('(max-width: 980px)').matches;
+let detailOpened = false;
+let panelAnimTimer = null;
+
+// Estado de reposo: sólo el mapa y sus filtros, a todo el ancho.
+function layoutMapOnly(){
+  if (isNarrow()) return; // en móvil el layout ya apila todo verticalmente
+  boardEl.style.gap = '0px';
+  mapPanelEl.style.width = boardEl.clientWidth + 'px';
+  mapPanelEl.classList.add('wide');
+  detailEl.style.width = '0px';
+  detailEl.style.opacity = '0';
+  detailEl.style.pointerEvents = 'none';
+
+  // El contenedor cambió de tamaño (o va a cambiar, por la transición CSS de
+  // 'width' de .map-panel): Leaflet no se entera solo, hay que avisarle o
+  // deja sin cargar los tiles fuera del tamaño que tenía al crearse.
+  clearInterval(panelAnimTimer);
+  map.invalidateSize();
+  panelAnimTimer = setInterval(() => map.invalidateSize(), 60);
+  setTimeout(() => {
+    clearInterval(panelAnimTimer);
+    map.invalidateSize();
+    resolveMarkerOverlaps();
+  }, 950);
+}
+layoutMapOnly();
+window.addEventListener('resize', () => { if(!detailOpened) layoutMapOnly(); });
+
+// Abre el panel de detalle: el mapa se achica y el recuadro de la carta
+// se despliega como una página que gira desde el lomo del libro.
+function openDetailPanel(){
+  if (isNarrow()){ detailOpened = true; return; }
+  if (detailOpened) return;
+  detailOpened = true;
+  const fullWidth = boardEl.clientWidth;
+  clearInterval(panelAnimTimer);
+  panelAnimTimer = setInterval(() => map.invalidateSize(), 60);
+
+  detailEl.classList.remove('panel-closing');
+  void detailEl.offsetWidth;
+  detailEl.classList.add('panel-opening');
+
+  mapPanelEl.classList.remove('wide');
+  boardEl.style.gap = '26px';
+  mapPanelEl.style.width = '460px';
+  detailEl.style.width = (fullWidth - 460 - 26) + 'px';
+  detailEl.style.opacity = '1';
+  detailEl.style.pointerEvents = 'auto';
+
+  setTimeout(() => {
+    clearInterval(panelAnimTimer);
+    mapPanelEl.style.width = '';
+    detailEl.style.width = '';
+    detailEl.classList.remove('panel-opening');
+    map.invalidateSize();
+    resolveMarkerOverlaps();
+  }, 950);
+}
+
+// Cierra el panel de detalle y vuelve al estado de reposo (sólo mapa).
+function closeDetailPanel(){
+  if (isNarrow()){ detailOpened = false; return; }
+  if (!detailOpened) return;
+  detailOpened = false;
+  const fullWidth = boardEl.clientWidth;
+  clearInterval(panelAnimTimer);
+  panelAnimTimer = setInterval(() => map.invalidateSize(), 60);
+
+  detailEl.classList.remove('panel-opening');
+  detailEl.classList.add('panel-closing');
+
+  mapPanelEl.classList.add('wide');
+  boardEl.style.gap = '0px';
+  mapPanelEl.style.width = fullWidth + 'px';
+  detailEl.style.width = '0px';
+  detailEl.style.opacity = '0';
+  detailEl.style.pointerEvents = 'none';
+
+  setTimeout(() => {
+    clearInterval(panelAnimTimer);
+    detailEl.classList.remove('panel-closing');
+    map.invalidateSize();
+    resolveMarkerOverlaps();
+  }, 950);
+}
+
+// ===== Lista lateral de regiones =====
+const regionList = document.getElementById('regionList');
+regionsAll.forEach(r => {
+  const count = (lettersByRegion[r.code] || []).length;
+  const row = document.createElement('div');
+  row.className = 'region-row' + (count>0 ? ' has' : '');
+  row.id = 'row-'+r.code;
+  row.innerHTML = `<span class="rnum">${r.code}</span><span class="rn">${r.name}</span><span class="rc">${count}</span>`;
+  row.addEventListener('click', () => focusRegion(r.code));
+  regionList.appendChild(row);
+});
+
+// ===== Panel de detalle: estados (vacío / selector / carta) =====
+const emptyState = document.getElementById('emptyState');
+const chooser = document.getElementById('chooser');
+const chooserEyebrow = document.getElementById('chooserEyebrow');
+const chooserTitle = document.getElementById('chooserTitle');
+const chooserCount = document.getElementById('chooserCount');
+const pickList = document.getElementById('pickList');
+const letterHost = document.getElementById('letterHost');
+
+function hideAll(){
+  emptyState.style.display = 'none';
+  chooser.classList.remove('show');
+  document.querySelectorAll('.letter').forEach(d => d.classList.remove('show'));
+}
+
+function showChooser(code){
+  hideAll();
+  const r = regionsAll.find(x => x.code === code);
+  const list = lettersByRegion[code] || [];
+  chooserEyebrow.textContent = "Región " + r.code;
+  chooserTitle.textContent = r.name;
+  chooserCount.textContent = list.length === 0
+    ? "Aún no hay cartas digitalizadas en esta región."
+    : (list.length === 1 ? "1 carta disponible" : list.length + " cartas disponibles");
+
+  pickList.innerHTML = '';
+  list.forEach(l => {
+    const item = document.createElement('div');
+    item.className = 'pick-item';
+    item.innerHTML = `
+      <div>
+        <div class="pi-title">${l.title}</div>
+        <div class="pi-sub">De ${l.from} — Para ${l.to} · ${l.date}</div>
+      </div>
+      <div class="pi-arrow">→</div>
+    `;
+    item.addEventListener('click', () => openLetter(l.id));
+    pickList.appendChild(item);
+  });
+  chooser.classList.add('show');
+}
+
+// ===== Construir vista de cada carta =====
+letters.forEach(l => {
+  const div = document.createElement('div');
+  div.className = 'letter';
+  div.id = 'letter-'+l.id;
+  div.innerHTML = `
+    <div class="panel-back-country" data-action="to-country">‹ Volver a Chile</div>
+    <span class="back-link" data-region="${l.regionCode}">‹ Volver a la región</span>
+    <div class="letter-meta">
+      <div>
+        ${l.isReal ? '<div class="real-badge">✦ Documento original digitalizado</div><br>' : ''}
+        <div class="place">${l.place}</div>
+        <h2>${l.title}</h2>
+        <div class="who">De ${l.from} — Para ${l.to}</div>
+        ${l.origin ? `<div class="origin">${l.origin}</div>` : ''}
+      </div>
+      <div class="badge-date">${l.date}</div>
+    </div>
+
+    <div class="doc-gallery" id="gallery-${l.id}"></div>
+
+    <div class="audio-row">
+      <button class="play-btn" data-lang="es">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <span class="btn-label">Escuchar en español</span>
+      </button>
+      <button class="play-btn secondary" data-lang="en">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <span class="btn-label">Escuchar en inglés</span>
+      </button>
+    </div>
+
+    <div class="transcript-block">
+      <div class="transcript-tabs">
+        <button class="t-tab active" data-tab="es">Transcripción — Español</button>
+        <button class="t-tab" data-tab="en">Transcript — English</button>
+      </div>
+      <p class="transcription" id="transcript-${l.id}"><span class="drop">${l.text.charAt(0)}</span>${l.text.slice(1)}</p>
+    </div>
+
+    <div class="tags">${l.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+
+    ${l.annotations ? `
+    <div class="archive-notes">
+      <p class="archive-title">Notas de archivo — página 2</p>
+      ${l.annotations.map(a => `
+        <div class="archive-row">
+          <span class="archive-label">${a.label}</span>
+          <span class="archive-value">${a.value}</span>
+        </div>
+      `).join('')}
+    </div>` : ''}
+  `;
+  letterHost.appendChild(div);
+
+  // Tabs de transcripción
+  div.querySelectorAll('.t-tab').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      div.querySelectorAll('.t-tab').forEach(t => t.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      const lang = e.currentTarget.dataset.tab;
+      const txt = lang === 'en' ? l.textEn : l.text;
+      const el = div.querySelector('#transcript-'+l.id);
+      el.innerHTML = `<span class="drop">${txt.charAt(0)}</span>${txt.slice(1)}`;
+    });
+  });
+
+  // Botones de audio
+  div.querySelectorAll('.play-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const lang = e.currentTarget.dataset.lang;
+      const textToRead = lang === 'en' ? l.textEn : l.text;
+      const locale = lang === 'en' ? 'en-US' : 'es-CL';
+      const fileSrc = lang === 'en' ? l.audioEn : l.audioEs;
+      const label = fileSrc
+        ? (lang === 'en' ? 'Inglés (grabación original)' : 'Español (grabación original)')
+        : (lang === 'en' ? 'Inglés (síntesis de voz)' : 'Español (síntesis de voz)');
+      playAudio(textToRead, locale, l.title, label, fileSrc);
+    });
+  });
+
+  div.querySelector('.back-link').addEventListener('click', (e) => {
+    hideAll();
+    showChooser(e.currentTarget.dataset.region);
+  });
+  div.querySelector('.panel-back-country').addEventListener('click', resetToCountry);
+
+  // Galería — miniaturas arriba, imagen principal y su leyenda abajo
+  const gallery = div.querySelector('#gallery-' + l.id);
+  gallery.innerHTML = `
+    <div class="doc-thumbs">
+      ${pageImages.map((p,i) => `<div class="doc-thumb${i===0?' active':''}" data-idx="${i}"><img src="${p.src}"></div>`).join('')}
+    </div>
+    <div class="doc-main" id="docMainWrap-${l.id}"><img id="docMain-${l.id}" src="${pageImages[0].src}" alt="${pageImages[0].label}"></div>
+    <div class="doc-caption" id="docCaption-${l.id}">${pageImages[0].label}</div>
+  `;
+  let currentImgIdx = 0;
+  gallery.querySelectorAll('.doc-thumb').forEach(t => {
+    t.addEventListener('click', (e) => {
+      const idx = parseInt(e.currentTarget.dataset.idx, 10);
+      currentImgIdx = idx;
+      gallery.querySelector('#docMain-'+l.id).src = pageImages[idx].src;
+      gallery.querySelector('#docCaption-'+l.id).textContent = pageImages[idx].label;
+      gallery.querySelectorAll('.doc-thumb').forEach(x => x.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+    });
+  });
+  gallery.querySelector('#docMainWrap-'+l.id).addEventListener('click', (e) => openLightbox(currentImgIdx, e));
+});
+
+function openLetter(idNum){
+  hideAll();
+  document.getElementById('letter-'+idNum).classList.add('show');
+}
+
+// ===== Reproductor fijo abajo =====
+const audioBar = document.getElementById('audioBar');
+const abTitle = document.getElementById('abTitle');
+const abSub = document.getElementById('abSub');
+const abToggle = document.getElementById('abToggle');
+const abToggleIcon = document.getElementById('abToggleIcon');
+const abStop = document.getElementById('abStop');
+
+const ICON_PAUSE = '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
+const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
+
+// Modo de reproducción activo: 'file' (grabación real, <audio>) o 'tts' (síntesis de voz)
+let audioMode = null;
+let currentAudioEl = null;
+
+function playAudio(text, locale, title, sublabel, fileSrc){
+  // Cortar cualquier reproducción anterior, sea del tipo que sea
+  window.speechSynthesis.cancel();
+  if(currentAudioEl){ currentAudioEl.pause(); currentAudioEl = null; }
+
+  if(fileSrc){
+    audioMode = 'file';
+    const audioEl = new Audio(fileSrc);
+    currentAudioEl = audioEl;
+    audioEl.onended = () => hideAudioBar();
+    audioEl.onerror = () => {
+      // Si el archivo no carga (ruta incorrecta, etc.), cae de vuelta a síntesis de voz
+      currentAudioEl = null;
+      playAudio(text, locale, title, sublabel.replace('grabación original', 'síntesis de voz — no se encontró el audio'), null);
+    };
+    audioEl.play().catch(() => audioEl.onerror());
+  } else {
+    audioMode = 'tts';
+    if(!('speechSynthesis' in window)){
+      alert('Este navegador no soporta síntesis de voz.');
+      return;
+    }
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = locale;
+    utter.rate = 0.92;
+    utter.onend = () => hideAudioBar();
+    utter.onerror = () => hideAudioBar();
+    window.speechSynthesis.speak(utter);
+  }
+
+  abTitle.textContent = title;
+  abSub.textContent = sublabel;
+  abToggleIcon.innerHTML = ICON_PAUSE;
+  audioBar.classList.add('show');
+}
+
+function hideAudioBar(){
+  audioBar.classList.remove('show');
+  audioMode = null;
+}
+
+abToggle.addEventListener('click', () => {
+  if(audioMode === 'file' && currentAudioEl){
+    if(currentAudioEl.paused){ currentAudioEl.play(); abToggleIcon.innerHTML = ICON_PAUSE; }
+    else { currentAudioEl.pause(); abToggleIcon.innerHTML = ICON_PLAY; }
+    return;
+  }
+  if(!window.speechSynthesis.speaking) return;
+  if(window.speechSynthesis.paused){
+    window.speechSynthesis.resume();
+    abToggleIcon.innerHTML = ICON_PAUSE;
+  } else {
+    window.speechSynthesis.pause();
+    abToggleIcon.innerHTML = ICON_PLAY;
+  }
+});
+abStop.addEventListener('click', () => {
+  if(currentAudioEl){ currentAudioEl.pause(); currentAudioEl = null; }
+  window.speechSynthesis.cancel();
+  hideAudioBar();
+});
+
+// ===== Lightbox estilo "hoja de libro", con efecto de ola al abrir =====
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxCaption = document.getElementById('lightboxCaption');
+let lbIndex = 0;
+let waveCleanupTimer = null;
+
+// Un único anillo, tenue, que nace del punto donde se tocó la carta
+function spawnWaveRing(cx, cy){
+  const ring = document.createElement('div');
+  ring.className = 'wave-ring';
+  ring.style.left = cx + 'px';
+  ring.style.top = cy + 'px';
+  document.body.appendChild(ring);
+  setTimeout(() => ring.remove(), 1150);
+}
+
+function openLightbox(idx, evt){
+  lbIndex = idx;
+  lightboxImg.src = pageImages[idx].src;
+  lightboxCaption.textContent = pageImages[idx].label;
+
+  // Punto desde el que "nace" el despliegue: el lugar donde se tocó la carta
+  const cx = evt ? evt.clientX : window.innerWidth / 2;
+  const cy = evt ? evt.clientY : window.innerHeight / 2;
+  lightbox.style.setProperty('--wave-x', (cx / window.innerWidth * 100) + '%');
+  lightbox.style.setProperty('--wave-y', (cy / window.innerHeight * 100) + '%');
+  spawnWaveRing(cx, cy);
+
+  lightboxImg.classList.remove('wave-end');
+  lightboxImg.classList.add('wave-start');
+
+  // Aseguramos que el navegador pinte el estado "cerrado" (clip-path en 0)
+  // ANTES de agregar 'show' — si no, algunos navegadores fusionan ambos
+  // cambios en un solo frame y la transición no llega a verse.
+  lightbox.classList.remove('show');
+  void lightbox.offsetWidth; // fuerza el reflow / repintado del estado inicial
+  lightbox.classList.add('show');
+
+  // Se deja pintar el estado inicial de la imagen y luego se anima hacia el final
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      lightboxImg.classList.remove('wave-start');
+      lightboxImg.classList.add('wave-end');
+    });
+  });
+
+  clearTimeout(waveCleanupTimer);
+  waveCleanupTimer = setTimeout(() => {
+    lightboxImg.classList.remove('wave-start', 'wave-end');
+  }, 1150);
+}
+function closeLightbox(){ lightbox.classList.remove('show'); }
+
+function flipTo(newIdx){
+  if(newIdx < 0 || newIdx >= pageImages.length) return;
+  const goingForward = newIdx > lbIndex;
+  lightboxImg.classList.add('flip-out');
+  setTimeout(() => {
+    lbIndex = newIdx;
+    lightboxImg.src = pageImages[lbIndex].src;
+    lightboxCaption.textContent = pageImages[lbIndex].label;
+    lightboxImg.classList.remove('flip-out');
+    lightboxImg.classList.add('flip-in-start');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { lightboxImg.classList.remove('flip-in-start'); });
+    });
+  }, 260);
+}
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', () => flipTo(lbIndex-1));
+document.getElementById('lbNext').addEventListener('click', () => flipTo(lbIndex+1));
+lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => {
+  if(!lightbox.classList.contains('show')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowRight') flipTo(lbIndex+1);
+  if(e.key === 'ArrowLeft') flipTo(lbIndex-1);
+});
+</script>
+</body>
+</html>

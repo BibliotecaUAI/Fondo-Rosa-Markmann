@@ -32,6 +32,7 @@ el.innerHTML = `<div class="velo"></div>
   </div>
   <div class="ampli"><img alt=""><button class="ic" aria-label="Cerrar ampliación">${ICO.cerrar}</button></div>`;
 document.body.appendChild(el);
+if (window.rmLuna){ el.querySelector('.acc').prepend(window.rmLuna.boton('ic')); window.rmLuna.pintar(); }
 const $ = s => el.querySelector(s), lec = $('.lec'), texto = $('.texto'), vitImg = $('.vitrina img');
 
 let c = null, pag = 0, lang = 'es', origen = null, tiempos = [], escritura = null, voz = null, sigue = true;

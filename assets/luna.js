@@ -17,8 +17,7 @@ html[data-p="4"] .luna:hover{border-color:#eceef1}
 html[data-p="4"] .luna:focus-visible{outline-color:#eceef1}
 html[data-p="4"] .luna svg{fill:currentColor;transform:rotate(-20deg)}
 .luna.flota{position:fixed;z-index:60;top:max(16px,env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px))}
-.nav .links{margin-left:auto}
-@media (max-width:900px){.nav .luna{margin-left:auto}}`;
+.nav .luna{margin-left:auto}`;
 document.head.appendChild(css);
 
 function pintar(){
@@ -42,7 +41,7 @@ function boton(clase){
 
 // En el recorrido va dentro del menú; en el archivo, fija arriba a la derecha.
 const nav = document.querySelector('.nav');
-if (nav) nav.insertBefore(boton(), nav.querySelector('.menu-btn'));
+if (nav) nav.insertBefore(boton(), nav.querySelector('.nav-cta, .menu-btn'));
 else document.body.appendChild(boton('flota'));
 window.rmLuna = { boton, pintar };
 pintar();

@@ -76,9 +76,23 @@
     transition: transform .5s cubic-bezier(.2,.7,.2,1), opacity .5s ease;
   }
   .nav.hide{ transform: translate(-50%, -120%); opacity: 0; }
-  .brand{ display: flex; flex-direction: column; line-height: 1.1; text-decoration: none; white-space: nowrap; }
-  .brand small{ font-size: 9.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--acc); font-weight: 500; }
-  .brand b{ font-weight: 700; font-size: 16px; }
+  .nav{ padding-left: 12px; padding-right: 12px; }
+  /* Comenzar la visita: el botón destacado del menú, a la derecha */
+  .nav-cta{
+    position: relative; overflow: hidden; flex-shrink: 0; display: inline-flex; align-items: center; gap: 10px;
+    padding: 11px 22px; border-radius: 999px; text-decoration: none; white-space: nowrap;
+    font-size: 14px; font-weight: 500; letter-spacing: .02em; color: #0a0a0b;
+    background: linear-gradient(180deg, var(--acc-2), var(--acc)); border: 1px solid var(--acc-2);
+    box-shadow: 0 0 0 4px rgba(var(--acc-rgb),0.14), 0 10px 26px rgba(var(--acc-rgb),0.28);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .nav-cta::after{ content: ""; position: absolute; inset: 0; transform: translateX(-120%);
+    background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%); animation: cta-brillo 4.5s ease-in-out 1.2s infinite; }
+  @keyframes cta-brillo{ 0%, 70%{ transform: translateX(-120%); } 100%{ transform: translateX(120%); } }
+  .nav-cta span{ transition: transform .2s ease; }
+  .nav-cta:hover{ transform: translateY(-1px); box-shadow: 0 0 0 6px rgba(var(--acc-rgb),0.18), 0 14px 32px rgba(var(--acc-rgb),0.36); }
+  .nav-cta:hover span{ transform: translateY(2px); }
+  @media (prefers-reduced-motion: reduce){ .nav-cta::after{ animation: none; } }
   .links{ display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
   .links a{
     display: block; padding: 9px 14px; border-radius: 999px; text-decoration: none;
@@ -90,7 +104,9 @@
   .nav-progress i{ display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(var(--prog, 0)); background: linear-gradient(90deg, transparent, var(--acc-2), var(--acc)); }
   .menu-btn{ display: none; }
   @media (max-width: 900px){
-    .links{ display: none; position: absolute; top: calc(100% + 10px); right: 0; flex-direction: column; padding: 8px; border-radius: 18px;
+    .menu-btn{ order: -1; }
+    .nav-cta{ padding: 10px 16px; font-size: 13px; }
+    .links{ display: none; position: absolute; top: calc(100% + 10px); left: 0; flex-direction: column; padding: 8px; border-radius: 18px;
       background: var(--glass); backdrop-filter: blur(18px); border: 1px solid var(--glass-line); }
     .nav.open .links{ display: flex; }
     .menu-btn{ display: inline-flex; width: 40px; height: 40px; border-radius: 50%; align-items: center; justify-content: center;
@@ -355,7 +371,6 @@
 <div class="backdrop" aria-hidden="true"></div>
 
 <nav class="nav" aria-label="Secciones">
-  <a class="brand" href="#inicio"><small>Fondo histórico</small><b>Rosa Markmann</b></a>
   <ul class="links">
     <li><a href="#inicio">Inicio</a></li>
     <li><a href="#biografia">Biografía</a></li>
@@ -364,6 +379,7 @@
     <li><a href="#galeria">Galería</a></li>
     <li><a href="archivo/">Archivo de cartas</a></li>
   </ul>
+  <a class="nav-cta" href="#biografia">Comenzar la visita <span aria-hidden="true">↓</span></a>
   <button class="menu-btn" aria-label="Abrir menú">☰</button>
   <div class="nav-progress"><i></i></div>
 </nav>
@@ -378,7 +394,6 @@
         <h1 class="reveal" style="--d:.2s">Rosa Markmann</h1>
         <div class="hero-rule reveal" style="--d:.3s"></div>
         <p class="hero-sub reveal" style="--d:.4s">“Un recorrido por las cartas que miles de chilenas y chilenos le escribieron en 1952”</p>
-        <a class="btn solid reveal" style="--d:.5s" href="#biografia">Comenzar la visita <span aria-hidden="true">↓</span></a>
       </div>
       <figure class="hero-photo reveal" style="--d:.25s">
         <div class="frame"><img src="assets/images/rosa-markmann-traje-blanco.jpg" alt="Retrato de Rosa Markmann con traje blanco cruzado y broche en la solapa"></div>

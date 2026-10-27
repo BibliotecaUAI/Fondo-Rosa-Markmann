@@ -759,7 +759,108 @@
     --lightbox-bg: rgba(6,6,7,0.94); --lb-btn-bg: rgba(20,20,22,0.85); --footer-ink: #a8a49a; --shadow-rgb: 0,0,0;
   }
 
+
+  /* ---------- Paleta · 4 Archivo plata (igual a Archivo dorado, con plata en vez de oro) ---------- */
+  html[data-p="4"]{
+    --ivory: #f4f4f5; --ivory-dim: #a5a9af;
+    --gold: #c3c8cf; --gold-light: #eceef1; --gold-dim: #6c727b;
+    --line: rgba(244,244,245,0.10); --line-gold: rgba(195,200,207,0.32); --acc-rgb: 195,200,207;
+    --tex-stone-tono: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27420%27%20height%3D%27420%27%3E%20%3Cfilter%20id%3D%27s%27%3E%20%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.018%200.028%27%20numOctaves%3D%273%27%20seed%3D%2711%27%20stitchTiles%3D%27stitch%27%20result%3D%27t%27/%3E%20%3CfeColorMatrix%20in%3D%27t%27%20type%3D%27matrix%27%20values%3D%270%200%200%200%200.80%20%200%200%200%200%200.81%20%200%200%200%200%200.84%20%200%200%200%200.05%200%27/%3E%20%3C/filter%3E%20%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23s%29%27/%3E%20%3C/svg%3E");
+    --satin:
+      linear-gradient(180deg, rgba(255,255,255,0) 0px, rgba(255,255,255,.025) 16px, rgba(255,255,255,.06) 38px,
+                              rgba(255,255,255,.015) 78px, rgba(255,255,255,0) 130px),
+      linear-gradient(90deg, #121213 0%, #1a1a1c 50%, #101011 100%);
+    --satin-bar: linear-gradient(180deg, #161618 0%, #1f1f21 22%, #2c2c2f 42%, #222224 58%, #19191b 80%, #141416 100%);
+    --silver-line: linear-gradient(90deg, transparent, #6c727b 16%, #eceef1 50%, #6c727b 84%, transparent);
+    --c-ivory: #f4f4f5; --c-ivory-dim: #a5a9af; --c-gold: #c3c8cf; --c-gold-light: #eceef1; --c-gold-dim: #6c727b;
+    --c-line: rgba(244,244,245,0.08); --c-line-gold: rgba(195,200,207,0.30); --c-acc-rgb: 195,200,207;
+    --strong: #eceef1;
+    --card-border: rgba(195,200,207,0.40);
+    --card-inner: rgba(195,200,207,0.15);
+    --card-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 22px 50px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.4);
+    --photo-fade: #121213;
+    --rule-1: rgba(236,238,241,0.85); --rule-2: rgba(195,200,207,0.55); --rule-3: rgba(195,200,207,0.40);
+    --hx-ink-2: #c3c8cf; --hx-col: #cfd2d6; --underline: #c3c8cf;
+    --title-sheen: linear-gradient(100deg, #f4f4f5 0%, #f4f4f5 42%, #aeb3ba 50%, #f4f4f5 58%, #f4f4f5 100%);
+    --em-sheen: linear-gradient(100deg, #8d939c 0%, #f4f5f7 38%, #a9aeb6 62%, #e9ebee 100%);
+    --btn-ink: #f4f4f5; --btn-border: rgba(195,200,207,0.42); --btn-border-hi: #eceef1;
+    --quiet-ink: #dfe2e6; --quiet-border: rgba(195,200,207,0.28);
+    --tab-on-bg: #c3c8cf; --tab-on-ink: #0a0a0b;
+    --menu-bg: #121213; --tip-bg: #eceef1; --tip-ink: #0a0a0b;
+    --fill: linear-gradient(90deg, #6c727b, #eceef1);
+    --mk-has-bg: #c3c8cf; --mk-has-ink: #0a0a0b; --mk-has-border: #eceef1;
+    --mk-letter: #eceef1; --mk-letter-border: #0a0a0b; --mk-rgb: 195,200,207;
+    --lightbox-bg: rgba(6,6,7,0.94); --lb-btn-bg: rgba(20,20,22,0.85); --footer-ink: #a5a9af; --shadow-rgb: 0,0,0;
+  }
+  /* El mismo fondo de mármol de Archivo dorado, con los resplandores en plata */
+  html[data-p="4"] body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(195,200,207,0.08), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 100%, rgba(195,200,207,0.05), transparent 60%),
+      #0a0a0b;
+  }
+  html[data-p="4"] body::before{
+    background:
+      radial-gradient(ellipse 1300px 800px at 50% -10%, rgba(195,200,207,0.06), transparent 60%),
+      radial-gradient(ellipse 1100px 700px at 100% 100%, rgba(195,200,207,0.04), transparent 55%),
+      var(--tex-stone-tono) 0 0 / 420px 420px repeat,
+      var(--tex-grain) 0 0 / 160px 160px repeat,
+      linear-gradient(180deg, #0d0d0e, #0a0a0b 40%, #0c0c0d);
+  }
+
+  /* ---------- Paleta · 5 Archivo blanco (Archivo dorado invertido: blanco, y el oro pasa a negro) ---------- */
+  html[data-p="5"]{
+    --noir: #f7f6f3; --noir-panel: #ffffff; --noir-panel-2: #f6f6f5;
+    --ivory: #141416; --ivory-dim: #6b6e74;
+    --gold: #141416; --gold-light: #000000; --gold-dim: #8a8d93;
+    --line: rgba(20,20,22,0.08); --line-gold: rgba(20,20,22,0.22); --acc-rgb: 20,20,22; --veil-rgb: 255,255,255;
+    --tex-stone-tono: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27420%27%20height%3D%27420%27%3E%20%3Cfilter%20id%3D%27s%27%3E%20%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.018%200.028%27%20numOctaves%3D%273%27%20seed%3D%2711%27%20stitchTiles%3D%27stitch%27%20result%3D%27t%27/%3E%20%3CfeColorMatrix%20in%3D%27t%27%20type%3D%27matrix%27%20values%3D%270%200%200%200%200.22%20%200%200%200%200%200.22%20%200%200%200%200%200.24%20%200%200%200%200.07%200%27/%3E%20%3C/filter%3E%20%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23s%29%27/%3E%20%3C/svg%3E");
+    /* tarjetas blancas con el mismo brillo en franja horizontal, en gris */
+    --satin:
+      linear-gradient(180deg, rgba(20,20,22,0) 0px, rgba(20,20,22,.012) 16px, rgba(20,20,22,.03) 38px,
+                              rgba(20,20,22,.008) 78px, rgba(20,20,22,0) 130px),
+      linear-gradient(90deg, #fbfbfa 0%, #ffffff 50%, #f8f8f6 100%);
+    --satin-bar: linear-gradient(180deg, #ffffff 0%, #f8f8f7 22%, #eeeeec 42%, #f4f4f2 58%, #fafaf9 80%, #ffffff 100%);
+    --silver-line: linear-gradient(90deg, transparent, #6b6e74 16%, #141416 50%, #6b6e74 84%, transparent);
+    --c-noir: #ffffff; --c-panel: #ffffff; --c-panel-2: #f6f6f5; --c-veil-rgb: 255,255,255;
+    --c-ivory: #141416; --c-ivory-dim: #6b6e74; --c-gold: #141416; --c-gold-light: #000000; --c-gold-dim: #8a8d93;
+    --c-line: rgba(20,20,22,0.08); --c-line-gold: rgba(20,20,22,0.22); --c-acc-rgb: 20,20,22;
+    --strong: #0a0a0b;
+    --soft-rgb: 20,20,22;
+    --card-border: rgba(20,20,22,0.55);
+    --card-inner: rgba(20,20,22,0.16);
+    --card-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 18px 40px rgba(20,20,22,0.10), 0 2px 6px rgba(20,20,22,0.06);
+    --photo-fade: #ffffff;
+    --sheen-rgb: 20,20,22;
+    --rule-1: rgba(20,20,22,0.9); --rule-2: rgba(20,20,22,0.55); --rule-3: rgba(20,20,22,0.30);
+    --hx-ink-2: #3b3d42; --hx-col: #55575c; --underline: #141416;
+    --title-sheen: linear-gradient(100deg, #141416 0%, #141416 42%, #8d9197 50%, #141416 58%, #141416 100%);
+    --em-sheen: linear-gradient(100deg, #141416 0%, #55575c 40%, #141416 62%, #6b6e74 100%);
+    --btn-ink: #141416; --btn-border: rgba(20,20,22,0.40); --btn-border-hi: #141416;
+    --quiet-ink: #141416; --quiet-border: rgba(20,20,22,0.25);
+    --tab-on-bg: #141416; --tab-on-ink: #ffffff;
+    --menu-bg: #ffffff; --tip-bg: #141416; --tip-ink: #ffffff;
+    --fill: linear-gradient(90deg, #8d9197, #141416);
+    --mk-has-bg: #141416; --mk-has-ink: #ffffff; --mk-has-border: #dadde0;
+    --mk-letter: #141416; --mk-letter-border: #ffffff; --mk-rgb: 20,20,22;
+    --lightbox-bg: rgba(255,255,255,0.96); --lb-btn-bg: #141416; --footer-ink: #6b6e74; --shadow-rgb: 20,20,22;
+  }
+  /* El mismo fondo de mármol, en claro: vetas grises sobre blanco */
+  html[data-p="5"] body{ background: #f7f6f3; }
+  html[data-p="5"] body::before{
+    background:
+      radial-gradient(ellipse 1300px 800px at 50% -10%, rgba(255,255,255,0.9), transparent 60%),
+      radial-gradient(ellipse 1100px 700px at 100% 100%, rgba(20,20,22,0.03), transparent 55%),
+      var(--tex-stone-tono) 0 0 / 420px 420px repeat,
+      var(--tex-grain-gris) 0 0 / 160px 160px repeat,
+      linear-gradient(180deg, #fbfaf8, #f6f5f2 40%, #f1f0ec);
+  }
+  html[data-p="5"] .uai-mark{ filter: invert(1); opacity: 0.05; }
+  html[data-p="5"] .bx-opt[aria-pressed="true"]{ background: #141416; color: #ffffff; }
+
   html[data-p]{
+    --c-noir: #0b0b0c; --c-panel: #161618; --c-panel-2: #0d0d0e; --c-veil-rgb: 12,12,13;
+    --soft-rgb: 255,255,255; --sheen-rgb: 255,255,255;
     --tex-grain-gris: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27160%27%20height%3D%27160%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20type%3D%27matrix%27%20values%3D%270%200%200%200%200.35%20%200%200%200%200%200.35%20%200%200%200%200%200.37%20%200%200%200%200.08%200%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E");
   }
 
@@ -809,9 +910,9 @@
 
   /* ---------- Tarjetas satinadas con doble filo ---------- */
   html[data-p] :is(.hx, header.top, .bio-panel, .map-panel, .detail, .audio-bar){
-    --noir: #0b0b0c;
-    --noir-panel: #161618;
-    --noir-panel-2: #0d0d0e;
+    --noir: var(--c-noir);
+    --noir-panel: var(--c-panel);
+    --noir-panel-2: var(--c-panel-2);
     --ivory: var(--c-ivory);
     --ivory-dim: var(--c-ivory-dim);
     --gold: var(--c-gold);
@@ -820,7 +921,7 @@
     --line: var(--c-line);
     --line-gold: var(--c-line-gold);
     --acc-rgb: var(--c-acc-rgb);
-    --veil-rgb: 12,12,13;
+    --veil-rgb: var(--c-veil-rgb);
   }
   html[data-p] :is(header.top, .bio-panel, .map-panel, .detail){
     position: relative;
@@ -854,7 +955,7 @@
   /* Brillo suave que cruza el encabezado de vez en cuando */
   html[data-p] .hx::after{
     content: ""; position: absolute; top: 0; bottom: 0; width: 38%; left: -45%; pointer-events: none;
-    background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.03) 40%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 60%, transparent 100%);
+    background: linear-gradient(100deg, transparent 0%, rgba(var(--sheen-rgb),0.03) 40%, rgba(var(--sheen-rgb),0.06) 50%, rgba(var(--sheen-rgb),0.03) 60%, transparent 100%);
     animation: hxSheen 9s ease-in-out 1.2s infinite;
   }
   @keyframes hxSheen{ 0%{ left: -45%; } 38%, 100%{ left: 110%; } }
@@ -914,18 +1015,18 @@
     transition: border-color .15s ease, background .15s ease, transform .15s ease;
   }
   html[data-p] :is(.play-btn, .lx-btn){ background: var(--satin-bar); }
-  html[data-p] .panel-back-country{ background: rgba(255,255,255,0.03); border-color: var(--quiet-border); color: var(--quiet-ink); }
+  html[data-p] .panel-back-country{ background: rgba(var(--soft-rgb),0.03); border-color: var(--quiet-border); color: var(--quiet-ink); }
   html[data-p] :is(.play-btn, .lx-btn, .panel-back-country):hover{ border-color: var(--btn-border-hi); transform: translateY(-1px); }
   html[data-p] .chooser .panel-back-country{ margin-bottom: 18px; }
   html[data-p] .badge-date{ border-radius: 999px; letter-spacing: .06em; }
-  html[data-p] .pick-item{ border-radius: 6px; background: rgba(255,255,255,0.02); }
+  html[data-p] .pick-item{ border-radius: 6px; background: rgba(var(--soft-rgb),0.02); }
   html[data-p] .region-badge{ border-radius: 999px; }
 
   /* ---------- Regiones ---------- */
   /* La tabla va en el mismo negro de la tarjeta; las cantidades en negrita */
   html[data-p] .map-panel .region-list .rc{ font-weight: 700; }
   html[data-p] .map-panel .region-list .region-row:not(.has) .rc{ color: var(--ivory-dim); opacity: .6; }
-  html[data-p] .map-panel .region-list .region-row:hover{ background: rgba(255,255,255,0.05); }
+  html[data-p] .map-panel .region-list .region-row:hover{ background: rgba(var(--soft-rgb),0.05); }
   html[data-p] .map-panel .region-list .region-row.active{ background: rgba(var(--c-acc-rgb),0.12); }
   html[data-p] .region-row{ font-size: 13.5px; padding: 9px 6px; }
   html[data-p] .region-row :is(.rnum, .rc){ font-size: 14.5px; }
@@ -940,7 +1041,7 @@
   /* ---------- Colores escritos a mano en el original, adaptados ---------- */
   html[data-p] :is(.back-to-country, .region-badge, .leaflet-tooltip.city-label){ background: rgba(12,12,13,0.88); }
   html[data-p] .back-to-country:hover{ background: #0c0c0d; }
-  html[data-p] :is(.panel-back-country:hover, .pick-item:hover){ background: rgba(255,255,255,0.07); }
+  html[data-p] :is(.panel-back-country:hover, .pick-item:hover){ background: rgba(var(--soft-rgb),0.07); }
   html[data-p] .doc-main::after{ background: rgba(12,12,13,0.7); }
   html[data-p] .audio-bar{
     background: var(--satin); border-top: 1px solid var(--card-border); color: var(--ivory);
@@ -1030,7 +1131,7 @@
     display: flex; align-items: center; gap: 10px; width: 100%; padding: 11px 14px; border: 0; border-radius: 10px;
     background: transparent; color: var(--ivory); font-size: 13px; text-align: left; cursor: pointer;
   }
-  .lx-menu button:hover{ background: rgba(255,255,255,0.08); }
+  .lx-menu button:hover{ background: rgba(var(--soft-rgb),0.08); }
   .lx-menu svg{ width: 11px; height: 11px; color: var(--gold-light); }
 
   /* Controles bajo la carta: solo símbolos, centrados; el nombre aparece al pasar el mouse */
@@ -1038,7 +1139,7 @@
   .lx-ico{
     width: 34px; height: 34px; border-radius: 50%; cursor: pointer; position: relative;
     display: inline-flex; align-items: center; justify-content: center;
-    color: var(--quiet-ink); background: rgba(255,255,255,0.03); border: 1px solid var(--quiet-border);
+    color: var(--quiet-ink); background: rgba(var(--soft-rgb),0.03); border: 1px solid var(--quiet-border);
     font-size: 11px; font-weight: 500; transition: border-color .15s ease, color .15s ease;
   }
   .lx-ico svg{ width: 13px; height: 13px; }
@@ -1129,6 +1230,8 @@
   html[data-p="3"] .bx-opt[aria-pressed="true"]{ background: #141416; color: #ffffff; }
   .bx-sw{ width: 22px; height: 22px; border-radius: 50%; flex: 0 0 auto; box-shadow: 0 0 0 1px rgba(127,127,127,0.35); }
   .bx-sw.s1{ background: conic-gradient(#0a0a0b 0 50%, #c9a227 50% 100%); }
+  .bx-sw.s4{ background: conic-gradient(#0a0a0b 0 50%, #c3c8cf 50% 100%); }
+  .bx-sw.s5{ background: conic-gradient(#f7f6f3 0 50%, #141416 50% 100%); }
   .bx-sw.s3{ background: conic-gradient(#ffffff 0 50%, #141416 50% 75%, #a9adb3 75% 100%); }
   .bx-desc{
     position: fixed; top: 66px; left: 50%; transform: translateX(-50%); z-index: 1299;
@@ -1249,6 +1352,43 @@
   @media (prefers-reduced-motion: reduce){
     .sala *, .sala *::before, .sala *::after{ animation: none !important; transition: none !important; }
   }
+
+  /* Archivo blanco: las etiquetas flotantes sobre el mapa también van en claro */
+  html[data-p="5"] :is(.back-to-country, .region-badge, .leaflet-tooltip.city-label){ background: rgba(255,255,255,0.94); color: #141416; }
+  html[data-p="5"] .back-to-country:hover{ background: #ffffff; }
+
+  /* Archivo blanco: la foto casi sin difuminado, solo un borde suave */
+  html[data-p="5"] .bio-photo::after{ background: linear-gradient(90deg, transparent 90%, rgba(255,255,255,0.45) 100%); }
+  @media (max-width: 900px){ html[data-p="5"] .bio-photo::after{ background: linear-gradient(180deg, transparent 90%, rgba(255,255,255,0.45) 100%); } }
+
+  /* ---------- Ilustración animada de cada región (junto a "Región · Nombre") ---------- */
+  html[data-p] .chooser{ position: relative; }
+  .rx{ display: none; }
+  html[data-p] .rx{
+    display: block; position: absolute; top: 34px; right: 34px; width: min(260px, 42%); pointer-events: none;
+    color: var(--gold); opacity: .9;
+  }
+  .rx svg{ width: 100%; height: auto; display: block; overflow: visible; }
+  .rx .d{ stroke-dasharray: 1; stroke-dashoffset: 1; animation: rxDraw 1.8s cubic-bezier(.4,.1,.2,1) .15s forwards; }
+  .rx .d2{ opacity: 0; animation: rxFade 1s ease 1.1s forwards; stroke-width: 1.1; }
+  .rx .car, .rx .flag, .rx .sea, .rx .smoke, .rx .tree, .rx .sun{ opacity: 0; animation: rxFade 1s ease 1.4s forwards; }
+  .rx .flag{ fill: currentColor; fill-opacity: .16; }
+  .rx .smoke circle{ stroke-width: 1; }
+  .rx .sun{ stroke-width: 1.1; }
+  .rx .mask{ fill: var(--noir-panel); stroke: none; }
+  .rx .car rect{ fill: var(--noir-panel); }
+  @keyframes rxDraw{ to{ stroke-dashoffset: 0; } }
+  @keyframes rxFade{ to{ opacity: 1; } }
+  @media (max-width: 980px){
+    html[data-p] .rx{ position: static; width: min(240px, 70%); margin: 0 0 14px auto; }
+  }
+  @media (prefers-reduced-motion: reduce){ .rx *{ animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; } }
+
+  /* Variante: la ilustración grande bajo la lista de cartas, ocupando el espacio libre */
+  html[data-p] .rx.abajo{
+    position: static; width: min(560px, 100%); margin: 44px auto 10px; opacity: .85;
+  }
+  html[data-p] .rx.abajo svg{ stroke-width: 1.2; }
 </style>
 </head>
 <body>
@@ -2287,12 +2427,16 @@ document.addEventListener('keydown', (e) => {
   const BOCETOS = {
     1: { nombre: 'Archivo dorado',
          desc: 'Negro y oro · el mismo diseño y funcionamiento que Galería blanca, con la paleta original del sitio' },
+    4: { nombre: 'Archivo plata',
+         desc: 'Igual a Archivo dorado —mármol, brillos, líneas— con plata en vez de oro' },
+    5: { nombre: 'Archivo blanco',
+         desc: 'Archivo dorado invertido: blanco con textura de mármol, y todo lo dorado pasa a negro' },
     3: { nombre: 'Galería blanca',
          desc: 'Blanco satinado · negro con brillo · tipografía UAI — al abrir una carta, se escribe sola a todo el ancho' }
   };
   const root = document.documentElement;
   // Los dos bocetos comparten el mismo diseño y funcionamiento; solo cambia la paleta
-  const vistaNueva = () => root.dataset.p === '1' || root.dataset.p === '3';
+  const vistaNueva = () => !!BOCETOS[root.dataset.p];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
@@ -2744,6 +2888,88 @@ document.addEventListener('keydown', (e) => {
     }
   }
 
+
+  // ==================================================================
+  // Ilustración animada de cada región, junto al título "Región · Nombre"
+  // Trazo fino en el color de acento del boceto (oro, plata o negro).
+  // ==================================================================
+  const RX = {
+    // Valparaíso: cerro con casas, ascensor que sube y baja, olas del puerto
+    V: `
+      <path class="d" pathLength="1" d="M0 104 C34 98 58 80 92 64 C122 50 150 44 186 40 C206 38 224 38 240 38"/>
+      <g class="d2">
+        <rect x="104" y="47" width="12" height="10"/><path d="M103 47 l7 -6 l7 6"/>
+        <rect x="128" y="41" width="14" height="10"/><path d="M127 41 l8 -6 l8 6"/>
+        <rect x="160" y="35" width="12" height="9"/><path d="M159 35 l7 -5 l7 5"/>
+        <rect x="190" y="31" width="13" height="9"/><path d="M189 31 l7 -5 l8 5"/>
+      </g>
+      <path class="d" pathLength="1" d="M44 108 L98 56"/><path class="d" pathLength="1" d="M52 110 L104 60"/>
+      <g class="car"><rect x="-7" y="-6" width="14" height="10" rx="1.5"/><path d="M-4 -2 h8"/>
+        <animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;1;1;0;0" keyTimes="0;.4;.5;.9;1" calcMode="linear" path="M54 100 L98 58"/></g>
+      <g class="sea"><path d="M-40 118 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
+        <path d="M-30 126 q10 -4 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" opacity=".55"/>
+        <animateTransform attributeName="transform" type="translate" from="0 0" to="40 0" dur="5s" repeatCount="indefinite"/></g>`,
+    // Metropolitana: fachada de La Moneda con la bandera flameando
+    RM: `
+      <path class="d" pathLength="1" d="M30 116 H210"/>
+      <path class="d" pathLength="1" d="M40 116 V70 H200 V116"/>
+      <path class="d" pathLength="1" d="M34 70 H206 M40 64 H200"/>
+      <path class="d" pathLength="1" d="M92 64 L120 50 L148 64"/>
+      <g class="d2">
+        <path d="M58 76 V112 M74 76 V112 M166 76 V112 M182 76 V112"/>
+        <path d="M100 116 V92 a20 20 0 0 1 40 0 V116"/>
+        <rect x="52" y="80" width="0" height="0"/>
+      </g>
+      <path class="d" pathLength="1" d="M120 50 V14"/>
+      <path class="flag" d="M120 14 C130 10 138 18 150 14 V30 C138 34 130 26 120 30 Z">
+        <animate attributeName="d" dur="3s" repeatCount="indefinite"
+          values="M120 14 C130 10 138 18 150 14 V30 C138 34 130 26 120 30 Z;
+                  M120 14 C130 18 138 10 150 15 V31 C138 26 130 34 120 30 Z;
+                  M120 14 C130 10 138 18 150 14 V30 C138 34 130 26 120 30 Z"/></path>`,
+    // Biobío: puente de arcos sobre el río, con el agua corriendo
+    VIII: `
+      <path class="d" pathLength="1" d="M0 70 H240"/>
+      <path class="d" pathLength="1" d="M0 76 H240"/>
+      <g class="d2"><path d="M10 76 a20 26 0 0 1 40 0 M50 76 a20 26 0 0 1 40 0 M90 76 a20 26 0 0 1 40 0 M130 76 a20 26 0 0 1 40 0 M170 76 a20 26 0 0 1 40 0 M210 76 a20 26 0 0 1 40 0"/>
+        <path d="M30 50 V70 M110 50 V70 M190 50 V70"/></g>
+      <g class="sea"><path d="M-40 108 h30 m10 0 h40 m12 0 h26 m10 0 h44 m14 0 h30 m10 0 h40 m10 0 h30"/>
+        <path d="M-30 118 h22 m14 0 h36 m10 0 h30 m16 0 h40 m10 0 h24 m12 0 h36 m10 0 h30" opacity=".55"/>
+        <animateTransform attributeName="transform" type="translate" from="0 0" to="48 0" dur="6s" repeatCount="indefinite"/></g>`,
+    // La Araucanía: volcán con fumarola y una araucaria
+    IX: `
+      <path class="d" pathLength="1" d="M0 116 H240"/>
+      <path class="d" pathLength="1" d="M70 116 L128 44 L140 44 L198 116"/>
+      <path class="d2" d="M118 58 l6 6 l6 -5 l6 6 l6 -6"/>
+      <g class="smoke">
+        <circle cx="134" cy="36" r="5"><animate attributeName="cy" values="40;6" dur="4s" repeatCount="indefinite"/><animate attributeName="r" values="3;9" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="4s" repeatCount="indefinite"/></circle>
+        <circle cx="138" cy="36" r="5"><animate attributeName="cy" values="40;6" dur="4s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="r" values="3;9" dur="4s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="4s" begin="1.3s" repeatCount="indefinite"/></circle>
+        <circle cx="131" cy="36" r="5"><animate attributeName="cy" values="40;6" dur="4s" begin="2.6s" repeatCount="indefinite"/><animate attributeName="r" values="3;9" dur="4s" begin="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="4s" begin="2.6s" repeatCount="indefinite"/></circle>
+      </g>
+      <g class="tree"><path class="d" pathLength="1" d="M36 116 V52"/>
+        <path class="d2" d="M36 54 q-18 2 -24 10 M36 54 q18 2 24 10 M36 68 q-14 2 -20 9 M36 68 q14 2 20 9 M36 82 q-10 2 -15 8 M36 82 q10 2 15 8 M30 50 q6 -6 12 0"/>
+        <animateTransform attributeName="transform" type="rotate" values="-1 36 116; 1 36 116; -1 36 116" dur="6s" repeatCount="indefinite"/></g>`,
+    // Resto de las regiones: la cordillera, con un sol que asoma
+    _: `
+      <circle class="sun" cx="150" cy="70" r="14"><animate attributeName="cy" values="78;58;78" dur="10s" repeatCount="indefinite"/></circle>
+      <path class="mask" d="M0 116 L36 70 L58 86 L92 44 L118 74 L140 58 L172 92 L198 62 L240 104 V130 H0 Z"/>
+      <path class="d" pathLength="1" d="M0 116 L36 70 L58 86 L92 44 L118 74 L140 58 L172 92 L198 62 L240 104"/>
+      <path class="d2" d="M86 52 l6 -8 l6 8 M134 64 l6 -6 l6 6"/>
+      <path class="d" pathLength="1" d="M0 122 H240"/>`
+  };
+  const chooserEl = document.getElementById('chooser');
+  const rx = document.createElement('div');
+  rx.className = 'rx';
+  rx.setAttribute('aria-hidden', 'true');
+  chooserEl.appendChild(rx);
+  const _showChooser = showChooser;
+  // Dos ubicaciones para comparar: junto al título (por defecto) o grande bajo la lista (?rx=abajo)
+  const rxAbajo = new URLSearchParams(location.search).get('rx') === 'abajo';
+  if (rxAbajo){ rx.classList.add('abajo'); document.getElementById('pickList').after(rx); }
+  showChooser = function(code){
+    _showChooser(code);
+    rx.innerHTML = `<svg viewBox="0 0 240 130" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${RX[code] || RX._}</svg>`;
+  };
+
   // Envolver las funciones del sitio: abrir una carta / ocultar vistas
   const _openLetter = openLetter;
   openLetter = function(id){
@@ -2949,7 +3175,7 @@ document.addEventListener('keydown', (e) => {
   });
 
   const qp = new URLSearchParams(location.search).get('p');
-  setBoceto(qp === '3' ? '3' : '1', false);
+  setBoceto(BOCETOS[qp] ? qp : '1', false);
 })();
 </script>
 </body>

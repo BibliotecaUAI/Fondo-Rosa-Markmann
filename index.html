@@ -341,7 +341,7 @@
     background: radial-gradient(ellipse at 50% 0%, rgba(var(--acc-rgb),0.18), transparent 60%); }
   .archivo-card p{ max-width: 52ch; margin: 0 auto 30px; color: var(--ink-dim); line-height: 1.75; font-size: 16px; }
   /* La tarjeta como un sobre: solapa con sello arriba y pliegues desde las esquinas inferiores */
-  .archivo-card{ --solapa: clamp(130px, 19vw, 220px); max-width: 960px; margin: 0 auto; border-radius: 8px; padding-top: calc(var(--solapa) + 56px); perspective: 1000px; }
+  .archivo-card{ --solapa: clamp(200px, 27vw, 330px); max-width: 960px; margin: 0 auto; border-radius: 8px; padding-top: calc(var(--solapa) + 78px); perspective: 1000px; }
   .archivo-card > :is(p, h2, a){ position: relative; z-index: 2; }
   .sobre-pliegues, .sobre-solapa{ position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; }
   /* los pliegues suben desde las esquinas y se cierran justo en el sello */
@@ -357,7 +357,7 @@
     box-shadow: 0 6px 18px rgba(0,0,0,0.5), inset 0 0 0 4px rgba(0,0,0,0.12); transition: transform .7s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
   .archivo-card:hover .sobre-solapa{ transform: rotateX(32deg); }
   .archivo-card:hover .sobre-sello{ transform: translateY(calc(var(--solapa) * -0.16)) rotate(-8deg); box-shadow: 0 6px 22px rgba(var(--acc-rgb),0.35), inset 0 0 0 4px rgba(0,0,0,0.12); }
-  @media (max-width: 900px){ .archivo-card{ --solapa: clamp(84px, 24vw, 120px); padding-top: calc(var(--solapa) + 48px); } .sobre-sello{ width: 50px; height: 50px; margin: -25px 0 0 -25px; font-size: 17px; } }
+  @media (max-width: 900px){ .archivo-card{ --solapa: clamp(120px, 36vw, 170px); padding-top: calc(var(--solapa) + 58px); } .sobre-sello{ width: 50px; height: 50px; margin: -25px 0 0 -25px; font-size: 17px; } }
   @media (prefers-reduced-motion: reduce){ .sobre-solapa, .sobre-sello{ transition: none; } }
 
   footer{ border-top: 1px solid var(--line-soft); padding: 34px 0 44px; font-size: 12px; color: var(--ink-dim); }

@@ -341,13 +341,15 @@
     background: radial-gradient(ellipse at 50% 0%, rgba(var(--acc-rgb),0.18), transparent 60%); }
   .archivo-card p{ max-width: 52ch; margin: 0 auto 30px; color: var(--ink-dim); line-height: 1.75; font-size: 16px; }
   /* La tarjeta como un sobre: solapa con sello arriba y pliegues desde las esquinas inferiores */
-  .archivo-card{ --solapa: clamp(110px, 15vw, 180px); border-radius: 8px; padding-top: calc(var(--solapa) + 56px); perspective: 1000px; }
+  .archivo-card{ --solapa: clamp(130px, 19vw, 220px); max-width: 960px; margin: 0 auto; border-radius: 8px; padding-top: calc(var(--solapa) + 56px); perspective: 1000px; }
   .archivo-card > :is(p, h2, a){ position: relative; z-index: 2; }
   .sobre-pliegues, .sobre-solapa{ position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; }
-  .sobre-pliegues{ height: 100%; z-index: 0; }
-  .sobre-pliegues path{ fill: none; stroke: rgba(var(--acc-rgb),0.2); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  /* los pliegues suben desde las esquinas y se cierran justo en el sello */
+  .sobre-pliegues{ top: var(--solapa); height: calc(100% - var(--solapa)); z-index: 0; }
+  .sobre-pliegues path{ fill: rgba(0,0,0,0.12); stroke: rgba(var(--acc-rgb),0.24); stroke-width: 1; vector-effect: non-scaling-stroke; }
   .sobre-solapa{ height: var(--solapa); z-index: 1; transform-origin: top; transition: transform .7s cubic-bezier(.2,.8,.2,1); }
-  .sobre-solapa .cara{ fill: rgba(var(--acc-rgb),0.07); }
+  .sobre-solapa .cara{ fill: rgba(var(--acc-rgb),0.08); }
+  .sobre-solapa{ filter: drop-shadow(0 8px 10px rgba(0,0,0,0.45)); }
   .sobre-solapa .borde{ fill: none; stroke: rgba(var(--acc-rgb),0.6); stroke-width: 1; vector-effect: non-scaling-stroke; }
   .sobre-sello{ position: absolute; z-index: 3; left: 50%; top: var(--solapa); width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 50%;
     display: grid; place-items: center; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 19px; letter-spacing: .04em; color: rgba(0,0,0,0.62);
@@ -509,7 +511,7 @@
   <section id="archivo" class="archivo" data-scene="archivo">
     <div class="wrap">
       <div class="archivo-card center reveal">
-        <svg class="sobre-pliegues" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 L50 52 L100 100"/></svg>
+        <svg class="sobre-pliegues" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 L50 0 L100 100"/></svg>
         <svg class="sobre-solapa" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="cara" d="M0 0 H100 L50 100 Z"/><path class="borde" d="M0 0 L50 100 L100 0"/></svg>
         <span class="sobre-sello" aria-hidden="true">RM</span>
         <p class="eyebrow">Archivo de cartas</p>

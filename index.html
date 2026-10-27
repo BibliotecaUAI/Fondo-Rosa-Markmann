@@ -151,7 +151,9 @@
   .frame::before, .frame::after{ content: ""; position: absolute; width: 16px; height: 16px; border: 1px solid var(--acc); }
   .frame::before{ top: 7px; left: 7px; border-right: 0; border-bottom: 0; }
   .frame::after{ bottom: 7px; right: 7px; border-left: 0; border-top: 0; }
-  .frame img{ display: block; width: 100%; filter: grayscale(1) contrast(1.05); }
+  .frame img{ display: block; width: 100%; }
+  .nota{ opacity: .75; font-style: italic; }
+  .pie{ margin: 14px 0 0; text-align: center; font-size: 11.5px; letter-spacing: .06em; color: var(--ink-dim); }
   .hero-photo figcaption{ margin-top: 18px; text-align: center; font-size: 11.5px; letter-spacing: .08em; color: var(--ink-dim); }
   .scroll-cue{ position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px;
     font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-dim); opacity: calc(1 - var(--sy, 0) / 200); }
@@ -168,7 +170,7 @@
   .bio{ padding: 18vh 0 14vh; }
   .bio-grid{ display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(28px, 6vw, 90px); align-items: start; }
   .bio-sticky{ position: sticky; top: calc(var(--nav-h) + 50px); }
-  .bio-sticky .frame img{ filter: grayscale(1) contrast(1.05) brightness(calc(0.75 + var(--bp, 0) * 0.3)); transform: scale(calc(1.08 - var(--bp, 0) * 0.08)); transform-origin: center 30%; transition: none; }
+  .bio-sticky .frame img{ filter: brightness(calc(0.8 + var(--bp, 0) * 0.2)); transform: scale(calc(1.08 - var(--bp, 0) * 0.08)); transform-origin: center 30%; transition: none; }
   .bio-sticky .frame{ overflow: hidden; }
   .bio-dates{ display: flex; justify-content: space-between; margin-top: 16px; font-size: 12px; letter-spacing: .14em; color: var(--ink-dim); }
   .bio-dates b{ color: var(--acc-2); font-weight: 500; }
@@ -307,8 +309,8 @@
         <a class="btn solid reveal" style="--d:.5s" href="#biografia">Comenzar la visita <span aria-hidden="true">↓</span></a>
       </div>
       <figure class="hero-photo reveal" style="--d:.25s">
-        <div class="frame"><img src="assets/images/rosa-markmann.jpg" alt="Retrato de Rosa Markmann de González Videla"></div>
-        <figcaption>Rosa Markmann Reijer · Primera Dama de Chile, 1946–1952</figcaption>
+        <div class="frame"><img src="assets/images/rosa-markmann-traje-blanco.jpg" alt="Retrato de Rosa Markmann con traje blanco cruzado y broche en la solapa"></div>
+        <figcaption>Rosa Markmann Reijer, Primera Dama de Chile (1946–1952) · Retrato de estudio <span class="nota">· fotografía colorizada digitalmente</span></figcaption>
       </figure>
     </div>
     <div class="scroll-cue" aria-hidden="true">Desliza<i></i></div>
@@ -320,7 +322,8 @@
   <section id="biografia" class="bio" data-scene="biografia">
     <div class="wrap bio-grid">
       <div class="bio-sticky reveal">
-        <div class="frame"><img src="assets/images/rosa-markmann.jpg" alt=""></div>
+        <div class="frame"><img src="assets/images/rosa-markmann-vestido-floral.jpg" alt="Retrato de Rosa Markmann con vestido negro de estampado floral dorado"></div>
+        <p class="pie">Retrato de estudio de Rosa Markmann <span class="nota">· fotografía colorizada digitalmente</span></p>
         <div class="bio-dates"><span>Taltal · <b>1907</b></span><span>Santiago · <b>2009</b></span></div>
       </div>
       <div class="bio-text">

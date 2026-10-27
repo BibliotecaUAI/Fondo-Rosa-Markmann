@@ -62,7 +62,7 @@ function escribir(t){
   const paso = ahora => {
     if (!escritura.pausa){
       espera -= ahora - ult;
-      while (espera <= 0 && n < resto.length){ const ch = resto[n++]; espera += /[.!?]/.test(ch) ? 300 : /[,;:]/.test(ch) ? 150 : 24; }
+      while (espera <= 0 && n < resto.length){ n++; espera += 24; }
       ya.data = resto.slice(0, n); falta.textContent = resto.slice(n);
       if (sigue){ const a = cur.getBoundingClientRect().bottom, b = texto.getBoundingClientRect().bottom - 48; if (a > b) texto.scrollTop += a - b; }
     }

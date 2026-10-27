@@ -233,19 +233,20 @@
   .hito h3{ font-weight: 500; font-size: 18px; margin: 0 0 10px; }
   .hito p{ font-size: 14.5px; line-height: 1.65; color: var(--ink-dim); margin: 0; }
   .hito .tag{ display: inline-block; margin-top: 14px; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--acc); }
-  .hitos-count{ margin-top: 28px; font-size: 12px; letter-spacing: .14em; color: var(--ink-dim); }
-  .hitos-count b{ color: var(--acc-2); font-weight: 500; }
+  .hitos-count{ margin-top: 28px; font-size: 13px; letter-spacing: .14em; color: var(--ink); }
+  .hitos-count b{ color: var(--acc-2); font-weight: 700; font-size: 15px; }
 
-  /* Flechas de la línea de tiempo: finas y discretas, a la altura de las tarjetas */
+  /* Flechas de la línea de tiempo: bien visibles, a la altura de las tarjetas */
   .tl-arrow{
-    position: absolute; top: 150px; z-index: 3; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    position: absolute; top: 146px; z-index: 3; width: 54px; height: 54px; border-radius: 50%; cursor: pointer;
     display: grid; place-items: center; color: var(--acc-2);
-    background: var(--glass); border: 1px solid var(--glass-line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    opacity: .72; transition: opacity .2s ease, transform .2s ease, border-color .2s ease;
+    background: rgba(var(--acc-rgb),0.14); border: 1.5px solid var(--acc); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 0 5px rgba(var(--acc-rgb),0.08), 0 10px 26px rgba(0,0,0,0.45);
+    transition: opacity .2s ease, transform .2s ease, background .2s ease, color .2s ease;
   }
-  .tl-arrow:hover{ opacity: 1; border-color: var(--acc); }
-  .tl-arrow:disabled{ opacity: .18; cursor: default; }
-  .tl-arrow svg{ width: 16px; height: 16px; }
+  .tl-arrow:hover{ background: var(--acc); color: #0a0a0b; transform: scale(1.06); }
+  .tl-arrow:disabled{ opacity: .25; cursor: default; transform: none; background: rgba(var(--acc-rgb),0.06); color: var(--acc-2); }
+  .tl-arrow svg{ width: 20px; height: 20px; stroke-width: 2; }
   .tl-arrow.prev{ left: max(14px, calc((100vw - 1180px) / 2 - 58px)); }
   .tl-arrow.next{ right: max(14px, calc((100vw - 1180px) / 2 - 58px)); }
   .track-wrap{ touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
@@ -351,8 +352,8 @@
     .pieza figcaption b{ font-size: 12px; } .pieza figcaption span{ font-size: 10.5px; }
     .hito{ flex-basis: 80vw; }
     .hito .card{ min-height: 0; padding: 22px 20px; }
-    .tl-arrow{ top: auto; bottom: -64px; width: 40px; height: 40px; }
-    .tl-arrow.prev{ left: calc(50% - 52px); } .tl-arrow.next{ right: calc(50% - 52px); }
+    .tl-arrow{ top: auto; bottom: -66px; width: 48px; height: 48px; }
+    .tl-arrow.prev{ left: calc(50% - 60px); } .tl-arrow.next{ right: calc(50% - 60px); }
     .hitos-count{ margin-top: 84px; text-align: center; }
     .hitos-hint{ display: none; }
     .stats{ grid-template-columns: 1fr 1fr; gap: 10px; } .stat{ padding: 20px 16px; } .stat b{ font-size: 42px; }

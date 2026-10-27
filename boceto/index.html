@@ -814,7 +814,7 @@
     --ivory: #141416; --ivory-dim: #6b6e74;
     --gold: #141416; --gold-light: #000000; --gold-dim: #8a8d93;
     --line: rgba(20,20,22,0.08); --line-gold: rgba(20,20,22,0.22); --acc-rgb: 20,20,22; --veil-rgb: 255,255,255;
-    --tex-stone-tono: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27420%27%20height%3D%27420%27%3E%20%3Cfilter%20id%3D%27s%27%3E%20%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.018%200.028%27%20numOctaves%3D%273%27%20seed%3D%2711%27%20stitchTiles%3D%27stitch%27%20result%3D%27t%27/%3E%20%3CfeColorMatrix%20in%3D%27t%27%20type%3D%27matrix%27%20values%3D%270%200%200%200%200.22%20%200%200%200%200%200.22%20%200%200%200%200%200.24%20%200%200%200%200.07%200%27/%3E%20%3C/filter%3E%20%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23s%29%27/%3E%20%3C/svg%3E");
+    --tex-stone-tono: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27420%27%20height%3D%27420%27%3E%20%3Cfilter%20id%3D%27s%27%3E%20%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.018%200.028%27%20numOctaves%3D%273%27%20seed%3D%2711%27%20stitchTiles%3D%27stitch%27%20result%3D%27t%27/%3E%20%3CfeColorMatrix%20in%3D%27t%27%20type%3D%27matrix%27%20values%3D%270%200%200%200%200.26%20%200%200%200%200%200.24%20%200%200%200%200%200.21%20%200%200%200%200.13%200%27/%3E%20%3C/filter%3E%20%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23s%29%27/%3E%20%3C/svg%3E");
     /* tarjetas blancas con el mismo brillo en franja horizontal, en gris */
     --satin:
       linear-gradient(180deg, rgba(20,20,22,0) 0px, rgba(20,20,22,.012) 16px, rgba(20,20,22,.03) 38px,
@@ -1395,6 +1395,21 @@
   html[data-p] .rx.insignia{ top: 22px; width: min(250px, 40%); }
   html[data-p] .rx.insignia.abajo{ width: min(460px, 90%); margin-top: 34px; }
   .rx .kite{ opacity: 0; animation: rxFade 1s ease 1.6s forwards; }
+
+  /* Archivo blanco: grano neutro y cálido (el gris del grano compartido tiraba a azul) */
+  html[data-p="5"]{
+    --tex-grain-gris: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27160%27%20height%3D%27160%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20type%3D%27matrix%27%20values%3D%270%200%200%200%200.36%20%200%200%200%200%200.34%20%200%200%200%200%200.31%20%200%200%200%200.09%200%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E");
+  }
+  html[data-p="5"] body{ background: #f7f5f1; }
+  html[data-p="5"] body::before{
+    background:
+      radial-gradient(ellipse 1300px 800px at 50% -10%, rgba(255,253,249,0.85), transparent 60%),
+      radial-gradient(ellipse 1100px 700px at 100% 100%, rgba(40,32,22,0.04), transparent 55%),
+      var(--tex-stone-tono) 0 0 / 420px 420px repeat,
+      var(--tex-grain-gris) 0 0 / 160px 160px repeat,
+      linear-gradient(180deg, #fbf9f6, #f6f4ef 40%, #f1eee8);
+  }
+  .rx[hidden]{ display: none !important; }
 </style>
 </head>
 <body>
@@ -2943,52 +2958,6 @@ document.addEventListener('keydown', (e) => {
       <g class="sea"><path d="M-40 182 q10 -4 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
         <animateTransform attributeName="transform" type="translate" from="0 0" to="40 0" dur="5s" repeatCount="indefinite"/></g>
       ` },
-    // Metropolitana: fachada de La Moneda con la bandera flameando
-    RM: `
-      <path class="d" pathLength="1" d="M30 116 H210"/>
-      <path class="d" pathLength="1" d="M40 116 V70 H200 V116"/>
-      <path class="d" pathLength="1" d="M34 70 H206 M40 64 H200"/>
-      <path class="d" pathLength="1" d="M92 64 L120 50 L148 64"/>
-      <g class="d2">
-        <path d="M58 76 V112 M74 76 V112 M166 76 V112 M182 76 V112"/>
-        <path d="M100 116 V92 a20 20 0 0 1 40 0 V116"/>
-        <rect x="52" y="80" width="0" height="0"/>
-      </g>
-      <path class="d" pathLength="1" d="M120 50 V14"/>
-      <path class="flag" d="M120 14 C130 10 138 18 150 14 V30 C138 34 130 26 120 30 Z">
-        <animate attributeName="d" dur="3s" repeatCount="indefinite"
-          values="M120 14 C130 10 138 18 150 14 V30 C138 34 130 26 120 30 Z;
-                  M120 14 C130 18 138 10 150 15 V31 C138 26 130 34 120 30 Z;
-                  M120 14 C130 10 138 18 150 14 V30 C138 34 130 26 120 30 Z"/></path>`,
-    // Biobío: puente de arcos sobre el río, con el agua corriendo
-    VIII: `
-      <path class="d" pathLength="1" d="M0 70 H240"/>
-      <path class="d" pathLength="1" d="M0 76 H240"/>
-      <g class="d2"><path d="M10 76 a20 26 0 0 1 40 0 M50 76 a20 26 0 0 1 40 0 M90 76 a20 26 0 0 1 40 0 M130 76 a20 26 0 0 1 40 0 M170 76 a20 26 0 0 1 40 0 M210 76 a20 26 0 0 1 40 0"/>
-        <path d="M30 50 V70 M110 50 V70 M190 50 V70"/></g>
-      <g class="sea"><path d="M-40 108 h30 m10 0 h40 m12 0 h26 m10 0 h44 m14 0 h30 m10 0 h40 m10 0 h30"/>
-        <path d="M-30 118 h22 m14 0 h36 m10 0 h30 m16 0 h40 m10 0 h24 m12 0 h36 m10 0 h30" opacity=".55"/>
-        <animateTransform attributeName="transform" type="translate" from="0 0" to="48 0" dur="6s" repeatCount="indefinite"/></g>`,
-    // La Araucanía: volcán con fumarola y una araucaria
-    IX: `
-      <path class="d" pathLength="1" d="M0 116 H240"/>
-      <path class="d" pathLength="1" d="M70 116 L128 44 L140 44 L198 116"/>
-      <path class="d2" d="M118 58 l6 6 l6 -5 l6 6 l6 -6"/>
-      <g class="smoke">
-        <circle cx="134" cy="36" r="5"><animate attributeName="cy" values="40;6" dur="4s" repeatCount="indefinite"/><animate attributeName="r" values="3;9" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="4s" repeatCount="indefinite"/></circle>
-        <circle cx="138" cy="36" r="5"><animate attributeName="cy" values="40;6" dur="4s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="r" values="3;9" dur="4s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="4s" begin="1.3s" repeatCount="indefinite"/></circle>
-        <circle cx="131" cy="36" r="5"><animate attributeName="cy" values="40;6" dur="4s" begin="2.6s" repeatCount="indefinite"/><animate attributeName="r" values="3;9" dur="4s" begin="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="4s" begin="2.6s" repeatCount="indefinite"/></circle>
-      </g>
-      <g class="tree"><path class="d" pathLength="1" d="M36 116 V52"/>
-        <path class="d2" d="M36 54 q-18 2 -24 10 M36 54 q18 2 24 10 M36 68 q-14 2 -20 9 M36 68 q14 2 20 9 M36 82 q-10 2 -15 8 M36 82 q10 2 15 8 M30 50 q6 -6 12 0"/>
-        <animateTransform attributeName="transform" type="rotate" values="-1 36 116; 1 36 116; -1 36 116" dur="6s" repeatCount="indefinite"/></g>`,
-    // Resto de las regiones: la cordillera, con un sol que asoma
-    _: `
-      <circle class="sun" cx="150" cy="70" r="14"><animate attributeName="cy" values="78;58;78" dur="10s" repeatCount="indefinite"/></circle>
-      <path class="mask" d="M0 116 L36 70 L58 86 L92 44 L118 74 L140 58 L172 92 L198 62 L240 104 V130 H0 Z"/>
-      <path class="d" pathLength="1" d="M0 116 L36 70 L58 86 L92 44 L118 74 L140 58 L172 92 L198 62 L240 104"/>
-      <path class="d2" d="M86 52 l6 -8 l6 8 M134 64 l6 -6 l6 6"/>
-      <path class="d" pathLength="1" d="M0 122 H240"/>`
   };
   const chooserEl = document.getElementById('chooser');
   const rx = document.createElement('div');
@@ -3001,7 +2970,9 @@ document.addEventListener('keydown', (e) => {
   if (rxAbajo){ rx.classList.add('abajo'); document.getElementById('pickList').after(rx); }
   showChooser = function(code){
     _showChooser(code);
-    const art = RX[code] || RX._;
+    const art = RX[code];
+    rx.hidden = !art;
+    if (!art){ rx.innerHTML = ''; return; }
     const vb = art.vb || '0 0 240 130';
     rx.classList.toggle('insignia', !!art.insignia);
     rx.innerHTML = `<svg viewBox="${vb}" fill="none" stroke="currentColor" stroke-width="${art.insignia ? 2.2 : 1.4}" stroke-linecap="round" stroke-linejoin="round">${art.svg || art}</svg>`;

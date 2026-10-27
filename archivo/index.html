@@ -1443,6 +1443,8 @@
   html[data-p] .lx-frame::after{ bottom: 7px; right: 7px; border-left: 0; border-top: 0; }
   html[data-p] .lx-thumbs{ margin-bottom: 18px; }
   html[data-p] .lx-cap{ margin-top: 16px; }
+
+  .bx-home{ text-decoration: none; padding: 8px 14px; border-right: 1px solid var(--line-gold); border-radius: 999px; }
 </style>
 </head>
 <body>
@@ -1879,27 +1881,27 @@ const letterAcevedo = {
   "pages": [
     {
       "label": "Página 1 — original manuscrito",
-      "src": "../assets/images/carta-acevedo-pagina-1.jpg"
+      "src": "assets/images/carta-acevedo-pagina-1.jpg"
     },
     {
       "label": "Página 2 — original manuscrito",
-      "src": "../assets/images/carta-acevedo-pagina-2.jpg"
+      "src": "assets/images/carta-acevedo-pagina-2.jpg"
     },
     {
       "label": "Página 3 — original manuscrito",
-      "src": "../assets/images/carta-acevedo-pagina-3.jpg"
+      "src": "assets/images/carta-acevedo-pagina-3.jpg"
     },
     {
       "label": "Página 4 — original manuscrito",
-      "src": "../assets/images/carta-acevedo-pagina-4.jpg"
+      "src": "assets/images/carta-acevedo-pagina-4.jpg"
     },
     {
       "label": "Página 5 — original manuscrito",
-      "src": "../assets/images/carta-acevedo-pagina-5.jpg"
+      "src": "assets/images/carta-acevedo-pagina-5.jpg"
     },
     {
       "label": "Página 6 — original manuscrito",
-      "src": "../assets/images/carta-acevedo-pagina-6.jpg"
+      "src": "assets/images/carta-acevedo-pagina-6.jpg"
     }
   ]
 };
@@ -2690,7 +2692,7 @@ document.addEventListener('keydown', (e) => {
   const bar = document.createElement('nav');
   bar.className = 'bx-bar';
   bar.setAttribute('aria-label', 'Elegir paleta de colores');
-  bar.innerHTML = `<span class="bx-label">Paleta</span>` + Object.keys(BOCETOS).map(n =>
+  bar.innerHTML = `<a class="bx-opt bx-home" href="../" title="Volver al inicio del recorrido">‹ Inicio</a><span class="bx-label">Paleta</span>` + Object.keys(BOCETOS).map(n =>
     `<button class="bx-opt" data-p="${n}" aria-pressed="false" title="${BOCETOS[n].nombre}">
        <span class="bx-sw s${n}"></span><span class="bx-name">${BOCETOS[n].nombre}</span>
      </button>`).join('');

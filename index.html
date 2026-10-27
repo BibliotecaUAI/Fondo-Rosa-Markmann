@@ -160,10 +160,16 @@
   .scroll-cue i{ width: 1px; height: 46px; background: linear-gradient(180deg, var(--acc), transparent); animation: cue 2.2s ease-in-out infinite; transform-origin: top; }
   @keyframes cue{ 0%{ transform: scaleY(0); opacity: 1; } 60%{ transform: scaleY(1); opacity: 1; } 100%{ transform: scaleY(1); opacity: 0; } }
   @media (max-width: 900px){
-    .hero-grid{ grid-template-columns: 1fr; text-align: center; }
+    /* En celular: primero el título, luego la foto; sin desvanecer al desplazarse */
+    .hero{ padding-top: calc(var(--nav-h) + 46px); }
+    .hero-grid{ grid-template-columns: 1fr; text-align: center; gap: 34px; }
+    .hero-text, .hero-photo{ transform: none !important; opacity: 1 !important; }
+    .hero h1{ font-size: clamp(44px, 13vw, 66px); }
+    .hero-inst{ font-size: 10px; letter-spacing: .26em; }
     .hero-rule{ margin-left: auto; margin-right: auto; background: linear-gradient(90deg, transparent, var(--acc), transparent); }
     .hero-sub{ margin-left: auto; margin-right: auto; }
-    .hero-photo{ width: min(300px, 80%); order: -1; }
+    .hero-photo{ width: min(270px, 74%); }
+    .scroll-cue{ display: none; }
   }
 
   /* 2 · Biografía: el retrato queda fijo mientras el texto avanza */
@@ -212,6 +218,55 @@
   .hito .tag{ display: inline-block; margin-top: 14px; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--acc); }
   .hitos-count{ margin-top: 28px; font-size: 12px; letter-spacing: .14em; color: var(--ink-dim); }
   .hitos-count b{ color: var(--acc-2); font-weight: 500; }
+
+  /* Flechas de la línea de tiempo: finas y discretas, a la altura de las tarjetas */
+  .tl-arrow{
+    position: absolute; top: 150px; z-index: 3; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; color: var(--acc-2);
+    background: var(--glass); border: 1px solid var(--glass-line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    opacity: .72; transition: opacity .2s ease, transform .2s ease, border-color .2s ease;
+  }
+  .tl-arrow:hover{ opacity: 1; border-color: var(--acc); }
+  .tl-arrow:disabled{ opacity: .18; cursor: default; }
+  .tl-arrow svg{ width: 16px; height: 16px; }
+  .tl-arrow.prev{ left: max(14px, calc((100vw - 1180px) / 2 - 58px)); }
+  .tl-arrow.next{ right: max(14px, calc((100vw - 1180px) / 2 - 58px)); }
+  .track-wrap{ touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+  .track-wrap.drag{ cursor: grabbing; }
+  .hito .card{ cursor: pointer; }
+  .hito .mas{ display: inline-flex; gap: 6px; margin-top: 16px; font-size: 11.5px; color: var(--acc-2); opacity: .85; }
+  .hitos-hint{ margin-left: 14px; opacity: .7; }
+
+  /* Panel desplegable de cada hito */
+  .hp{ position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 24px;
+    background: rgba(6,6,7,0.6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    opacity: 0; visibility: hidden; transition: opacity .4s ease, visibility 0s linear .4s; }
+  .hp.show{ opacity: 1; visibility: visible; transition: opacity .4s ease; }
+  .hp-card{ position: relative; width: min(760px, 100%); max-height: calc(100svh - 48px); overflow: auto;
+    padding: clamp(26px, 4vw, 44px); border-radius: 20px;
+    background: rgba(18,17,14,0.82); border: 1px solid rgba(var(--acc-rgb),0.45);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+    transform: translateY(18px) scale(.97); filter: blur(4px); transition: transform .55s cubic-bezier(.2,.7,.2,1), filter .55s ease; }
+  html[data-p="4"] .hp-card{ background: rgba(16,16,18,0.84); }
+  .hp.show .hp-card{ transform: none; filter: none; }
+  .hp-card .year{ font-family: 'Cormorant Garamond', serif; font-size: 52px; line-height: 1; color: var(--acc-2); margin: 0 0 10px; }
+  .hp-card h3{ font-weight: 500; font-size: clamp(22px, 2.4vw, 28px); margin: 0 0 6px; }
+  .hp-card .tag{ display: inline-block; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--acc); }
+  .hp-card .rule{ height: 1px; margin: 20px 0; background: linear-gradient(90deg, var(--acc), transparent); }
+  .hp-card p{ font-size: 16px; line-height: 1.8; color: var(--ink); margin: 0 0 14px; }
+  .hp-media{ display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 22px; }
+  .hp-media button{ padding: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #111; cursor: zoom-in; text-align: left; color: var(--ink); }
+  .hp-media img{ display: block; width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top; transition: transform .6s ease; }
+  .hp-media button:hover img{ transform: scale(1.05); }
+  .hp-media span{ display: block; padding: 8px 10px; font-size: 11.5px; line-height: 1.35; color: var(--ink-dim); }
+  .hp-cartas{ display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .hp-cartas a{ font-size: 13px; padding: 10px 16px; }
+  .hp-close{ position: absolute; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    color: var(--ink); background: transparent; border: 1px solid var(--glass-line); font-size: 16px; }
+  .hp-nav{ display: flex; justify-content: space-between; gap: 10px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line-soft); }
+  .hp-nav button{ background: none; border: 0; color: var(--ink-dim); font: inherit; font-size: 13px; cursor: pointer; padding: 6px 0; }
+  .hp-nav button:hover{ color: var(--acc-2); }
+  .hp-nav button:disabled{ opacity: .25; cursor: default; }
 
   /* 4 · El fondo */
   .fondo{ padding: 16vh 0; }
@@ -271,6 +326,22 @@
   footer{ border-top: 1px solid var(--line-soft); padding: 34px 0 44px; font-size: 12px; color: var(--ink-dim); }
   footer .wrap{ display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 
+  /* Celular (al final, para que prime sobre las reglas generales) */
+  @media (max-width: 640px){
+    .masonry{ columns: 2; column-gap: 10px; }
+    .pieza{ margin-bottom: 10px; border-radius: 8px; }
+    .pieza figcaption{ position: static; opacity: 1; transform: none; border: 0; border-radius: 0; padding: 9px 10px; background: rgba(0,0,0,0.45); }
+    .pieza figcaption b{ font-size: 12px; } .pieza figcaption span{ font-size: 10.5px; }
+    .hito{ flex-basis: 80vw; }
+    .hito .card{ min-height: 0; padding: 22px 20px; }
+    .tl-arrow{ top: auto; bottom: -64px; width: 40px; height: 40px; }
+    .tl-arrow.prev{ left: calc(50% - 52px); } .tl-arrow.next{ right: calc(50% - 52px); }
+    .hitos-count{ margin-top: 84px; text-align: center; }
+    .hitos-hint{ display: none; }
+    .stats{ grid-template-columns: 1fr 1fr; gap: 10px; } .stat{ padding: 20px 16px; } .stat b{ font-size: 42px; }
+    .bio{ padding-top: 12vh; }
+    .lb .prev, .lb .next{ top: auto; bottom: 22px; }
+  }
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior: auto; }
     .reveal{ opacity: 1; transform: none; filter: none; transition: none; }
@@ -351,9 +422,11 @@
         <p class="eyebrow">Hitos</p>
         <h2 class="title">Una vida, <em>un archivo</em></h2>
       </div>
-      <div class="track-wrap">
+      <div class="track-wrap" id="trackWrap">
         <div class="track-line"></div>
         <div class="track" id="track"></div>
+        <button class="tl-arrow prev" aria-label="Hito anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="tl-arrow next" aria-label="Hito siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
       </div>
       <div class="wrap hitos-count" id="hitosCount"></div>
     </div>
@@ -418,6 +491,8 @@
   </div>
 </footer>
 
+<div class="hp" id="hp" role="dialog" aria-modal="true" aria-label="Detalle del hito"><div class="hp-card"></div></div>
+
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Documento ampliado">
   <button class="x" aria-label="Cerrar">✕</button>
   <button class="prev" aria-label="Anterior">‹</button>
@@ -433,23 +508,51 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---------- Hitos (fuente: biografía del sitio y documento del proyecto) ----------
+  const R = 'assets/images/', G = 'galeria/';
   const HITOS = [
-    { year: '1907', t: 'Nace en Taltal', d: 'Rosa Markmann Reijer nace en el norte de Chile.' },
-    { year: '1946', t: 'Primera Dama de Chile', d: 'Acompaña al presidente Gabriel González Videla hasta 1952.', tag: '1946 — 1952' },
-    { year: 'La Moneda', t: 'Un despacho propio', d: 'Es la primera Primera Dama en instalar su oficina en el palacio. Desde ahí crea la Oficina de la Mujer.' },
-    { year: '1949', t: 'El voto de las mujeres', d: 'Las chilenas obtienen el derecho a voto pleno, una causa que ella impulsó.' },
-    { year: '1952', t: '«Madre del Mundo»', d: 'En Nueva York, el Comité Internacional de Madres de Norteamérica le otorga el título en reconocimiento a su labor social.' },
-    { year: '1952', t: 'Miles de cartas', d: 'Personas de todo Chile le escriben pidiendo trabajo, vivienda o medicamentos. Este fondo conserva cartas de ese año.' },
-    { year: '2009', t: 'Fallece en Santiago', d: 'Se conservan cerca de 8.000 cartas dirigidas a ella en el Archivo Nacional de Chile.' },
-    { year: 'Donación', t: 'Llega a Bibliotecas UAI', d: 'La profesora Magdalena Pereira dona 8 cajas de correspondencia a la Biblioteca de la UAI.' },
-    { year: '2026', t: 'Piloto de digitalización', d: 'Selección de cartas digitalizadas, transcritas, grabadas y traducidas al inglés.' },
-    { year: 'Mar 2026', t: 'Exposición «Memoria en papel»', d: 'El legado de Rosa Markmann y las voces femeninas de 1952, en la Biblioteca de Viña del Mar.', tag: 'Ago 2026 · Biblioteca Peñalolén' },
-    { year: 'Conversatorio', t: 'Las voces de su tiempo', d: '«Rosa Markmann y las voces de su tiempo: mujeres, memoria y archivo».' }
+    { year: '1907', t: 'Nace en Taltal', d: 'Rosa Markmann Reijer nace en el norte de Chile.',
+      mas: ['Rosa Markmann Reijer nació en Taltal, en la Región de Antofagasta, en 1907. Fue conocida como «Miti».'],
+      media: [[R + 'rosa-markmann-vestido-floral.jpg', 'Retrato de estudio · fotografía colorizada digitalmente']] },
+    { year: '1946', t: 'Primera Dama de Chile', d: 'Acompaña al presidente Gabriel González Videla hasta 1952.', tag: '1946 — 1952',
+      mas: ['Fue Primera Dama de Chile entre 1946 y 1952, durante el gobierno de su esposo, el presidente Gabriel González Videla.'],
+      media: [[R + 'rosa-markmann-traje-blanco.jpg', 'Retrato de estudio · fotografía colorizada digitalmente']] },
+    { year: 'La Moneda', t: 'Un despacho propio', d: 'Es la primera Primera Dama en instalar su oficina en el palacio. Desde ahí crea la Oficina de la Mujer.',
+      mas: ['Fue la primera Primera Dama en instalar un despacho propio dentro del Palacio de La Moneda.',
+            'Desde ahí creó la Oficina de la Mujer: un equipo de abogadas, asistentes sociales y matronas dedicado a leer y gestionar las peticiones que llegaban de todo Chile.'],
+      media: [[G + 'federacion-chilena-de-instituciones-femeninas.jpg', 'Federación Chilena de Instituciones Femeninas'], [G + 'discurso.jpg', 'Discurso']] },
+    { year: '1949', t: 'El voto de las mujeres', d: 'Las chilenas obtienen el derecho a voto pleno, una causa que ella impulsó.',
+      mas: ['Desde La Moneda impulsó el derecho a voto de las mujeres, junto con la creación de viviendas de emergencia y campañas de salud pública que marcaron su época.'],
+      media: [[G + 'boletin-defensa-femenina-chiquicamata-30-mayo-1952.jpg', 'Boletín Defensa Femenina · Chuquicamata, 1952']] },
+    { year: '1952', t: '«Madre del Mundo»', d: 'En Nueva York, el Comité Internacional de Madres de Norteamérica le otorga el título en reconocimiento a su labor social.',
+      mas: ['En 1952, durante una visita a Nueva York, el Comité Internacional de Madres de Norteamérica le otorgó el título de «Madre del Mundo», en reconocimiento a su labor social.',
+            '«Más que a mí, va dirigido a honrar la virtud de la mujer chilena.»'],
+      media: [[R + 'rosa-markmann.jpg', 'Retrato de Rosa Markmann']] },
+    { year: '1952', t: 'Miles de cartas', d: 'Personas de todo Chile le escriben pidiendo trabajo, vivienda o medicamentos. Este fondo conserva cartas de ese año.',
+      mas: ['En un país con alto desempleo, escasez de vivienda y tuberculosis extendida, miles de personas le escribían pidiendo trabajo, casa o medicamentos, o pidiéndole interceder ante el Presidente.',
+            'Ella o su equipo respondían, derivaban la solicitud a un ministerio o gestionaban ayuda directa.'],
+      cartas: [[10, 'Solicitud de trabajo fijo · Valparaíso'], [2, 'Solicitud de un abrigo · Los Andes'], [1, 'Pensión de gracia · Llo-Lleo']] },
+    { year: '2009', t: 'Fallece en Santiago', d: 'Se conservan cerca de 8.000 cartas dirigidas a ella en el Archivo Nacional de Chile.',
+      mas: ['Rosa Markmann murió en Santiago en 2009.', 'Se conservan cerca de 8.000 cartas dirigidas a ella en el Archivo Nacional de Chile.'] },
+    { year: 'Donación', t: 'Llega a Bibliotecas UAI', d: 'La profesora Magdalena Pereira dona 8 cajas de correspondencia a la Biblioteca de la UAI.',
+      mas: ['La profesora Magdalena Pereira donó a la Biblioteca de la Universidad Adolfo Ibáñez 8 cajas con la correspondencia dirigida a la Primera Dama durante 1952.',
+            'Son cartas, notas y telegramas enviados en su mayoría por mujeres de distintas regiones del país, que solicitan ayuda o su mediación en problemas sociales, laborales e incluso familiares.'] },
+    { year: '2026', t: 'Piloto de digitalización', d: 'Selección de cartas digitalizadas, transcritas, grabadas y traducidas al inglés.',
+      mas: ['El proyecto digitaliza el corpus en alta calidad, conservando archivos TIFF y PDF de visualización.',
+            'Cada carta se transcribe de forma fiel, se graba su lectura en voz y se traduce al inglés con apoyo de IA y la revisión de expertos, evaluando tiempo, precisión y legibilidad.'],
+      cartas: [[4, 'Solicitud de un abrigo'], [9, 'Carta desde Loncoche'], [10, 'Carta de Ema Acevedo']] },
+    { year: 'Mar 2026', t: 'Exposición «Memoria en papel»', d: 'El legado de Rosa Markmann y las voces femeninas de 1952, en la Biblioteca de Viña del Mar.', tag: 'Ago 2026 · Biblioteca Peñalolén',
+      mas: ['«Memoria en papel: el legado de Rosa Markmann y las voces femeninas de 1952» se presentó en la Biblioteca de Viña del Mar en marzo de 2026 y en la Biblioteca de Pregrado de Peñalolén en agosto.'],
+      media: [[G + 'invitacion-padre-hurtado-santiago-17-de-abril-1952.jpg', 'Invitación del Padre Hurtado'], [G + 'viviendas-de-emergencia-ovalle-24-de-agosto-de-1952.jpg', 'Viviendas de emergencia · Ovalle'],
+              [G + 'regalo-muneca-chol-chol-10-de-enero-1952.jpg', 'Regalo de una muñeca · Chol Chol'], [G + 'fundacion-biblioteca-temuco-27-sept-1952.jpg', 'Fundación de una biblioteca · Temuco']] },
+    { year: 'Conversatorio', t: 'Las voces de su tiempo', d: '«Rosa Markmann y las voces de su tiempo: mujeres, memoria y archivo».',
+      mas: ['Conversatorio «Rosa Markmann y las voces de su tiempo: mujeres, memoria y archivo», parte de las actividades que buscan que estos documentos trasciendan como fuentes de memoria colectiva.'] }
   ];
+
   const track = document.getElementById('track');
   track.innerHTML = HITOS.map(h => `
     <article class="hito"><div class="card">
       <p class="year">${h.year}</p><h3>${h.t}</h3><p>${h.d}</p>${h.tag ? `<span class="tag">${h.tag}</span>` : ''}
+      <span class="mas">Ver más +</span>
     </div></article>`).join('');
   const hitoEls = [...track.children];
   const hitosCount = document.getElementById('hitosCount');
@@ -483,19 +586,21 @@
 
   // Visor de la galería
   const lb = document.getElementById('lb'), lbImg = lb.querySelector('img'), lbCap = lb.querySelector('figcaption');
-  let cur = 0;
-  function show(i){ cur = (i + GAL.length) % GAL.length; const [f, t, s] = GAL[cur]; lbImg.src = `galeria/${f}.jpg`; lbImg.alt = t; lbCap.innerHTML = `${t}<span>${s}</span>`; lb.classList.add('show'); }
+  let cur = 0, lista = null;
+  function show(i){ lista = null; cur = (i + GAL.length) % GAL.length; const [f, t, s] = GAL[cur]; lbImg.src = `galeria/${f}.jpg`; lbImg.alt = t; lbCap.innerHTML = `${t}<span>${s}</span>`; lb.classList.add('show'); }
+  function showList(l, i){ lista = l; cur = (i + l.length) % l.length; const [src, t] = l[cur]; lbImg.src = src; lbImg.alt = t; lbCap.innerHTML = t; lb.classList.add('show'); }
+  const step = d => lista ? showList(lista, cur + d) : show(cur + d);
   masonry.addEventListener('click', e => { const p = e.target.closest('.pieza'); if (p) show(+p.dataset.i); });
   masonry.addEventListener('keydown', e => { const p = e.target.closest('.pieza'); if (p && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); show(+p.dataset.i); } });
   lb.querySelector('.x').onclick = () => lb.classList.remove('show');
-  lb.querySelector('.prev').onclick = () => show(cur - 1);
-  lb.querySelector('.next').onclick = () => show(cur + 1);
+  lb.querySelector('.prev').onclick = () => step(-1);
+  lb.querySelector('.next').onclick = () => step(1);
   lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('show'); });
   addEventListener('keydown', e => {
     if (!lb.classList.contains('show')) return;
     if (e.key === 'Escape') lb.classList.remove('show');
-    if (e.key === 'ArrowRight') show(cur + 1);
-    if (e.key === 'ArrowLeft') show(cur - 1);
+    if (e.key === 'ArrowRight') step(1);
+    if (e.key === 'ArrowLeft') step(-1);
   });
 
   // ---------- Apariciones al desplazarse ----------
@@ -547,8 +652,95 @@
     track.style.setProperty('--hx', Math.max(0, dist * p).toFixed(1));
     const idx = Math.min(HITOS.length - 1, Math.round(p * (HITOS.length - 1)));
     hitoEls.forEach((h, i) => h.classList.toggle('on', i <= idx && i >= idx - 1));
-    hitosCount.innerHTML = `<b>${String(idx + 1).padStart(2, '0')}</b> / ${String(HITOS.length).padStart(2, '0')} · ${HITOS[idx].t}`;
+    hitosCount.innerHTML = `<b>${String(idx + 1).padStart(2, '0')}</b> / ${String(HITOS.length).padStart(2, '0')} · ${HITOS[idx].t}<span class="hitos-hint">· Arrastra, usa las flechas o toca una tarjeta</span>`;
+    if (typeof btnPrev !== 'undefined'){ btnPrev.disabled = idx === 0; btnNext.disabled = idx === HITOS.length - 1; }
   }
+  // La línea avanza con la rueda; además se navega libremente (flechas, arrastre, dedo, teclado).
+  // Navegar libremente mueve la página por detrás al mismo punto, así ambos métodos nunca se desfasan.
+  const wrapEl = document.getElementById('trackWrap');
+  const yDe = i => hitos.offsetTop + (hitos.offsetHeight - innerHeight) * (i / (HITOS.length - 1));
+  const idxActual = () => { const span = hitos.offsetHeight - innerHeight; const pr = Math.min(1, Math.max(0, (scrollY - hitos.offsetTop) / span)); return Math.round(pr * (HITOS.length - 1)); };
+  // Desplazamiento suave propio (el del navegador a veces no arranca): avanza la página hasta el hito i
+  let anim = 0, destino = null;
+  const ir = i => {
+    i = Math.max(0, Math.min(HITOS.length - 1, i));
+    destino = i;
+    btnPrev.disabled = i === 0; btnNext.disabled = i === HITOS.length - 1;
+    const y0 = scrollY, y1 = yDe(i), t0 = performance.now(), dur = reduce ? 0 : 650;
+    cancelAnimationFrame(anim); root.style.scrollBehavior = 'auto';
+    const paso = now => {
+      const k = dur ? Math.min(1, (now - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 3);
+      scrollTo(0, y0 + (y1 - y0) * e);
+      if (k < 1) anim = requestAnimationFrame(paso); else { anim = 0; destino = null; root.style.scrollBehavior = ''; }
+    };
+    anim = requestAnimationFrame(paso);
+    // respaldo: si el navegador pausa las animaciones, llega igual al hito
+    setTimeout(() => { if (destino === i && anim){ cancelAnimationFrame(anim); anim = 0; scrollTo(0, y1); destino = null; root.style.scrollBehavior = ''; } }, dur + 300);
+  };
+  // Si ya hay un desplazamiento en curso, las flechas cuentan desde su destino (clics rápidos seguidos)
+  const base = () => destino != null ? destino : idxActual();
+  const btnPrev = wrapEl.querySelector('.tl-arrow.prev'), btnNext = wrapEl.querySelector('.tl-arrow.next');
+  btnPrev.onclick = e => { e.stopPropagation(); ir(base() - 1); };
+  btnNext.onclick = e => { e.stopPropagation(); ir(base() + 1); };
+  let drag = null;
+  wrapEl.addEventListener('pointerdown', e => {
+    if (e.target.closest('.tl-arrow')) return;
+    drag = { x: e.clientX, y: scrollY, moved: false, id: e.pointerId, hito: e.target.closest('.hito') };
+  });
+  addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) < 6) return;
+    if (!drag.moved){ drag.moved = true; wrapEl.classList.add('drag'); root.style.scrollBehavior = 'auto'; }
+    const span = hitos.offsetHeight - innerHeight, dist = track.scrollWidth - innerWidth + 40;
+    scrollTo(0, drag.y - dx * span / dist);
+  });
+  const soltar = e => {
+    if (!drag) return;
+    const d = drag; drag = null; wrapEl.classList.remove('drag'); root.style.scrollBehavior = '';
+    if (d.moved) ir(idxActual());                                 // se acomoda al hito más cercano
+    else if (d.hito) abrirHito(hitoEls.indexOf(d.hito));
+  };
+  addEventListener('pointerup', soltar); addEventListener('pointercancel', () => { drag = null; wrapEl.classList.remove('drag'); root.style.scrollBehavior = ''; });
+
+  // Panel de cada hito: texto ampliado y su material relacionado
+  const hp = document.getElementById('hp'), hpCard = hp.querySelector('.hp-card');
+  let hpIdx = 0;
+  function abrirHito(i){
+    if (i < 0 || i >= HITOS.length) return;
+    hpIdx = i; const h = HITOS[i];
+    hpCard.innerHTML = `
+      <button class="hp-close" aria-label="Cerrar">✕</button>
+      <p class="year">${h.year}</p><h3>${h.t}</h3>${h.tag ? `<span class="tag">${h.tag}</span>` : ''}
+      <div class="rule"></div>
+      ${(h.mas || [h.d]).map(t => `<p>${t}</p>`).join('')}
+      ${h.media ? `<div class="hp-media">${h.media.map(([src, t], k) => `<button data-k="${k}"><img src="${src}" alt="${t}" loading="lazy"><span>${t}</span></button>`).join('')}</div>` : ''}
+      ${h.cartas ? `<div class="hp-cartas">${h.cartas.map(([id, t]) => `<a class="btn" href="archivo/?carta=${id}">Leer la carta: ${t} →</a>`).join('')}</div>` : ''}
+      <div class="hp-nav"><button data-go="-1" ${i === 0 ? 'disabled' : ''}>‹ ${i > 0 ? HITOS[i - 1].t : ''}</button><button data-go="1" ${i === HITOS.length - 1 ? 'disabled' : ''}>${i < HITOS.length - 1 ? HITOS[i + 1].t : ''} ›</button></div>`;
+    hp.classList.add('show'); hpCard.scrollTop = 0;
+    hpCard.querySelector('.hp-close').focus({ preventScroll: true });
+  }
+  const cerrarHito = () => hp.classList.remove('show');
+  hp.addEventListener('click', e => {
+    if (e.target === hp || e.target.closest('.hp-close')) return cerrarHito();
+    const m = e.target.closest('.hp-media button'); if (m) return showList(HITOS[hpIdx].media, +m.dataset.k);
+    const g = e.target.closest('[data-go]'); if (g && !g.disabled){ const n = hpIdx + +g.dataset.go; abrirHito(n); scrollTo({ top: yDe(n) }); }
+  });
+  hitoEls.forEach((h, i) => { h.tabIndex = 0; h.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); abrirHito(i); } }); });
+  addEventListener('keydown', e => {
+    if (lb.classList.contains('show')) return;
+    if (hp.classList.contains('show')){
+      if (e.key === 'Escape') cerrarHito();
+      if (e.key === 'ArrowRight' && hpIdx < HITOS.length - 1){ abrirHito(hpIdx + 1); scrollTo({ top: yDe(hpIdx) }); }
+      if (e.key === 'ArrowLeft' && hpIdx > 0){ abrirHito(hpIdx - 1); scrollTo({ top: yDe(hpIdx) }); }
+      return;
+    }
+    if (document.body.dataset.scene === 'hitos'){
+      if (e.key === 'ArrowRight'){ e.preventDefault(); ir(base() + 1); }
+      if (e.key === 'ArrowLeft'){ e.preventDefault(); ir(base() - 1); }
+    }
+  });
+
   addEventListener('scroll', () => { if (!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive: true });
   addEventListener('resize', frame);
   frame();

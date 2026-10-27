@@ -3278,6 +3278,16 @@ document.addEventListener('keydown', (e) => {
 
   const qp = new URLSearchParams(location.search).get('p');
   setBoceto(BOCETOS[qp] ? qp : '1', false);
+
+  // Enlace directo a una carta (?carta=10): abre su región y luego la carta
+  const qc = +new URLSearchParams(location.search).get('carta');
+  const lc = qc && letters.find(l => l.id === qc);
+  if (lc){
+    setTimeout(() => {
+      focusRegion(lc.regionCode);
+      setTimeout(() => openLetter(lc.id), 900);
+    }, 300);
+  }
 })();
 </script>
 </body>

@@ -1389,6 +1389,12 @@
     position: static; width: min(560px, 100%); margin: 44px auto 10px; opacity: .85;
   }
   html[data-p] .rx.abajo svg{ stroke-width: 1.2; }
+
+  /* Insignia ilustrada (estilo de línea gruesa dentro de un círculo) */
+  .rx .tint{ fill: currentColor; fill-opacity: var(--t, .15); }
+  html[data-p] .rx.insignia{ top: 22px; width: min(250px, 40%); }
+  html[data-p] .rx.insignia.abajo{ width: min(460px, 90%); margin-top: 34px; }
+  .rx .kite{ opacity: 0; animation: rxFade 1s ease 1.6s forwards; }
 </style>
 </head>
 <body>
@@ -2894,21 +2900,49 @@ document.addEventListener('keydown', (e) => {
   // Trazo fino en el color de acento del boceto (oro, plata o negro).
   // ==================================================================
   const RX = {
-    // Valparaíso: cerro con casas, ascensor que sube y baja, olas del puerto
-    V: `
-      <path class="d" pathLength="1" d="M0 104 C34 98 58 80 92 64 C122 50 150 44 186 40 C206 38 224 38 240 38"/>
+    // Valparaíso: el ascensor como protagonista, con el cerro, sus casas y el mar
+    V: { vb: '0 0 260 190', insignia: true, svg: `
+      <!-- sol tenue detrás del cerro -->
+      <g class="sun"><circle cx="108" cy="38" r="18" class="tint" style="--t:.14"/>
+        <animateTransform attributeName="transform" type="translate" values="0 4; 0 -3; 0 4" dur="12s" repeatCount="indefinite"/></g>
+      <!-- línea del cerro -->
+      <path class="d" pathLength="1" d="M0 150 C40 140 70 112 110 92 C140 76 170 64 214 56 C232 53 248 52 260 52"/>
+      <!-- casas del cerro, al fondo -->
       <g class="d2">
-        <rect x="104" y="47" width="12" height="10"/><path d="M103 47 l7 -6 l7 6"/>
-        <rect x="128" y="41" width="14" height="10"/><path d="M127 41 l8 -6 l8 6"/>
-        <rect x="160" y="35" width="12" height="9"/><path d="M159 35 l7 -5 l7 5"/>
-        <rect x="190" y="31" width="13" height="9"/><path d="M189 31 l7 -5 l8 5"/>
+        <path d="M16 112 h30 v34 h-30 Z" class="tint" style="--t:.12"/><path d="M13 114 l18 -14 l18 14"/>
+        <rect x="21" y="122" width="7" height="9" rx="1"/><rect x="34" y="122" width="7" height="9" rx="1"/>
+        <path d="M48 96 h28 v40 h-28 Z" class="tint" style="--t:.20"/><path d="M45 98 h34"/>
+        <rect x="53" y="105" width="6" height="8" rx="1"/><rect x="65" y="105" width="6" height="8" rx="1"/><rect x="53" y="119" width="6" height="8" rx="1"/><rect x="65" y="119" width="6" height="8" rx="1"/>
+        <path d="M78 82 h24 v30 h-24 Z" class="tint" style="--t:.10"/><path d="M75 84 l15 -11 l15 11"/>
+        <rect x="84" y="92" width="12" height="8" rx="1"/>
+        <path d="M184 30 h26 v24 h-26 Z" class="tint" style="--t:.12"/><path d="M181 32 h32"/>
+        <rect x="189" y="38" width="6" height="7" rx="1"/><rect x="199" y="38" width="6" height="7" rx="1"/>
+        <path d="M214 38 h30 v18 h-30 Z" class="tint" style="--t:.18"/><path d="M211 40 l18 -10 l18 10"/>
       </g>
-      <path class="d" pathLength="1" d="M44 108 L98 56"/><path class="d" pathLength="1" d="M52 110 L104 60"/>
-      <g class="car"><rect x="-7" y="-6" width="14" height="10" rx="1.5"/><path d="M-4 -2 h8"/>
-        <animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;1;1;0;0" keyTimes="0;.4;.5;.9;1" calcMode="linear" path="M54 100 L98 58"/></g>
-      <g class="sea"><path d="M-40 118 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
-        <path d="M-30 126 q10 -4 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" opacity=".55"/>
-        <animateTransform attributeName="transform" type="translate" from="0 0" to="40 0" dur="5s" repeatCount="indefinite"/></g>`,
+      <!-- estación superior sobre pilotes -->
+      <g class="d2" style="stroke-width:1.8">
+        <path d="M138 44 h40 v24 h-40 Z" class="tint" style="--t:.22"/><path d="M134 44 h48"/><path d="M140 38 h36 v6"/>
+        <rect x="143" y="50" width="8" height="9" rx="1.2"/><rect x="155" y="50" width="8" height="9" rx="1.2"/><rect x="167" y="50" width="7" height="9" rx="1.2"/>
+        <path d="M142 68 l8 22 M158 68 l-4 20 M158 68 l8 14 M174 68 l-6 12"/>
+      </g>
+      <!-- estación inferior -->
+      <g class="d2" style="stroke-width:1.8">
+        <path d="M18 150 h34 v18 h-34 Z" class="tint" style="--t:.22"/><path d="M14 150 h42"/>
+        <rect x="23" y="155" width="9" height="8" rx="1.2"/><rect x="37" y="155" width="9" height="8" rx="1.2"/>
+      </g>
+      <!-- riel: el protagonista, en diagonal con sus durmientes -->
+      <path class="d" pathLength="1" d="M52 166 L146 72" style="stroke-width:2.2"/>
+      <path class="d" pathLength="1" d="M62 172 L156 78" style="stroke-width:2.2"/>
+      <path class="d2" d="M60 162 l8 8 M74 148 l8 8 M88 134 l8 8 M102 120 l8 8 M116 106 l8 8 M130 92 l8 8" style="stroke-width:1.4"/>
+      <!-- carro del ascensor, sube y baja -->
+      <g class="car" style="stroke-width:2">
+        <path d="M-15 -14 h30 l0 20 h-30 Z" class="tint" style="--t:.38" transform="rotate(-45)"/>
+        <g transform="rotate(-45)"><rect x="-11" y="-10" width="8" height="7" rx="1"/><rect x="3" y="-10" width="8" height="7" rx="1"/><path d="M-15 -14 h30"/></g>
+        <animateMotion dur="8s" repeatCount="indefinite" keyPoints="0;1;1;0;0" keyTimes="0;.42;.5;.92;1" calcMode="linear" path="M70 150 L134 86"/></g>
+      <!-- mar al pie del cerro -->
+      <g class="sea"><path d="M-40 182 q10 -4 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
+        <animateTransform attributeName="transform" type="translate" from="0 0" to="40 0" dur="5s" repeatCount="indefinite"/></g>
+      ` },
     // Metropolitana: fachada de La Moneda con la bandera flameando
     RM: `
       <path class="d" pathLength="1" d="M30 116 H210"/>
@@ -2967,7 +3001,10 @@ document.addEventListener('keydown', (e) => {
   if (rxAbajo){ rx.classList.add('abajo'); document.getElementById('pickList').after(rx); }
   showChooser = function(code){
     _showChooser(code);
-    rx.innerHTML = `<svg viewBox="0 0 240 130" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${RX[code] || RX._}</svg>`;
+    const art = RX[code] || RX._;
+    const vb = art.vb || '0 0 240 130';
+    rx.classList.toggle('insignia', !!art.insignia);
+    rx.innerHTML = `<svg viewBox="${vb}" fill="none" stroke="currentColor" stroke-width="${art.insignia ? 2.2 : 1.4}" stroke-linecap="round" stroke-linejoin="round">${art.svg || art}</svg>`;
   };
 
   // Envolver las funciones del sitio: abrir una carta / ocultar vistas

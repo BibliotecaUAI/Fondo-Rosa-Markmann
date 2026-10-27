@@ -1410,6 +1410,39 @@
       linear-gradient(180deg, #fbf9f6, #f6f4ef 40%, #f1eee8);
   }
   .rx[hidden]{ display: none !important; }
+
+  /* Página más realista: sin texto descriptivo bajo el selector de versiones */
+  .bx-desc{ display: none !important; }
+  body{ padding-top: 76px; }
+
+  /* ---------- Marco de museo para la carta abierta ----------
+     Paspartú en el tono de la tarjeta, doble filete en el color de acento
+     de cada versión y la carta montada con una sombra suave. */
+  html[data-p="1"]{ --mat: linear-gradient(180deg, #1b1913, #12110d); --frame: #c9a227; --frame-soft: rgba(201,162,39,0.35); }
+  html[data-p="4"]{ --mat: linear-gradient(180deg, #1b1b1d, #121213); --frame: #c3c8cf; --frame-soft: rgba(195,200,207,0.35); }
+  html[data-p="5"]{ --mat: linear-gradient(180deg, #fbfaf7, #f2f0eb); --frame: #141416; --frame-soft: rgba(20,20,22,0.30); }
+  html[data-p] .lx-frame{
+    padding: 18px; border-radius: 3px; background: var(--mat);
+    border: 1px solid var(--frame);
+    box-shadow:
+      0 0 0 5px var(--c-noir, #0b0b0c),
+      0 0 0 6px var(--frame-soft),
+      0 26px 54px rgba(var(--shadow-rgb),0.45);
+  }
+  html[data-p="5"] .lx-frame{ box-shadow: 0 0 0 5px #ffffff, 0 0 0 6px var(--frame-soft), 0 22px 46px rgba(20,20,22,0.16); }
+  html[data-p] .lx-frame img{
+    border-radius: 1px;
+    box-shadow: 0 0 0 1px var(--frame-soft), 0 6px 18px rgba(0,0,0,0.35);
+  }
+  /* Esquineros finos en el paspartú */
+  html[data-p] .lx-frame::before, html[data-p] .lx-frame::after{
+    content: ""; position: absolute; width: 14px; height: 14px; pointer-events: none;
+    border: 1px solid var(--frame);
+  }
+  html[data-p] .lx-frame::before{ top: 7px; left: 7px; border-right: 0; border-bottom: 0; }
+  html[data-p] .lx-frame::after{ bottom: 7px; right: 7px; border-left: 0; border-top: 0; }
+  html[data-p] .lx-thumbs{ margin-bottom: 18px; }
+  html[data-p] .lx-cap{ margin-top: 16px; }
 </style>
 </head>
 <body>
@@ -2446,14 +2479,9 @@ document.addEventListener('keydown', (e) => {
 // ==================================================================
 (function(){
   const BOCETOS = {
-    1: { nombre: 'Archivo dorado',
-         desc: 'Negro y oro · el mismo diseño y funcionamiento que Galería blanca, con la paleta original del sitio' },
-    4: { nombre: 'Archivo plata',
-         desc: 'Igual a Archivo dorado —mármol, brillos, líneas— con plata en vez de oro' },
-    5: { nombre: 'Archivo blanco',
-         desc: 'Archivo dorado invertido: blanco con textura de mármol, y todo lo dorado pasa a negro' },
-    3: { nombre: 'Galería blanca',
-         desc: 'Blanco satinado · negro con brillo · tipografía UAI — al abrir una carta, se escribe sola a todo el ancho' }
+    1: { nombre: 'Archivo dorado', desc: '' },
+    4: { nombre: 'Archivo plata', desc: '' },
+    5: { nombre: 'Archivo blanco', desc: '' }
   };
   const root = document.documentElement;
   // Los dos bocetos comparten el mismo diseño y funcionamiento; solo cambia la paleta

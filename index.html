@@ -340,6 +340,23 @@
   .archivo-card::before{ content: ""; position: absolute; inset: -40% -10% auto; height: 120%; pointer-events: none;
     background: radial-gradient(ellipse at 50% 0%, rgba(var(--acc-rgb),0.18), transparent 60%); }
   .archivo-card p{ max-width: 52ch; margin: 0 auto 30px; color: var(--ink-dim); line-height: 1.75; font-size: 16px; }
+  /* La tarjeta como un sobre: solapa con sello arriba y pliegues desde las esquinas inferiores */
+  .archivo-card{ --solapa: clamp(110px, 15vw, 180px); border-radius: 8px; padding-top: calc(var(--solapa) + 56px); perspective: 1000px; }
+  .archivo-card > :is(p, h2, a){ position: relative; z-index: 2; }
+  .sobre-pliegues, .sobre-solapa{ position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; }
+  .sobre-pliegues{ height: 100%; z-index: 0; }
+  .sobre-pliegues path{ fill: none; stroke: rgba(var(--acc-rgb),0.2); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .sobre-solapa{ height: var(--solapa); z-index: 1; transform-origin: top; transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+  .sobre-solapa .cara{ fill: rgba(var(--acc-rgb),0.07); }
+  .sobre-solapa .borde{ fill: none; stroke: rgba(var(--acc-rgb),0.6); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .sobre-sello{ position: absolute; z-index: 3; left: 50%; top: var(--solapa); width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 50%;
+    display: grid; place-items: center; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 19px; letter-spacing: .04em; color: rgba(0,0,0,0.62);
+    background: radial-gradient(circle at 35% 30%, var(--acc-2), var(--acc) 55%, var(--acc-dim));
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5), inset 0 0 0 4px rgba(0,0,0,0.12); transition: transform .7s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
+  .archivo-card:hover .sobre-solapa{ transform: rotateX(32deg); }
+  .archivo-card:hover .sobre-sello{ transform: translateY(calc(var(--solapa) * -0.16)) rotate(-8deg); box-shadow: 0 6px 22px rgba(var(--acc-rgb),0.35), inset 0 0 0 4px rgba(0,0,0,0.12); }
+  @media (max-width: 900px){ .archivo-card{ --solapa: clamp(84px, 24vw, 120px); padding-top: calc(var(--solapa) + 48px); } .sobre-sello{ width: 50px; height: 50px; margin: -25px 0 0 -25px; font-size: 17px; } }
+  @media (prefers-reduced-motion: reduce){ .sobre-solapa, .sobre-sello{ transition: none; } }
 
   footer{ border-top: 1px solid var(--line-soft); padding: 34px 0 44px; font-size: 12px; color: var(--ink-dim); }
   footer .wrap{ display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
@@ -492,6 +509,9 @@
   <section id="archivo" class="archivo" data-scene="archivo">
     <div class="wrap">
       <div class="archivo-card center reveal">
+        <svg class="sobre-pliegues" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 L50 52 L100 100"/></svg>
+        <svg class="sobre-solapa" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="cara" d="M0 0 H100 L50 100 Z"/><path class="borde" d="M0 0 L50 100 L100 0"/></svg>
+        <span class="sobre-sello" aria-hidden="true">RM</span>
         <p class="eyebrow">Archivo de cartas</p>
         <h2 class="title">Lee las cartas <em>en su lugar de origen</em></h2>
         <p>Recorre el mapa de Chile, elige una región y abre cada carta: la imagen original, su ficha catalográfica y la transcripción en español y en inglés.</p>

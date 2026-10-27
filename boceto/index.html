@@ -922,16 +922,11 @@
   html[data-p] .region-badge{ border-radius: 999px; }
 
   /* ---------- Regiones ---------- */
-  /* Solo la tabla va sobre papel claro; el título, las instrucciones y el mapa siguen en la tarjeta */
-  html[data-p] .map-panel .region-list{
-    --ivory: var(--table-ink); --ivory-dim: var(--table-dim); --gold-light: var(--table-ink); --line: rgba(var(--table-rgb),0.08);
-    color: var(--ivory); padding: 6px 16px; border-radius: 8px;
-    background: var(--table-bg); box-shadow: 0 0 0 1px var(--card-inner);
-  }
-  html[data-p] .map-panel .region-list .region-row:hover{ background: rgba(var(--table-rgb),0.05); }
-  html[data-p] .map-panel .region-list .region-row.active{ background: rgba(var(--table-rgb),0.09); }
+  /* La tabla va en el mismo negro de la tarjeta; las cantidades en negrita */
   html[data-p] .map-panel .region-list .rc{ font-weight: 700; }
-  html[data-p] .map-panel .region-list .region-row:not(.has) .rc{ color: var(--table-faint); }
+  html[data-p] .map-panel .region-list .region-row:not(.has) .rc{ color: var(--ivory-dim); opacity: .6; }
+  html[data-p] .map-panel .region-list .region-row:hover{ background: rgba(255,255,255,0.05); }
+  html[data-p] .map-panel .region-list .region-row.active{ background: rgba(var(--c-acc-rgb),0.12); }
   html[data-p] .region-row{ font-size: 13.5px; padding: 9px 6px; }
   html[data-p] .region-row :is(.rnum, .rc){ font-size: 14.5px; }
   html[data-p] .map-instructions{ font-size: 13.5px; }

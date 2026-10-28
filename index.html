@@ -45,6 +45,8 @@
     -webkit-font-smoothing: antialiased; overflow-x: hidden;
   }
   .serif{ font-family: 'Cormorant Garamond', serif; }
+  /* Nombres de la universidad y la biblioteca: misma letra del título */
+  .uai{ font-family: 'Geomanist', sans-serif; font-weight: 700; }
   a{ color: inherit; }
 
   /* Fondo de mármol fijo, con un resplandor que se desplaza según la sección */
@@ -138,7 +140,7 @@
   .hero{ min-height: 100svh; display: grid; place-items: center; overflow: hidden; padding: calc(var(--nav-h) + 40px) 0 60px; }
   .hero-grid{ display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 5vw, 80px); align-items: center; }
   .hero-text{ text-align: center; transform: translateY(calc(var(--sy, 0) * 0.18px)); opacity: calc(1 - var(--sy, 0) / 700); }
-  .hero-inst{ font-family: 'Cormorant Garamond', serif; font-size: clamp(13px, 1.25vw, 17px); letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--acc-2); white-space: nowrap; margin: 0 0 30px;
+  .hero-inst{ font-family: 'Geomanist', sans-serif; font-size: clamp(13px, 1.2vw, 16px); letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--acc-2); white-space: nowrap; margin: 0 0 30px;
     padding-bottom: 12px; border-bottom: 1px solid var(--line); }
   .hero-eyebrow{ font-family: 'Cormorant Garamond', serif; font-size: clamp(16px, 1.6vw, 21px); letter-spacing: .4em; text-transform: uppercase; color: var(--acc); margin: 0 0 6px; }
   .hero h1{
@@ -197,9 +199,8 @@
   .bio-dates b{ color: var(--acc-2); font-weight: 500; }
   .bio-text p{ font-size: clamp(17px, 1.35vw, 19px); line-height: 1.85; margin: 0 0 26px; color: var(--ink); }
   /* Los párrafos de lectura van justificados en todo el sitio */
-  .bio-text p:not(.eyebrow), .hito p:not(.year), .hp-card p:not(.year), .fondo-text p:not(.eyebrow), .gal-head p:not(.eyebrow), .archivo-card p:not(.eyebrow){ text-align: justify; hyphens: auto; }
+  .bio-text p:not(.eyebrow), .hito p:not(.year), .hp-card p:not(.year), .fondo-text p:not(.eyebrow), .gal-head p:not(.eyebrow){ text-align: justify; hyphens: auto; }
   .bio-text .quote p{ text-align: center; }
-  .archivo-card p:not(.eyebrow){ text-align-last: center; }
   .bio-text p.lead::first-letter{ -webkit-initial-letter: 2; initial-letter: 2; font-weight: 700; color: var(--acc-2); margin-right: .12em; }
   .quote{
     margin: 46px 0; padding: 34px 30px; text-align: center; border-radius: 16px;
@@ -341,9 +342,13 @@
   }
   .archivo-card::before{ content: ""; position: absolute; inset: -40% -10% auto; height: 120%; pointer-events: none;
     background: radial-gradient(ellipse at 50% 0%, rgba(var(--acc-rgb),0.18), transparent 60%); }
-  .archivo-card p{ max-width: 52ch; margin: 0 auto 30px; color: var(--ink-dim); line-height: 1.75; font-size: 16px; }
+  .archivo-card p{ max-width: 60ch; margin: 0 auto 28px; color: var(--ink-dim); line-height: 1.75; font-size: 16px; }
   /* La tarjeta como un sobre: solapa con sello arriba y pliegues desde las esquinas inferiores */
-  .archivo-card{ --solapa: clamp(200px, 27vw, 330px); max-width: 960px; margin: 0 auto; border-radius: 8px; padding-top: calc(var(--solapa) + 78px); perspective: 1000px; }
+  /* proporción de sobre real (apaisado 8:5); la solapa cierra un poco antes de la mitad y todo el texto queda centrado bajo el sello */
+  .archivo-card{ --w: min(960px, calc(100vw - 40px)); --solapa: calc(var(--w) * .25); max-width: 960px; aspect-ratio: 8 / 5; margin: 0 auto; border-radius: 6px;
+    padding: calc(var(--solapa) + 52px) clamp(28px, 5vw, 64px) 44px; perspective: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+  .archivo-card .eyebrow{ margin-bottom: 12px; }
+  .archivo-card h2.title{ font-size: clamp(26px, 3.2vw, 40px); margin-bottom: 14px; }
   .archivo-card > :is(p, h2, a){ position: relative; z-index: 2; }
   .sobre-pliegues, .sobre-solapa{ position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; }
   /* los pliegues suben desde las esquinas y se cierran justo en el sello */
@@ -359,7 +364,7 @@
     box-shadow: 0 6px 18px rgba(0,0,0,0.5), inset 0 0 0 4px rgba(0,0,0,0.12); transition: transform .7s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
   .archivo-card:hover .sobre-solapa{ transform: rotateX(32deg); }
   .archivo-card:hover .sobre-sello{ transform: translateY(calc(var(--solapa) * -0.16)) rotate(-8deg); box-shadow: 0 6px 22px rgba(var(--acc-rgb),0.35), inset 0 0 0 4px rgba(0,0,0,0.12); }
-  @media (max-width: 900px){ .archivo-card{ --solapa: clamp(120px, 36vw, 170px); padding-top: calc(var(--solapa) + 58px); } .sobre-sello{ width: 50px; height: 50px; margin: -25px 0 0 -25px; font-size: 17px; } }
+  @media (max-width: 900px){ .archivo-card{ aspect-ratio: auto; --solapa: clamp(120px, 34vw, 170px); padding-top: calc(var(--solapa) + 50px); } .sobre-sello{ width: 50px; height: 50px; margin: -25px 0 0 -25px; font-size: 17px; } }
   @media (prefers-reduced-motion: reduce){ .sobre-solapa, .sobre-sello{ transition: none; } }
 
   footer{ border-top: 1px solid var(--line-soft); padding: 34px 0 44px; font-size: 12px; color: var(--ink-dim); }
@@ -478,7 +483,7 @@
       <div class="fondo-text">
         <p class="eyebrow reveal">El fondo</p>
         <h2 class="title reveal">Voces femeninas <em>de 1952</em></h2>
-        <p class="reveal">El fondo fue donado a la Biblioteca de la Universidad Adolfo Ibáñez por la profesora Magdalena Pereira. Reúne la correspondencia dirigida a la Primera Dama durante 1952: cartas, notas y telegramas enviados en su mayoría por mujeres de distintas regiones del país.</p>
+        <p class="reveal">El fondo fue donado a la <b class="uai">Biblioteca de la Universidad Adolfo Ibáñez</b> por la profesora Magdalena Pereira. Reúne la correspondencia dirigida a la Primera Dama durante 1952: cartas, notas y telegramas enviados en su mayoría por mujeres de distintas regiones del país.</p>
         <p class="reveal">Es un testimonio de las necesidades sociales del Chile de mediados del siglo XX y una fuente primaria para la historia, la sociología, los estudios de género, la educación y el trabajo social.</p>
         <ul class="proceso reveal">
           <li>Conservación</li><li>Digitalización</li><li>Transcripción</li><li>Lectura en audio</li><li>Traducción al inglés</li><li>Georreferenciación</li>
@@ -527,7 +532,7 @@
 
 <footer>
   <div class="wrap">
-    <span>Bibliotecas UAI · Fondo Rosa Markmann</span>
+    <span><b class="uai">Bibliotecas UAI</b> · Fondo Rosa Markmann</span>
     <span>Proyecto «Preservación, digitalización y puesta en valor del Archivo de la Oficina de la Mujer (1952)»</span>
   </div>
 </footer>
@@ -572,9 +577,9 @@
       mas: ['En un país con alto desempleo, escasez de vivienda y tuberculosis extendida, miles de personas le escribían pidiendo trabajo, casa o medicamentos, o pidiéndole interceder ante el presidente.',
             'Ella o su equipo respondían, derivaban la solicitud a un ministerio o gestionaban ayuda directa.'],
       cartas: [[10, 'Solicitud de trabajo fijo · Valparaíso'], [2, 'Solicitud de un abrigo · Los Andes'], [1, 'Pensión de gracia · Llo-Lleo']] },
-    { year: '2009', t: 'De su Vida al Fondo Histórico', d: 'Murió en Santiago a los 101 años. En 2026, sus cartas de 1952 llegaron a Bibliotecas UAI.',
+    { year: '2009', t: 'De su Vida al Fondo Histórico', d: 'Murió en Santiago a los 101 años. En 2026, sus cartas de 1952 llegaron a <b class="uai">Bibliotecas UAI</b>.',
       mas: ['Rosa Markmann murió en Santiago el 12 de junio de 2009, a los 101 años.',
-            'En 2026, la profesora Magdalena Pereira donó a la Biblioteca de la Universidad Adolfo Ibáñez 8 cajas con la correspondencia dirigida a la Primera Dama durante 1952.',
+            'En 2026, la profesora Magdalena Pereira donó a la <b class="uai">Biblioteca de la Universidad Adolfo Ibáñez</b> 8 cajas con la correspondencia dirigida a la Primera Dama durante 1952.',
             'Son cartas, notas y telegramas enviados en su mayoría por mujeres de distintas regiones del país, que solicitan ayuda o su mediación en problemas sociales, laborales e incluso familiares.',
             'Además de este fondo, el Archivo Nacional de Chile conserva cerca de 8.000 cartas dirigidas a ella.'] },
     { year: '2026', t: 'Piloto de digitalización', d: 'Selección de cartas digitalizadas, transcritas, grabadas y traducidas al inglés.',

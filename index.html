@@ -142,7 +142,7 @@
   .hero-text{ text-align: center; transform: translateY(calc(var(--sy, 0) * 0.18px)); opacity: calc(1 - var(--sy, 0) / 700); }
   .hero-inst{ font-family: 'Geomanist', sans-serif; font-size: clamp(13px, 1.2vw, 16px); letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--acc-2); white-space: nowrap; margin: 0 0 30px;
     padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-  .hero-eyebrow{ font-family: 'Cormorant Garamond', serif; font-size: clamp(16px, 1.6vw, 21px); letter-spacing: .4em; text-transform: uppercase; color: var(--acc); margin: 0 0 6px; }
+  .hero-eyebrow{ font-family: 'Cormorant Garamond', serif; font-size: clamp(16px, 1.6vw, 21px); letter-spacing: .2em; text-transform: uppercase; color: var(--acc); margin: 0 0 6px; }
   .hero h1{
     font-weight: 700; font-size: clamp(48px, 7.5vw, 104px); line-height: .98; margin: 0; letter-spacing: -0.02em;
     background: var(--sheen); background-size: 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -377,7 +377,7 @@
     background: radial-gradient(ellipse 55% 160% at 50% 0%, rgba(var(--acc-rgb),0.12), transparent 70%), linear-gradient(180deg, rgba(10,10,11,0.94), rgba(10,10,11,0.74));
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
   .franja::after{ content: ""; position: absolute; left: clamp(16px, 3vw, 40px); right: clamp(16px, 3vw, 40px); bottom: 0; height: 1px; background: rgba(var(--acc-rgb),0.32); }
-  .franja-inst{ font-weight: 700; font-size: clamp(11px, 1.05vw, 15px); letter-spacing: .12em; text-transform: uppercase; color: var(--acc-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .franja-inst{ font-weight: 700; font-size: clamp(10px, .82vw, 12.5px); letter-spacing: .14em; text-transform: uppercase; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Menú fijo abajo, compacto y siempre visible */
   .nav{ top: auto; bottom: 18px; width: auto; max-width: calc(100% - 24px); height: auto; padding: 6px; justify-content: center; }
@@ -387,7 +387,8 @@
 
   /* Portada: todo centrado y el botón bajo la leyenda */
   .hero{ padding: 102px 0 110px; }
-  .hero-sub{ margin-bottom: 30px; }
+  .hero-sub{ margin: 0 auto 30px; max-width: 30em; padding: 22px 28px; border-radius: 16px; font-size: clamp(19px, 1.7vw, 23px); color: var(--acc-2);
+    background: rgba(var(--acc-rgb),0.05); border: 1px solid var(--glass-line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
   .hero-cta{ padding: 14px 30px; font-size: 15px; }
 
   /* Nombre de cada sección: igual que en Biografía (tamaño y color) */
@@ -399,11 +400,15 @@
     .viaje-escena{ position: sticky; top: 0; height: 100vh; overflow: hidden; }
     .viaje-fila{ display: flex; width: 300vw; height: 100%; will-change: transform; }
     .viaje-fila > section{ flex: 0 0 100vw; height: 100vh; overflow: hidden; }
-    .viaje .hero{ min-height: 0; }
+    .viaje .hero{ min-height: 0; place-items: start center; padding: 104px 0 0; }
+    .viaje .hero-grid{ align-items: start; }
+    .viaje .hero-text{ align-self: center; }
+    .viaje .hero-photo, .viaje .bio-sticky{ width: min(460px, calc((100vh - 200px) * .75)); justify-self: center; }
+    .viaje .hero-photo{ margin: 0; } .viaje .bio-sticky{ position: relative; top: 0; transform: none !important; opacity: 1 !important; filter: none !important; }
+    .viaje .hero-photo .frame img, .viaje .bio-sticky .frame img{ aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
     .viaje .hero-text, .viaje .hero-photo{ transform: none !important; opacity: 1 !important; }
-    .viaje .bio{ padding: 110px 0 0; }
+    .viaje .bio{ padding: 104px 0 0; }
     .viaje .bio-text{ will-change: transform; }
-    .viaje .bio-sticky{ width: min(100%, calc((100vh - 290px) * .78)); justify-self: center; }
     .hitos{ height: 520vh; }
   }
 
@@ -423,7 +428,7 @@
     .links{ display: flex; position: static; flex-direction: row; padding: 0; background: none; border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; overflow-x: auto; scrollbar-width: none; }
     .links a{ padding: 8px 11px; font-size: 12px; }
     .hero{ padding-top: 100px; }
-    .franja-inst{ font-size: 10px; letter-spacing: .05em; }
+    .franja-inst{ font-size: 9.5px; letter-spacing: .06em; }
     .stats{ grid-template-columns: 1fr 1fr; gap: 10px; } .stat{ padding: 20px 16px; } .stat b{ font-size: 42px; }
     .bio{ padding-top: 12vh; }
     .lb .prev, .lb .next{ top: auto; bottom: 22px; }
@@ -464,12 +469,12 @@
         <p class="hero-eyebrow reveal" style="--d:.1s">Fondo histórico</p>
         <h1 class="reveal" style="--d:.2s">Rosa Markmann</h1>
         <div class="hero-rule reveal" style="--d:.3s"></div>
-        <p class="hero-sub reveal" style="--d:.4s">Un recorrido por las cartas que miles de chilenas y chilenos le escribieron en 1952</p>
+        <p class="hero-sub reveal" style="--d:.4s">Filántropa y defensora de la mujer chilena: su legado vive en las miles de cartas que le escribieron en 1952 y en las personas a las que su labor permitió ayudar</p>
         <a class="nav-cta hero-cta reveal" style="--d:.5s" href="#biografia">Comenzar recorrido</a>
       </div>
       <figure class="hero-photo reveal" style="--d:.25s">
         <div class="frame"><img src="assets/images/rosa-markmann-traje-blanco.jpg" alt="Retrato de Rosa Markmann con traje blanco cruzado y broche en la solapa"></div>
-        <figcaption>Rosa Markmann Reijer, Primera Dama de Chile (1946–1952) · Retrato de estudio <span class="nota">· fotografía colorizada digitalmente</span></figcaption>
+        <figcaption>Rosa Markmann Reijer (1907–2009) · Retrato de estudio <span class="nota">· fotografía colorizada digitalmente</span></figcaption>
       </figure>
     </div>
   </section>
@@ -879,6 +884,6 @@
   medirViaje(); frame();
 })();
 </script>
-<script src="assets/luna.js"></script>
+<script src="assets/luna.js?v=3"></script>
 </body>
 </html>

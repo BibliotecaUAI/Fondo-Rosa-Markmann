@@ -76,7 +76,7 @@ html.leyendo,html.leyendo body{overflow:hidden}
 .chip .prog{width:46px;height:2px;background:rgba(var(--q-14110a, 20,17,10),.25);border-radius:2px;overflow:hidden;display:none}
 .chip .prog i{display:block;height:100%;width:0;background:var(--p-14110a, #14110a)}
 .chip.suena .prog{display:block}
-.transc{font:400 19.5px/1.62 'Cormorant Garamond',serif;color:var(--p-ebe6d9, #ebe6d9);max-width:62ch;margin:0}
+.transc{font:400 19.5px/1.62 'Cormorant Garamond',serif;color:var(--p-ebe6d9, #ebe6d9);max-width:62ch;margin:0;text-align:justify;hyphens:auto}
 .transc .capital{float:left;font-size:3.3em;line-height:.82;color:var(--acc);padding:.06em .1em 0 0;font-weight:500}
 .transc .falta{opacity:0}
 .transc .cursor{display:inline-block;width:1px;height:1em;margin:0 1px -.14em;background:var(--acc2);animation:parpadeo 1s steps(1) infinite}

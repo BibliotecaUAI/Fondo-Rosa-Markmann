@@ -137,8 +137,8 @@
   /* 1 · Portada */
   .hero{ min-height: 100svh; display: grid; place-items: center; overflow: hidden; padding: calc(var(--nav-h) + 40px) 0 60px; }
   .hero-grid{ display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 5vw, 80px); align-items: center; }
-  .hero-text{ transform: translateY(calc(var(--sy, 0) * 0.18px)); opacity: calc(1 - var(--sy, 0) / 700); }
-  .hero-inst{ font-size: 11px; letter-spacing: .34em; text-transform: uppercase; font-weight: 500; color: var(--ink); opacity: .8; margin: 0 0 30px;
+  .hero-text{ text-align: center; transform: translateY(calc(var(--sy, 0) * 0.18px)); opacity: calc(1 - var(--sy, 0) / 700); }
+  .hero-inst{ font-family: 'Cormorant Garamond', serif; font-size: clamp(13px, 1.25vw, 17px); letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--acc-2); white-space: nowrap; margin: 0 0 30px;
     padding-bottom: 12px; border-bottom: 1px solid var(--line); }
   .hero-eyebrow{ font-family: 'Cormorant Garamond', serif; font-size: clamp(16px, 1.6vw, 21px); letter-spacing: .4em; text-transform: uppercase; color: var(--acc); margin: 0 0 6px; }
   .hero h1{
@@ -147,8 +147,8 @@
     animation: sheen 9s ease-in-out 1.5s infinite;
   }
   @keyframes sheen{ 0%{ background-position: 100% 0; } 38%, 100%{ background-position: 0% 0; } }
-  .hero-rule{ width: 160px; height: 1px; margin: 26px 0 22px; background: linear-gradient(90deg, var(--acc), transparent); }
-  .hero-sub{ font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(19px, 1.9vw, 25px); line-height: 1.45; color: var(--ink-dim); max-width: 34ch; margin: 0 0 34px; }
+  .hero-rule{ width: 160px; height: 1px; margin: 26px auto 22px; background: linear-gradient(90deg, transparent, var(--acc), transparent); }
+  .hero-sub{ font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(19px, 1.9vw, 25px); line-height: 1.45; color: var(--ink-dim); max-width: 34ch; margin: 0 auto 34px; }
   .btn{
     display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 999px; text-decoration: none;
     font-size: 13.5px; font-weight: 500; letter-spacing: .02em; cursor: pointer;
@@ -182,9 +182,7 @@
     .hero-grid{ grid-template-columns: 1fr; text-align: center; gap: 34px; }
     .hero-text, .hero-photo{ transform: none !important; opacity: 1 !important; }
     .hero h1{ font-size: clamp(44px, 13vw, 66px); }
-    .hero-inst{ font-size: 10px; letter-spacing: .26em; }
-    .hero-rule{ margin-left: auto; margin-right: auto; background: linear-gradient(90deg, transparent, var(--acc), transparent); }
-    .hero-sub{ margin-left: auto; margin-right: auto; }
+    .hero-inst{ font-size: 11.5px; letter-spacing: .08em; }
     .hero-photo{ width: min(270px, 74%); }
     .scroll-cue{ display: none; }
   }
@@ -198,6 +196,10 @@
   .bio-dates{ display: flex; justify-content: space-between; margin-top: 16px; font-size: 12px; letter-spacing: .14em; color: var(--ink-dim); }
   .bio-dates b{ color: var(--acc-2); font-weight: 500; }
   .bio-text p{ font-size: clamp(17px, 1.35vw, 19px); line-height: 1.85; margin: 0 0 26px; color: var(--ink); }
+  /* Los párrafos de lectura van justificados en todo el sitio */
+  .bio-text p:not(.eyebrow), .hito p:not(.year), .hp-card p:not(.year), .fondo-text p:not(.eyebrow), .gal-head p:not(.eyebrow), .archivo-card p:not(.eyebrow){ text-align: justify; hyphens: auto; }
+  .bio-text .quote p{ text-align: center; }
+  .archivo-card p:not(.eyebrow){ text-align-last: center; }
   .bio-text p.lead::first-letter{ -webkit-initial-letter: 2; initial-letter: 2; font-weight: 700; color: var(--acc-2); margin-right: .12em; }
   .quote{
     margin: 46px 0; padding: 34px 30px; text-align: center; border-radius: 16px;
@@ -413,7 +415,7 @@
         <p class="hero-eyebrow reveal" style="--d:.1s">Fondo histórico</p>
         <h1 class="reveal" style="--d:.2s">Rosa Markmann</h1>
         <div class="hero-rule reveal" style="--d:.3s"></div>
-        <p class="hero-sub reveal" style="--d:.4s">“Un recorrido por las cartas que miles de chilenas y chilenos le escribieron en 1952”</p>
+        <p class="hero-sub reveal" style="--d:.4s">Un recorrido por las cartas que miles de chilenas y chilenos le escribieron en 1952</p>
       </div>
       <figure class="hero-photo reveal" style="--d:.25s">
         <div class="frame"><img src="assets/images/rosa-markmann-traje-blanco.jpg" alt="Retrato de Rosa Markmann con traje blanco cruzado y broche en la solapa"></div>
@@ -444,7 +446,7 @@
         </div>
         <h3 class="reveal">¿Por qué recibía tantas cartas?</h3>
         <p class="reveal">Creó la Oficina de la Mujer: un equipo de abogadas, asistentes sociales y matronas dedicado a leer y gestionar las peticiones que llegaban de todo Chile.</p>
-        <p class="reveal">En un país con alto desempleo, escasez de vivienda y tuberculosis extendida, miles de personas le escribían pidiendo trabajo, casa o medicamentos, o pidiéndole interceder ante el Presidente. Ella o su equipo respondían, derivaban la solicitud a un ministerio o gestionaban ayuda directa.</p>
+        <p class="reveal">En un país con alto desempleo, escasez de vivienda y tuberculosis extendida, miles de personas le escribían pidiendo trabajo, casa o medicamentos, o pidiéndole interceder ante el presidente. Ella o su equipo respondían, derivaban la solicitud a un ministerio o gestionaban ayuda directa.</p>
       </div>
     </div>
   </section>
@@ -485,7 +487,7 @@
       <div class="stats">
         <div class="stat reveal"><b data-count="8">0</b><span>cajas de correspondencia</span></div>
         <div class="stat reveal" style="--d:.1s"><b data-count="1952">0</b><span>año de las cartas</span></div>
-        <div class="stat reveal" style="--d:.2s"><b data-count="11">0</b><span>cartas digitalizadas en el piloto 2026</span></div>
+        <div class="stat reveal" style="--d:.2s"><b data-count="10">0</b><span>cartas digitalizadas en el piloto 2026</span></div>
         <div class="stat reveal" style="--d:.3s"><b data-count="17">0</b><span>documentos en la exposición «Memoria en papel»</span></div>
       </div>
     </div>
@@ -501,7 +503,7 @@
           <p class="eyebrow reveal">Galería</p>
           <h2 class="title reveal">Memoria <em>en papel</em></h2>
         </div>
-        <p class="reveal">Documentos de la exposición «Memoria en papel: el legado de Rosa Markmann y las voces femeninas de 1952», presentada en la Biblioteca de Viña del Mar en marzo de 2026.</p>
+        <p class="reveal">Documentos de la exposición «Memoria en papel: el legado de Rosa Markmann y las voces femeninas de 1952», presentada en la Biblioteca de Viña del Mar en marzo de 2026 y en la Biblioteca de Pregrado de Peñalolén en agosto de 2026.</p>
       </div>
       <div class="masonry" id="masonry"></div>
     </div>
@@ -516,7 +518,7 @@
         <span class="sobre-sello" aria-hidden="true">RM</span>
         <p class="eyebrow">Archivo de cartas</p>
         <h2 class="title">Lee las cartas <em>en su lugar de origen</em></h2>
-        <p>Recorre el mapa de Chile, elige una región y abre cada carta: la imagen original, su ficha catalográfica y la transcripción en español y en inglés.</p>
+        <p>Recorre el mapa de Chile, elige una región y abre cada carta: la imagen original, sus datos, la transcripción y su traducción al inglés.</p>
         <a class="btn solid" href="archivo/">Entrar al archivo <span aria-hidden="true">→</span></a>
       </div>
     </div>
@@ -526,7 +528,7 @@
 <footer>
   <div class="wrap">
     <span>Bibliotecas UAI · Fondo Rosa Markmann</span>
-    <span>Prototipo de recorrido · contenido del proyecto «Preservación, digitalización y puesta en valor del Archivo de la Oficina de la Mujer (1952)»</span>
+    <span>Proyecto «Preservación, digitalización y puesta en valor del Archivo de la Oficina de la Mujer (1952)»</span>
   </div>
 </footer>
 
@@ -549,42 +551,42 @@
   // ---------- Hitos (fuente: biografía del sitio y documento del proyecto) ----------
   const R = 'assets/images/', G = 'galeria/';
   const HITOS = [
-    { year: '1907', t: 'Nace en Taltal', d: 'Rosa Markmann Reijer nace en el norte de Chile.',
+    { year: '1907', t: 'Nacimiento en Taltal', d: 'Rosa Markmann Reijer nació en Taltal, en el norte de Chile.',
       mas: ['Rosa Markmann Reijer nació en Taltal, en la Región de Antofagasta, en 1907. Fue conocida como «Miti».'],
       media: [[R + 'rosa-markmann-vestido-floral.jpg', 'Retrato de estudio · fotografía colorizada digitalmente']] },
-    { year: '1946', t: 'Primera Dama de Chile', d: 'Acompaña al presidente Gabriel González Videla hasta 1952.', tag: '1946 — 1952',
+    { year: '1946', t: 'Primera Dama de Chile', d: 'Acompañó al presidente Gabriel González Videla durante todo su mandato.', tag: '1946 — 1952',
       mas: ['Fue Primera Dama de Chile entre 1946 y 1952, durante el gobierno de su esposo, el presidente Gabriel González Videla.'],
       media: [[R + 'rosa-markmann-traje-blanco.jpg', 'Retrato de estudio · fotografía colorizada digitalmente']] },
-    { year: 'La Moneda', t: 'Un despacho propio', d: 'Es la primera Primera Dama en instalar su oficina en el palacio. Desde ahí crea la Oficina de la Mujer.',
-      mas: ['Fue la primera Primera Dama en instalar un despacho propio dentro del Palacio de La Moneda.',
+    { year: 'La Moneda', t: 'Un despacho propio', d: 'Fue la primera esposa de un presidente en tener despacho propio en el palacio. Desde ahí creó la Oficina de la Mujer.',
+      mas: ['Fue la primera esposa de un presidente chileno en tener un despacho propio dentro del Palacio de La Moneda.',
             'Desde ahí creó la Oficina de la Mujer: un equipo de abogadas, asistentes sociales y matronas dedicado a leer y gestionar las peticiones que llegaban de todo Chile.'],
       media: [[G + 'federacion-chilena-de-instituciones-femeninas.jpg', 'Federación Chilena de Instituciones Femeninas'], [G + 'discurso.jpg', 'Discurso']] },
-    { year: '1949', t: 'El voto de las mujeres', d: 'Las chilenas obtienen el derecho a voto pleno, una causa que ella impulsó.',
+    { year: '1949', t: 'El voto de las mujeres', d: 'Las chilenas obtuvieron el derecho a voto pleno, una causa que ella impulsó.',
       mas: ['Desde La Moneda impulsó el derecho a voto de las mujeres, junto con la creación de viviendas de emergencia y campañas de salud pública que marcaron su época.'],
       media: [[G + 'boletin-defensa-femenina-chiquicamata-30-mayo-1952.jpg', 'Boletín Defensa Femenina · Chuquicamata, 1952']] },
-    { year: '1952', t: '«Madre del Mundo»', d: 'En Nueva York, el Comité Internacional de Madres de Norteamérica le otorga el título en reconocimiento a su labor social.',
+    { year: '1952', t: '«Madre del Mundo»', d: 'En Nueva York, el Comité Internacional de Madres de Norteamérica le otorgó el título en reconocimiento a su labor social.',
       mas: ['En 1952, durante una visita a Nueva York, el Comité Internacional de Madres de Norteamérica le otorgó el título de «Madre del Mundo», en reconocimiento a su labor social.',
             '«Más que a mí, va dirigido a honrar la virtud de la mujer chilena.»'],
       media: [[R + 'rosa-markmann.jpg', 'Retrato de Rosa Markmann']] },
-    { year: '1952', t: 'Miles de cartas', d: 'Personas de todo Chile le escriben pidiendo trabajo, vivienda o medicamentos. Este fondo conserva cartas de ese año.',
-      mas: ['En un país con alto desempleo, escasez de vivienda y tuberculosis extendida, miles de personas le escribían pidiendo trabajo, casa o medicamentos, o pidiéndole interceder ante el Presidente.',
+    { year: '1952', t: 'Miles de cartas', d: 'Personas de todo Chile le escribieron pidiendo trabajo, vivienda o medicamentos. Este fondo conserva cartas de ese año.',
+      mas: ['En un país con alto desempleo, escasez de vivienda y tuberculosis extendida, miles de personas le escribían pidiendo trabajo, casa o medicamentos, o pidiéndole interceder ante el presidente.',
             'Ella o su equipo respondían, derivaban la solicitud a un ministerio o gestionaban ayuda directa.'],
       cartas: [[10, 'Solicitud de trabajo fijo · Valparaíso'], [2, 'Solicitud de un abrigo · Los Andes'], [1, 'Pensión de gracia · Llo-Lleo']] },
-    { year: '2009', t: 'Fallece en Santiago', d: 'Se conservan cerca de 8.000 cartas dirigidas a ella en el Archivo Nacional de Chile.',
-      mas: ['Rosa Markmann murió en Santiago en 2009.', 'Se conservan cerca de 8.000 cartas dirigidas a ella en el Archivo Nacional de Chile.'] },
-    { year: 'Donación', t: 'Llega a Bibliotecas UAI', d: 'La profesora Magdalena Pereira dona 8 cajas de correspondencia a la Biblioteca de la UAI.',
+    { year: '2009', t: 'Muerte en Santiago', d: 'Murió en Santiago en 2009. Su legado sigue vivo en las miles de cartas que recibió.',
+      mas: ['Rosa Markmann murió en Santiago en 2009.', 'Además de este fondo, el Archivo Nacional de Chile conserva cerca de 8.000 cartas dirigidas a ella.'] },
+    { year: 'Donación', t: 'Llegada a Bibliotecas UAI', d: 'La profesora Magdalena Pereira donó 8 cajas de correspondencia a la Biblioteca de la Universidad Adolfo Ibáñez.',
       mas: ['La profesora Magdalena Pereira donó a la Biblioteca de la Universidad Adolfo Ibáñez 8 cajas con la correspondencia dirigida a la Primera Dama durante 1952.',
             'Son cartas, notas y telegramas enviados en su mayoría por mujeres de distintas regiones del país, que solicitan ayuda o su mediación en problemas sociales, laborales e incluso familiares.'] },
     { year: '2026', t: 'Piloto de digitalización', d: 'Selección de cartas digitalizadas, transcritas, grabadas y traducidas al inglés.',
-      mas: ['El proyecto digitaliza el corpus en alta calidad, conservando archivos TIFF y PDF de visualización.',
-            'Cada carta se transcribe de forma fiel, se graba su lectura en voz y se traduce al inglés con apoyo de IA y la revisión de expertos, evaluando tiempo, precisión y legibilidad.'],
-      cartas: [[4, 'Solicitud de un abrigo'], [9, 'Carta desde Loncoche'], [10, 'Carta de Ema Acevedo']] },
-    { year: 'Mar 2026', t: 'Exposición «Memoria en papel»', d: 'El legado de Rosa Markmann y las voces femeninas de 1952, en la Biblioteca de Viña del Mar.', tag: 'Ago 2026 · Biblioteca Peñalolén',
+      mas: ['El proyecto digitaliza el corpus en alta calidad y conserva archivos TIFF para su preservación y PDF para su consulta.',
+            'Cada carta se transcribe de forma fiel, se graba su lectura en voz alta y se traduce al inglés con apoyo de IA y la revisión de expertos. En cada etapa se evalúan el tiempo, la precisión y la legibilidad.'],
+      cartas: [[4, 'Solicitud de beca · Ercilla'], [9, 'Solicitud de trabajo como cartero · Loncoche'], [6, 'Solicitud de ropa, con un poema · Coronel']] },
+    { year: '2026', t: 'Exposición «Memoria en papel»', d: 'El legado de Rosa Markmann y las voces femeninas de 1952 se exhibió en Viña del Mar y en Peñalolén.', tag: 'Viña del Mar, marzo · Peñalolén, agosto',
       mas: ['«Memoria en papel: el legado de Rosa Markmann y las voces femeninas de 1952» se presentó en la Biblioteca de Viña del Mar en marzo de 2026 y en la Biblioteca de Pregrado de Peñalolén en agosto.'],
       media: [[G + 'invitacion-padre-hurtado-santiago-17-de-abril-1952.jpg', 'Invitación del Padre Hurtado'], [G + 'viviendas-de-emergencia-ovalle-24-de-agosto-de-1952.jpg', 'Viviendas de emergencia · Ovalle'],
               [G + 'regalo-muneca-chol-chol-10-de-enero-1952.jpg', 'Regalo de una muñeca · Chol Chol'], [G + 'fundacion-biblioteca-temuco-27-sept-1952.jpg', 'Fundación de una biblioteca · Temuco']] },
     { year: 'Conversatorio', t: 'Las voces de su tiempo', d: '«Rosa Markmann y las voces de su tiempo: mujeres, memoria y archivo».',
-      mas: ['Conversatorio «Rosa Markmann y las voces de su tiempo: mujeres, memoria y archivo», parte de las actividades que buscan que estos documentos trasciendan como fuentes de memoria colectiva.'] }
+      mas: ['El conversatorio «Rosa Markmann y las voces de su tiempo: mujeres, memoria y archivo» forma parte de las actividades que buscan que estos documentos trasciendan como fuentes de memoria colectiva.'] }
   ];
 
   const track = document.getElementById('track');

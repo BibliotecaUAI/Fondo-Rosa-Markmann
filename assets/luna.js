@@ -2,22 +2,23 @@
 (() => {
 const raiz = document.documentElement, CLAVE = 'rm-paleta';
 const guardar = p => { try { localStorage.setItem(CLAVE, p); } catch (e) {} };
-const ICONO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 14.6A8.3 8.3 0 0 1 9.4 3.8a8.3 8.3 0 1 0 10.8 10.8Z"/></svg>';
+// la luna lleva el mismo degradado dorado del botón Comenzar recorrido
+const ICONO = '<svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="luna-oro" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6c866"/><stop offset="1" stop-color="#c9a227"/></linearGradient></defs><path d="M20.2 14.6A8.3 8.3 0 0 1 9.4 3.8a8.3 8.3 0 1 0 10.8 10.8Z"/></svg>';
 
 const css = document.createElement('style');
 css.textContent = `
 .luna{width:40px;height:40px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;padding:0;
   border:1px solid rgba(201,162,39,.38);background:rgba(10,10,11,.55);color:#e6c866;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
   transition:border-color .25s ease,background .25s ease,color .25s ease,transform .25s ease}
-.luna svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linejoin:round;transition:fill .3s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
+.luna svg{width:18px;height:18px;fill:url(#luna-oro);stroke:#c9a227;stroke-width:1;stroke-linejoin:round;transition:fill .3s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
 .luna:hover{border-color:#e6c866;transform:translateY(-1px)}
 .luna:focus-visible{outline:1px solid #e6c866;outline-offset:3px}
 html[data-p="4"] .luna{border-color:rgba(195,200,207,.4);color:#eceef1}
 html[data-p="4"] .luna:hover{border-color:#eceef1}
 html[data-p="4"] .luna:focus-visible{outline-color:#eceef1}
-html[data-p="4"] .luna svg{fill:currentColor;transform:rotate(-20deg)}
+html[data-p="4"] .luna svg{fill:currentColor;stroke:currentColor;transform:rotate(-20deg)}
 .luna.flota{position:fixed;z-index:60;top:max(16px,env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px))}
-.nav .luna{margin-left:auto}`;
+.nav .nav-cta{margin-left:auto}`;
 document.head.appendChild(css);
 
 function pintar(){
@@ -39,9 +40,9 @@ function boton(clase){
   return b;
 }
 
-// En el recorrido va dentro del menú; en el archivo, fija arriba a la derecha.
+// En el recorrido va al final del menú, después de Comenzar recorrido; en el archivo, fija arriba a la derecha.
 const nav = document.querySelector('.nav');
-if (nav) nav.insertBefore(boton(), nav.querySelector('.nav-cta, .menu-btn'));
+if (nav) nav.insertBefore(boton(), nav.querySelector('.nav-progress'));
 else document.body.appendChild(boton('flota'));
 window.rmLuna = { boton, pintar };
 pintar();

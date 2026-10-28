@@ -18,7 +18,9 @@ html[data-p="4"] .luna:hover{border-color:#eceef1}
 html[data-p="4"] .luna:focus-visible{outline-color:#eceef1}
 html[data-p="4"] .luna svg{fill:currentColor;stroke:currentColor;transform:rotate(-20deg)}
 .luna.flota{position:fixed;z-index:60;top:max(16px,env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px))}
-.nav .nav-cta{margin-left:auto}`;
+.nav .nav-cta{margin-left:auto}
+.franja .luna{width:32px;height:32px}
+.franja .luna svg{width:14px;height:14px}`;
 document.head.appendChild(css);
 
 function pintar(){
@@ -40,9 +42,10 @@ function boton(clase){
   return b;
 }
 
-// En el recorrido va al final del menú, después de Comenzar recorrido; en el archivo, fija arriba a la derecha.
-const nav = document.querySelector('.nav');
-if (nav) nav.insertBefore(boton(), nav.querySelector('.nav-progress'));
+// En el recorrido va a la derecha de la franja de la universidad; en el archivo, fija arriba a la derecha.
+const franja = document.querySelector('.franja'), nav = document.querySelector('.nav');
+if (franja) franja.appendChild(boton());
+else if (nav) nav.insertBefore(boton(), nav.querySelector('.nav-progress'));
 else document.body.appendChild(boton('flota'));
 window.rmLuna = { boton, pintar };
 pintar();

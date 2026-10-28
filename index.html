@@ -23,7 +23,7 @@
     --acc: #c9a227; --acc-2: #e6c866; --acc-dim: #8a7127; --acc-rgb: 201,162,39;
     --line: rgba(201,162,39,0.30); --line-soft: rgba(244,241,232,0.08);
     --glass: rgba(18,17,14,0.55); --glass-line: rgba(230,200,102,0.22);
-    --sheen: linear-gradient(100deg, #f4f1e8 0%, #f4f1e8 42%, #e6c866 50%, #f4f1e8 58%, #f4f1e8 100%);
+    --sheen: linear-gradient(100deg, #f4f1e8 0%, #f4f1e8 40%, #eadba8 50%, #f4f1e8 60%, #f4f1e8 100%);
     --stone: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27420%27%20height%3D%27420%27%3E%20%3Cfilter%20id%3D%27s%27%3E%20%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.018%200.028%27%20numOctaves%3D%273%27%20seed%3D%2711%27%20stitchTiles%3D%27stitch%27%20result%3D%27t%27/%3E%20%3CfeColorMatrix%20in%3D%27t%27%20type%3D%27matrix%27%20values%3D%270%200%200%200%200.83%20%200%200%200%200%200.74%20%200%200%200%200%200.52%20%200%200%200%200.05%200%27/%3E%20%3C/filter%3E%20%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23s%29%27/%3E%20%3C/svg%3E");
     --grain: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27160%27%20height%3D%27160%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20type%3D%27matrix%27%20values%3D%270%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200.035%200%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E");
     --nav-h: 64px;
@@ -33,7 +33,7 @@
     --acc: #c3c8cf; --acc-2: #eceef1; --acc-dim: #6c727b; --acc-rgb: 195,200,207;
     --line: rgba(195,200,207,0.30);
     --glass: rgba(16,16,18,0.55); --glass-line: rgba(220,224,230,0.22);
-    --sheen: linear-gradient(100deg, #f4f4f5 0%, #f4f4f5 42%, #aeb3ba 50%, #f4f4f5 58%, #f4f4f5 100%);
+    --sheen: linear-gradient(100deg, #f4f4f5 0%, #f4f4f5 40%, #cfd2d7 50%, #f4f4f5 60%, #f4f4f5 100%);
     --stone: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27420%27%20height%3D%27420%27%3E%20%3Cfilter%20id%3D%27s%27%3E%20%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.018%200.028%27%20numOctaves%3D%273%27%20seed%3D%2711%27%20stitchTiles%3D%27stitch%27%20result%3D%27t%27/%3E%20%3CfeColorMatrix%20in%3D%27t%27%20type%3D%27matrix%27%20values%3D%270%200%200%200%200.80%20%200%200%200%200%200.81%20%200%200%200%200%200.84%20%200%200%200%200.05%200%27/%3E%20%3C/filter%3E%20%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23s%29%27/%3E%20%3C/svg%3E");
   }
 
@@ -61,11 +61,11 @@
   }
   @property --gx{ syntax: '<percentage>'; inherits: true; initial-value: 20%; }
   @property --gy{ syntax: '<percentage>'; inherits: true; initial-value: 0%; }
-  body[data-scene="biografia"] .backdrop{ --gx: 85%; --gy: 20%; }
-  body[data-scene="hitos"] .backdrop{ --gx: 50%; --gy: 50%; }
-  body[data-scene="fondo"] .backdrop{ --gx: 10%; --gy: 70%; }
-  body[data-scene="galeria"] .backdrop{ --gx: 90%; --gy: 90%; }
-  body[data-scene="archivo"] .backdrop{ --gx: 50%; --gy: 100%; }
+  body[data-scene="biografia"] :is(.backdrop, .franja){ --gx: 85%; --gy: 20%; }
+  body[data-scene="hitos"] :is(.backdrop, .franja){ --gx: 50%; --gy: 50%; }
+  body[data-scene="fondo"] :is(.backdrop, .franja){ --gx: 10%; --gy: 70%; }
+  body[data-scene="galeria"] :is(.backdrop, .franja){ --gx: 90%; --gy: 90%; }
+  body[data-scene="archivo"] :is(.backdrop, .franja){ --gx: 50%; --gy: 100%; }
 
   /* ---------- Menú de vidrio ---------- */
   .nav{
@@ -146,7 +146,7 @@
   .hero h1{
     font-weight: 700; font-size: clamp(48px, 7.5vw, 104px); line-height: .98; margin: 0; letter-spacing: -0.02em;
     background: var(--sheen); background-size: 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
-    animation: sheen 9s ease-in-out 1.5s infinite;
+    animation: sheen 11s ease-in-out 1.5s infinite;
   }
   @keyframes sheen{ 0%{ background-position: 100% 0; } 38%, 100%{ background-position: 0% 0; } }
   .hero-rule{ width: 160px; height: 1px; margin: 26px auto 22px; background: linear-gradient(90deg, transparent, var(--acc), transparent); }
@@ -374,8 +374,13 @@
   /* Franja institucional fija arriba, con la luna a la derecha */
   .franja{ position: fixed; z-index: 50; top: 0; left: 0; right: 0; height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
     padding: 0 clamp(16px, 3vw, 40px);
-    background: radial-gradient(ellipse 55% 160% at 50% 0%, rgba(var(--acc-rgb),0.12), transparent 70%), linear-gradient(180deg, rgba(10,10,11,0.94), rgba(10,10,11,0.74));
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    /* la misma textura del fondo, fija a la pantalla: la franja se funde con él, sin oscurecer */
+    background:
+      radial-gradient(ellipse 1100px 700px at var(--gx, 20%) var(--gy, 0%), rgba(var(--acc-rgb),0.10), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 100% 100%, rgba(var(--acc-rgb),0.05), transparent 60%),
+      var(--stone) 0 0 / 420px 420px, var(--grain) 0 0 / 160px 160px,
+      linear-gradient(180deg, #0d0d0e, #0a0a0b 40%, #0c0c0d);
+    background-attachment: fixed; transition: --gx 1.2s ease, --gy 1.2s ease; }
   .franja::after{ content: ""; position: absolute; left: clamp(16px, 3vw, 40px); right: clamp(16px, 3vw, 40px); bottom: 0; height: 1px; background: rgba(var(--acc-rgb),0.32); }
   .franja-inst{ font-weight: 700; font-size: clamp(10px, .82vw, 12.5px); letter-spacing: .14em; text-transform: uppercase; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
@@ -387,8 +392,7 @@
 
   /* Portada: todo centrado y el botón bajo la leyenda */
   .hero{ padding: 102px 0 110px; }
-  .hero-sub{ margin: 0 auto 30px; max-width: 30em; padding: 22px 28px; border-radius: 16px; font-size: clamp(19px, 1.7vw, 23px); color: var(--acc-2);
-    background: rgba(var(--acc-rgb),0.05); border: 1px solid var(--glass-line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .hero-sub{ margin: 0 auto 30px; max-width: 38ch; }
   .hero-cta{ padding: 14px 30px; font-size: 15px; }
 
   /* Nombre de cada sección: igual que en Biografía (tamaño y color) */
@@ -469,7 +473,7 @@
         <p class="hero-eyebrow reveal" style="--d:.1s">Fondo histórico</p>
         <h1 class="reveal" style="--d:.2s">Rosa Markmann</h1>
         <div class="hero-rule reveal" style="--d:.3s"></div>
-        <p class="hero-sub reveal" style="--d:.4s">“Un recorrido por las cartas que miles de chilenas y chilenos le escribieron en 1952.”</p>
+        <p class="hero-sub reveal" style="--d:.4s">“Filántropa y defensora de la mujer chilena: su legado vive en las miles de cartas que le escribieron en 1952 y en las personas a las que su labor permitió ayudar.”</p>
         <a class="nav-cta hero-cta reveal" style="--d:.5s" href="#biografia">Comenzar recorrido</a>
       </div>
       <figure class="hero-photo reveal" style="--d:.25s">

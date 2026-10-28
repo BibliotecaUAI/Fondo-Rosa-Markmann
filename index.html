@@ -351,8 +351,9 @@
   .archivo-card h2.title{ font-size: clamp(26px, 3.2vw, 40px); margin-bottom: 14px; }
   .archivo-card > :is(p, h2, a){ position: relative; z-index: 2; }
   .sobre-pliegues, .sobre-solapa{ position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; }
-  /* los pliegues suben desde las esquinas y se cierran justo en el sello */
-  .sobre-pliegues{ top: var(--solapa); height: calc(100% - var(--solapa)); z-index: 0; }
+  /* como el ícono de sobre: los pliegues suben desde las esquinas inferiores y mueren en el borde de la solapa (los traza el script) */
+  .sobre-pliegues{ height: 100%; z-index: 0; }
+  .sobre-pliegues path{ fill: none !important; }
   .sobre-pliegues path{ fill: rgba(0,0,0,0.12); stroke: rgba(var(--acc-rgb),0.24); stroke-width: 1; vector-effect: non-scaling-stroke; }
   .sobre-solapa{ height: var(--solapa); z-index: 1; transform-origin: top; transition: transform .7s cubic-bezier(.2,.8,.2,1); }
   .sobre-solapa .cara{ fill: rgba(var(--acc-rgb),0.08); }
@@ -404,7 +405,7 @@
     <li><a href="#hitos">Hitos</a></li>
     <li><a href="#fondo">El fondo</a></li>
     <li><a href="#galeria">Galería</a></li>
-    <li><a href="archivo/">Archivo de cartas</a></li>
+    <li><a href="#archivo">Archivo de cartas</a></li>
   </ul>
   <a class="nav-cta" href="#biografia">Comenzar recorrido <span aria-hidden="true">↓</span></a>
   <button class="menu-btn" aria-label="Abrir menú">☰</button>
@@ -518,7 +519,7 @@
   <section id="archivo" class="archivo" data-scene="archivo">
     <div class="wrap">
       <div class="archivo-card center reveal">
-        <svg class="sobre-pliegues" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 L50 0 L100 100"/></svg>
+        <svg class="sobre-pliegues" aria-hidden="true"><path/></svg>
         <svg class="sobre-solapa" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="cara" d="M0 0 H100 L50 100 Z"/><path class="borde" d="M0 0 L50 100 L100 0"/></svg>
         <span class="sobre-sello" aria-hidden="true">RM</span>
         <p class="eyebrow">Archivo de cartas</p>
@@ -648,6 +649,16 @@
     if (e.key === 'ArrowRight') step(1);
     if (e.key === 'ArrowLeft') step(-1);
   });
+
+  // ---------- Sobre del archivo: pliegues desde las esquinas inferiores hasta el borde de la solapa ----------
+  const sobre = document.querySelector('.archivo-card'), pliegues = sobre.querySelector('.sobre-pliegues');
+  const plegar = () => {
+    const w = sobre.offsetWidth, h = sobre.offsetHeight, se = sobre.querySelector('.sobre-sello'), s = se.offsetTop + se.offsetHeight / 2;
+    const x = w * .34, y = s * x / (w / 2);
+    pliegues.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    pliegues.querySelector('path').setAttribute('d', `M0 ${h} L${x} ${y} M${w} ${h} L${w - x} ${y}`);
+  };
+  new ResizeObserver(plegar).observe(sobre);
 
   // ---------- Apariciones al desplazarse ----------
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });

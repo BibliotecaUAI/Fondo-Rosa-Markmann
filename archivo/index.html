@@ -182,11 +182,11 @@ html[data-p="4"] .titulo h1{background-image:linear-gradient(100deg,#f4f4f5 0%,#
 .bajar:hover{background:var(--acc);color:var(--p-0a0a0b, #0a0a0b)}
 .bajar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 @keyframes bote{50%{transform:translateY(6px)}}
-.partes{overflow:hidden;transition:height .9s cubic-bezier(.65,0,.18,1)}
-.partes-fila{display:flex;align-items:flex-start;width:200%;transition:transform .9s cubic-bezier(.65,0,.18,1)}
-.parte{flex:0 0 50%;min-width:0;transition:opacity .9s ease}
+.partes{overflow:hidden;transition:height 1.8s cubic-bezier(.65,0,.35,1)}
+.partes-fila{display:flex;align-items:flex-start;width:200%;transition:transform 1.8s cubic-bezier(.65,0,.35,1)}
+.parte{flex:0 0 50%;min-width:0;transition:opacity 1.8s cubic-bezier(.65,0,.35,1)}
 .partes.dos .partes-fila{transform:translateX(-50%)}
-.partes:not(.dos) .parte:last-child,.partes.dos .parte:first-child{opacity:0;pointer-events:none}
+.partes:not(.dos) .parte:last-child,.partes.dos .parte:first-child{opacity:.35;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.partes,.partes-fila,.parte{transition:none}}
 
 /* Segunda parte: regiones y mapa a lo ancho */

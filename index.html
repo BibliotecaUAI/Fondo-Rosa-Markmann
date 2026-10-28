@@ -413,7 +413,7 @@
     .viaje .hero-text, .viaje .hero-photo{ transform: none !important; opacity: 1 !important; }
     .viaje .bio{ padding: 104px 0 0; }
     .viaje .bio-text{ will-change: transform; }
-    .hitos{ height: 520vh; }
+    .hitos{ height: 580vh; }
   }
 
   /* Celular (al final, para que prime sobre las reglas generales) */
@@ -735,11 +735,13 @@
   const hitosFijo = hitos.querySelector('.hitos-sticky'), escritorio = matchMedia('(min-width: 901px)');
   const lectura = bioSec.querySelector('.bio-text');
   let T1 = 0, LEE = 0, T2 = 0;
-  const clamp01 = v => Math.min(1, Math.max(0, v)), curva = k => k * k * (3 - 2 * k);
+  // deslizamiento pausado: arranque y frenado suaves, y la sección que sale se desvanece un poco
+  const clamp01 = v => Math.min(1, Math.max(0, v)), curva = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+  const [panelPortada, panelBio] = fila.children;
   function medirViaje(){
-    lectura.style.transform = fila.style.transform = hitosFijo.style.transform = '';
+    lectura.style.transform = fila.style.transform = hitosFijo.style.transform = panelPortada.style.opacity = panelBio.style.opacity = '';
     if (!escritorio.matches){ T1 = LEE = T2 = 0; viajeEl.style.height = hitos.style.marginTop = ''; return; }
-    const V = innerHeight; T1 = T2 = V;
+    const V = innerHeight; T1 = T2 = V * 1.6;   // cada paso lateral ocupa 1,6 pantallas de desplazamiento
     LEE = Math.max(0, lectura.offsetTop + lectura.offsetHeight + 110 - V);
     viajeEl.style.height = (V + T1 + LEE + T2) + 'px';
     hitos.style.marginTop = -(V + T2) + 'px';
@@ -750,6 +752,7 @@
     const y = scrollY - viajeEl.offsetTop;
     const k1 = curva(clamp01(y / T1)), lei = LEE ? clamp01((y - T1) / LEE) * LEE : 0, k2 = curva(clamp01((y - T1 - LEE) / T2));
     fila.style.transform = `translateX(${-(k1 + k2) * 100}vw)`;
+    panelPortada.style.opacity = 1 - .65 * k1; panelBio.style.opacity = 1 - .65 * k2;
     lectura.style.transform = `translateY(${-lei}px)`;
     hitosFijo.style.transform = k2 < 1 ? `translateX(${(1 - k2) * 100}vw)` : '';
     const escena = y < T1 * .5 ? 'inicio' : y < T1 + LEE + T2 * .5 ? 'biografia' : null;

@@ -404,14 +404,14 @@
     .viaje-escena{ position: sticky; top: 0; height: 100vh; overflow: hidden; }
     .viaje-fila{ display: flex; width: 300vw; height: 100%; will-change: transform; }
     .viaje-fila > section{ flex: 0 0 100vw; height: 100vh; overflow: hidden; }
-    .viaje .hero{ min-height: 0; place-items: start center; padding: 104px 0 0; }
+    .viaje .hero{ min-height: 0; place-items: start center; padding: var(--arriba, 104px) 0 0; }
     .viaje .hero-grid{ align-items: start; }
     .viaje .hero-text{ align-self: center; }
     .viaje .hero-photo, .viaje .bio-sticky{ width: min(460px, calc((100vh - 200px) * .75)); justify-self: center; }
     .viaje .hero-photo{ margin: 0; } .viaje .bio-sticky{ position: relative; top: 0; transform: none !important; opacity: 1 !important; filter: none !important; }
     .viaje .hero-photo .frame img, .viaje .bio-sticky .frame img{ aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
     .viaje .hero-text, .viaje .hero-photo{ transform: none !important; opacity: 1 !important; }
-    .viaje .bio{ padding: 104px 0 0; }
+    .viaje .bio{ padding: var(--arriba, 104px) 0 0; }
     .viaje .bio-text{ will-change: transform; }
     .hitos{ height: 580vh; }
   }
@@ -740,8 +740,11 @@
   const [panelPortada, panelBio] = fila.children;
   function medirViaje(){
     lectura.style.transform = fila.style.transform = hitosFijo.style.transform = panelPortada.style.opacity = panelBio.style.opacity = '';
-    if (!escritorio.matches){ T1 = LEE = T2 = 0; viajeEl.style.height = hitos.style.marginTop = ''; return; }
+    if (!escritorio.matches){ T1 = LEE = T2 = 0; viajeEl.style.height = hitos.style.marginTop = ''; viajeEl.style.removeProperty('--arriba'); return; }
     const V = innerHeight; T1 = T2 = V * 1.6;   // cada paso lateral ocupa 1,6 pantallas de desplazamiento
+    // el retrato (con su pie) queda al centro entre la franja de arriba y el menú de abajo; la biografía usa la misma altura
+    const libre = nav.getBoundingClientRect().top - 62 - document.querySelector('.hero-photo').offsetHeight;
+    viajeEl.style.setProperty('--arriba', (62 + Math.max(16, libre / 2)) + 'px');
     LEE = Math.max(0, lectura.offsetTop + lectura.offsetHeight + 110 - V);
     viajeEl.style.height = (V + T1 + LEE + T2) + 'px';
     hitos.style.marginTop = -(V + T2) + 'px';
